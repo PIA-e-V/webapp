@@ -1,0 +1,80 @@
+body {
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
+}
+
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/material-icons/material-icons.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/Barlow/Barlow-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Bree Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/Bree_Serif/BreeSerif-Regular.ttf) format('truetype');
+}
+
+* {
+  font-family: 'Barlow';
+  font-weight: normal;
+  font-style: normal;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-reverse-enter-active, .fade-reverse-leave-active {
+  transition: opacity .3s;
+}
+.fade-reverse-enter, .fade-reverse-leave-to {
+  opacity: 0;
+}
+
+
+.slide-in-left-enter-active, .slide-in-left-leave-active {
+  transition: transform .3s;
+}
+.slide-in-left-enter, .slide-in-left-leave-to {
+  transform: translateX(-320px);
+}

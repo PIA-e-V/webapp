@@ -1,0 +1,5 @@
+overwrite: true
+schema: "http://localhost/graphql"
+generates:
+  '@types/graphql-types.ts':
+    - typescript

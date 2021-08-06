@@ -1,0 +1,5 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target" : { "namespace": "android_app", "package_name": "com.followthevote.twa",
+                   "sha256_cert_fingerprints": ["2E:92:BB:9D:64:2E:4B:8A:94:4E:42:6A:56:59:DD:7E:5B:99:0D:D2:E7:84:7D:AE:55:B3:CA:2B:0D:C6:4F:E2"] }
+    }]
