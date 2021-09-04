@@ -27,23 +27,20 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .statement {
   max-width: 600px;
+  @apply bg-white mx-auto mt-5 p-2 pb-5 rounded-2xl shadow-lg text-center;
 
-  @apply bg-white mx-auto mt-10 p-2 pb-5 rounded-2xl shadow-lg text-center
-}
-
-.statement .heading {
-  font-size: 16pt;
-
-  @apply font-bold mt-2 mb-5
+  .heading {
+    font-size: 16pt;
+    @apply font-bold mt-2 mb-5;
+  }
 }
 
 .statement .date {
   font-size: 0.9em;
   color: #5e5e5e;
-
-  @apply font-light
+  @apply font-light;
 }
 </style>

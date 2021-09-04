@@ -19,11 +19,11 @@ export default defineComponent({
       defailt: () => false
     }
   },
-  setup (props, ctx) {
+  setup(props, ctx) {
     const router = useRouter()
 
     return {
-      goBack () {
+      goBack() {
         if (props.disableNavigation) {
           ctx.emit('click')
           return
@@ -40,18 +40,18 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 #back-btn {
   width: 25px;
   height: 25px;
   line-height: 25px;
   top: 42px;
   left: 20px;
-  color: #3A4090FF;
+  color: #3a4090ff;
   outline: none;
   user-select: none;
 
-  @apply m-auto font-bold rounded shadow bg-white font-black cursor-pointer text-center absolute p-0
+  @apply m-auto font-bold rounded shadow bg-white font-black cursor-pointer text-center absolute p-0;
 }
 
 #back-btn span {

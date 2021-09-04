@@ -2,6 +2,30 @@
   <div class="container mx-auto relative">
     <SplashScreen @after-leave="transitionActive = false" />
 
+    <div v-if="isReady && !transitionActive" id="header">
+      <div v-if="$route.path === '/'" class="grid auto-rows-auto" style="grid-template-columns: 90px auto">
+        <div>
+          <Button
+            small
+            background="white"
+            color="black"
+            class="mt-8 mx-auto"
+            style="border-radius: 10px !important"
+            @click="!isAuthenticated ? $router.push('/login') : logout()"
+          >
+            {{ isAuthenticated ? 'Log out' : 'Log in' }}
+          </Button>
+        </div>
+        <div>
+          <img class="logo mt-6" src="/logo.png" alt="Logo" />
+        </div>
+      </div>
+
+      <div v-else>
+        <img class="logo pt-6" style="height: 70px; max-height: unset" src="/logo.png" alt="Logo" />
+      </div>
+    </div>
+
     <transition name="slide-in-left">
       <div v-if="menu" id="side-menu">
         <section>Einstellungen</section>
@@ -33,17 +57,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, ref } from '@nuxtjs/composition-api'
-import BottomNavigation from '~/components/BottomNavigation.vue'
+import { defineComponent, onBeforeMount, ref } from '@nuxtjs/composition-api'
 import useAppState from '~/composables/useAppState'
 import useOnboarding from '~/composables/useOnboarding'
+import useUser from '~/store/useUser'
+import useConfirmationDialog from '~/composables/useConfirmationDialog'
 
 export default defineComponent({
-  components: {
-    BottomNavigation
-  },
   setup() {
     const { isReady } = useAppState()
+    const { isAuthenticated, logout: logoutUser } = useUser()
+    const { confirm } = useConfirmationDialog()
     useOnboarding()
 
     const menu = ref(false)
@@ -63,16 +87,20 @@ export default defineComponent({
       window.addEventListener('orientationchange', calculateScreenHeight)
     })
 
-    onMounted(() => {
-      if (localStorage.getItem('onboarding.initial') !== '1') {
-        window.location.href = '/onboarding/'
-      }
-    })
-
     return {
       isReady,
+      isAuthenticated,
       menu,
       transitionActive: ref(!isReady.value),
+      async logout() {
+        const res = await confirm('Log out', 'Willst du dich wirklich ausloggen?')
+        if (!res) {
+          return
+        }
+
+        await logoutUser()
+        window.location.reload()
+      },
       toggleMenu() {
         menu.value = !menu.value
       }
@@ -82,11 +110,29 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+#header {
+  height: 100px;
+  /*background: url('/header.svg') no-repeat;*/
+  background: rgba(58, 64, 144, 1);
+  background-size: 100%;
+
+  @apply sticky top-0 left-0 z-10;
+}
+
+#header .logo {
+  max-height: 50px;
+  max-width: calc(100% - 20px);
+
+  @apply block mx-auto;
+}
+
 #main-container {
   height: 100vh;
-  height: calc(var(--vh, 1vh) * 100 - 50px);
+  height: calc(var(--vh, 1vh) * 100 - 150px);
 
   overflow-y: scroll;
+
+  @apply pb-4;
 }
 
 #burger-menu-btn {

@@ -56,18 +56,17 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .card {
   max-width: 600px;
+  @apply bg-white mx-auto mt-5 p-2 pb-3 rounded-2xl shadow-lg text-center font-light;
 
-  @apply bg-white mx-auto mt-8 p-2 pb-3 rounded-2xl shadow-lg text-center font-light
-}
+  .description {
+    font-size: 10pt;
+    max-height: 150px;
 
-.card .description {
-  font-size: 10pt;
-  max-height: 150px;
-
-  @apply font-bold block mt-2 overflow-scroll px-1
+    @apply font-bold block mt-2 overflow-scroll px-1;
+  }
 }
 
 .card .index {

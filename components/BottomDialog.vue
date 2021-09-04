@@ -19,7 +19,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .bottom-dialog-container {
   height: calc(var(--vh, 1vh) * 100);
   background: rgba(0, 0, 0, 0.5);

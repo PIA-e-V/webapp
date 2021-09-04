@@ -10,7 +10,7 @@ export default {
       lang: 'de'
     },
     meta: {
-      author: 'Political Innovation Association e.V.',
+      author: 'Political Innovation Association (PIA) e.V.',
       mobileAppIOS: true
     },
     workbox: {
@@ -47,7 +47,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/registration.ts', mode: 'client' },
-    { src: '~/plugins/pwa-update.ts', mode: 'client' }
+    { src: '~/plugins/pwa-update.ts', mode: 'client' },
+    { src: '~/plugins/screen-orientation-lock.ts', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -60,6 +61,23 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxtjs/composition-api/module'
+    // ['nuxt-twa-module', {
+    //   /* module options */
+    //   defaultUrl: 'https://app.followthevote.com',
+    //   hostName: 'followthevote.com.com',
+    //   sha256Fingerprints: ['CE:10:4B:B0:DC:2D:56:CF:24:99:4E:16:C5:14:DD:79:D1:2E:CD:5B:87:7D:CF:4A:65:B3:15:7F:88:56:01:CF'],
+    //   applicationId: 'com.followthevote.twa',
+    //   launcherName: 'FollowTheVote',
+    //   versionCode: 1,
+    //   versionName: '0.1',
+    //   statusBarColor: '#343E94',
+    //
+    //   /* optional */
+    //   /* overwrite default location for icon */
+    //   iconPath: '/static/icon.png',
+    //   /* Overwrite folder where to put .wellknown */
+    //   distFolder: '.nuxt/dist/client'
+    // }]
   ],
 
   tailwind: {

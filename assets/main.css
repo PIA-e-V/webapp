@@ -3,6 +3,10 @@ body {
   overflow: hidden;
 }
 
+h1 {
+  font-size: 20pt;
+}
+
 /* fallback */
 @font-face {
   font-family: 'Material Icons';

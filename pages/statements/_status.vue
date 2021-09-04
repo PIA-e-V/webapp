@@ -4,22 +4,19 @@
       <BackButton path="/" />
 
       <h1>Statements</h1>
-      <div v-if="$route.params.status === 'open'">
-        Offene Statements die du noch nicht bearbeitet hast.
-      </div>
-      <div v-else>
-        Abgeschlossene Statements die du bereits bearbeitet hast.
-      </div>
+      <div v-if="$route.params.status === 'open'">Offene Statements die du noch nicht bearbeitet hast.</div>
+      <div v-else>Abgeschlossene Statements die du bereits bearbeitet hast.</div>
     </header>
 
     <div v-for="topic in topics" :key="topic.id">
       <h2 class="pl-6 pt-6 font-bold">
-        <span class="material-icons">{{ topic.icon }}</span> <span class="inline-block" style="transform: translateY(-6px)">- {{ topic.title }}</span>
+        <span class="material-icons">{{ topic.icon }}</span>
+        <span class="inline-block" style="transform: translateY(-6px)">- {{ topic.title }}</span>
       </h2>
 
       <section class="statements">
         <ProposalCard
-          v-for="proposal in proposals.filter(p => p.topic.id === topic.id)"
+          v-for="proposal in proposals.filter((p) => p.topic.id === topic.id)"
           :key="proposal.id"
           :value="proposal"
           hide-topic
@@ -37,7 +34,7 @@ import useGraphql from '~/composables/useGraphql'
 import { Proposal, Topic } from '~/@types/graphql-types'
 
 export default defineComponent({
-  setup () {
+  setup() {
     const client = useGraphql()
     const route = useRoute()
 
@@ -46,7 +43,14 @@ export default defineComponent({
 
     const { fetchState } = useFetch(async () => {
       const proposalFields = [
-        'id', 'title', 'statement', 'short_statement', 'explanation', 'source_of_proposal', 'source_of_explanation', 'color',
+        'id',
+        'title',
+        'statement',
+        'short_statement',
+        'explanation',
+        'source_of_proposal',
+        'source_of_explanation',
+        'color',
         { arguments: ['id', 'statement', 'source'] },
         { topic: ['id', 'title', 'icon'] }
       ]
@@ -56,7 +60,9 @@ export default defineComponent({
         fields: ['statement_progress']
       }
 
-      operation.fields!.push(route.value.params.status === 'open' ? { openProposals: proposalFields } : { doneProposals: proposalFields })
+      operation.fields!.push(
+        route.value.params.status === 'open' ? { openProposals: proposalFields } : { doneProposals: proposalFields }
+      )
 
       const q = query(operation)
       const { me: meResponse } = await client.query(q.query, q.variables)
@@ -64,7 +70,9 @@ export default defineComponent({
       if (meResponse) {
         proposals.value = meResponse.openProposals ? meResponse.openProposals : meResponse.doneProposals
 
-        topics.value = proposals.value.map(proposal => proposal.topic).filter((value, index, self) => self.findIndex(t => t.id === value.id) === index)
+        topics.value = proposals.value
+          .map((proposal) => proposal.topic)
+          .filter((value, index, self) => self.findIndex((t) => t.id === value.id) === index)
       }
     })
 
@@ -76,26 +84,26 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 header {
   height: 150px;
-  background: #3A4090;
+  background: #3a4090;
 
   @apply relative;
-}
 
-header h1 {
-  color: white;
-  font-size: 20pt;
-  font-family: 'Bree Serif';
+  h1 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Bree Serif';
 
-  @apply pt-8 font-bold text-center
-}
+    @apply pt-8 font-bold text-center;
+  }
 
-header div {
-  color: white;
+  div {
+    color: white;
 
-  @apply text-center font-light px-3
+    @apply text-center font-light px-3;
+  }
 }
 
 .statements {
@@ -104,11 +112,10 @@ header div {
   overflow-y: hidden;
   white-space: nowrap;
 
-  scrollbar-width: none;  /* Firefox */
+  scrollbar-width: none; /* Firefox */
 }
 
 .statements::-webkit-scrollbar {
   display: none;
 }
-
 </style>

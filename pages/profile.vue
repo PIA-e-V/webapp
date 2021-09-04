@@ -9,24 +9,20 @@
       </div>
     </header>
 
-    <h2 v-if="fetchState.pending" class="text-center pt-5">
-      Lade Profildaten ...
-    </h2>
+    <h2 v-if="fetchState.pending" class="text-center pt-5">Lade Profildaten ...</h2>
     <h2 v-else-if="partyScores.length === 0" class="text-center pt-5 px-4">
-      <span class="font-bold">Ups...</span><br><br>
+      <span class="font-bold">Ups...</span><br /><br />
 
-      Du hast noch keine Statements beantwortet. Beantworte Statements bevor du dein politisches Profil sehen kannst.<br><br>
+      Du hast noch keine Statements beantwortet. Beantworte Statements bevor du dein politisches Profil sehen kannst.<br /><br />
 
       <nuxt-link to="/statements/open">
-        <span class="font-bold underline">Klicke hier</span>
-      </nuxt-link>, um dir ein Statement auszusuchen.
+        <span class="font-bold underline">Klicke hier</span> </nuxt-link
+      >, um dir ein Statement auszusuchen.
     </h2>
 
     <section id="capture" class="px-2 pb-4 mt-5 grid grid-cols-3 sm:grid-cols-3 auto-rows-fr mx-auto">
       <div v-for="(score, i) in partyScores" :key="score.party.id">
-        <div class="text-center font-bold">
-          #{{ i+1 }} - {{ score.party.name }}
-        </div>
+        <div class="text-center font-bold">#{{ i + 1 }} - {{ score.party.name }}</div>
         <div :id="`chart-${score.party.id}`" />
       </div>
     </section>
@@ -41,7 +37,7 @@
           max="100"
           value="100"
           @change="weightChanged(topic)"
-        >
+        />
       </div>
     </section>
 
@@ -60,7 +56,7 @@ import useGraphql from '~/composables/useGraphql'
 import { ScoreResult, Topic } from '~/@types/graphql-types'
 
 export default defineComponent({
-  setup () {
+  setup() {
     const client = useGraphql()
 
     const topics = ref<Topic[]>([])
@@ -73,7 +69,11 @@ export default defineComponent({
       const q = query([
         {
           operation: 'partyScores',
-          fields: ['score', { party: ['id', 'name', 'color'] }, { topics: [{ topic: ['id', 'title', 'icon'] }, 'score'] }]
+          fields: [
+            'score',
+            { party: ['id', 'name', 'color'] },
+            { topics: [{ topic: ['id', 'title', 'icon'] }, 'score'] }
+          ]
         },
         {
           operation: 'me',
@@ -84,7 +84,7 @@ export default defineComponent({
 
       if (scoreResponse) {
         partyScores.value = scoreResponse
-        topics.value = scoreResponse.map(s => s.topics.map(t => t.topic))[0]
+        topics.value = scoreResponse.map((s) => s.topics.map((t) => t.topic))[0]
       }
       if (meResponse) {
         matchCount.value = meResponse.doneProposals.length
@@ -95,7 +95,7 @@ export default defineComponent({
       renderCharts()
     })
 
-    function renderCharts () {
+    function renderCharts() {
       const generalOptions: ApexOptions = {
         chart: { type: 'radialBar', width: '100%' },
         grid: { padding: { top: 0, right: 0, bottom: 0, left: 0 } },
@@ -116,9 +116,9 @@ export default defineComponent({
         let totalScore = 0
         score.topics.forEach((t) => {
           const element = document.querySelector(`#topic-weight-${t.topic.id}`) as HTMLInputElement
-          totalScore += t.score * parseInt((element.value)) / 100
+          totalScore += (t.score * parseInt(element.value)) / 100
         })
-        totalScore = Math.round(totalScore / score.topics.length * 100)
+        totalScore = Math.round((totalScore / score.topics.length) * 100)
 
         if (!charts.has(score.party.id)) {
           const chart = new ApexCharts(document.querySelector(`#chart-${score.party.id}`), {
@@ -140,10 +140,10 @@ export default defineComponent({
       partyScores,
       fetchState,
       matchCount,
-      weightChanged () {
+      weightChanged() {
         renderCharts()
       },
-      async share () {
+      async share() {
         const canvas = await html2canvas(document.querySelector('#capture')!)
 
         console.log(canvas.toDataURL('image/jpeg', 0.95))
@@ -175,44 +175,43 @@ export default defineComponent({
           // }
         }
       }
-
     }
   }
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 header {
   height: 150px;
-  background: #3A4090;
-}
+  background: #3a4090;
 
-header h1 {
-  color: white;
-  font-size: 20pt;
-  font-family: 'Bree Serif';
+  h1 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Bree Serif';
 
-  @apply pt-8 font-bold text-center
-}
+    @apply pt-8 font-bold text-center;
+  }
 
-header div {
-  color: white;
+  div {
+    color: white;
 
-  @apply text-center font-light px-3
+    @apply text-center font-light px-3;
+  }
 }
 
 #share-btn {
   right: 20px;
   bottom: 60px;
 
-  @apply absolute
+  @apply absolute;
 }
 
 #weightings {
-  @apply px-8 pb-12
+  @apply px-8 pb-12;
 }
 
-#weightings input[type=range] {
-  @apply w-full
+#weightings input[type='range'] {
+  @apply w-full;
 }
 </style>

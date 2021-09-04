@@ -131,18 +131,22 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 header {
-  height: 150px;
+  height: 120px;
   background: #3A4090;
-}
 
-header h1 {
-  color: white;
-  font-size: 20pt;
-  font-family: 'Bree Serif';
+  h1 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Bree Serif';
 
-  @apply pt-8 font-bold text-center
+    @apply pt-4 font-bold text-center
+  }
+
+  #back-btn {
+    top: 26px;
+  }
 }
 
 .short-statement {

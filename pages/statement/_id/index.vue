@@ -20,7 +20,10 @@
     <transition name="fade">
       <div v-if="!fetchState.pending" id="source">
         <Dialog :value="proposal.source_of_proposal">
-          Quelle
+          <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px;">
+            <div><span class="material-icons">info</span></div>
+            <span>Quelle</span>
+          </div>
         </Dialog>
       </div>
     </transition>
@@ -61,18 +64,21 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 header {
-  height: 150px;
+  height: 120px;
   background: #3A4090;
-}
 
-header h1 {
-  color: white;
-  font-size: 20pt;
-  font-family: 'Bree Serif';
+  h1 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Bree Serif';
+    @apply pt-4 font-bold text-center;
+  }
 
-  @apply pt-8 font-bold text-center
+  #back-btn {
+    top: 26px;
+  }
 }
 
 .short-statement {
@@ -90,7 +96,7 @@ header h1 {
 
 #source {
   left: 10px;
-  bottom: 65px;
+  bottom: 55px;
 
   @apply absolute
 }

@@ -15,7 +15,7 @@
         style="bottom: 20px;"
         @click="submit"
       >
-        Absenden
+        Okay
       </Button>
       <Button
         small
@@ -52,9 +52,10 @@ export default defineComponent({
 
 <style scoped>
 #confirmation-dialog {
-  top: 25vw;
-  left: 5vw;
-  width: 90vw;
+  top: 20%;
+  left: calc(50% - min(45%, 200px));
+  width: 90%;
+  max-width: 400px;
 
   @apply bg-white absolute rounded-xl p-5
 }

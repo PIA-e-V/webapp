@@ -24,28 +24,30 @@
       />
     </div>
 
-    <AppButton
-      small
-      class="feedback-btn"
-      icon="chat"
-      background="white"
-      color="black"
-      @click="feedbackDialog = true"
-    />
+    <div v-if="!fetchState.pending" id="feedback-btn" @click="feedbackDialog = true">
+      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">
+        <div><span class="material-icons">feedback</span></div>
+        <span class="underline" style="line-height: 18px">Feedback</span>
+      </div>
+    </div>
 
-    <AppButton
-      small
-      class="forward-btn"
-      icon="arrow_forward"
-      @click="save('NEUTRAL')"
-    >
+    <div v-if="!fetchState.pending" id="source">
+      <Dialog :value="currentArgument.source">
+        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
+          <div><span class="material-icons">info</span></div>
+          <span>Quelle</span>
+        </div>
+      </Dialog>
+    </div>
+
+    <AppButton v-if="!fetchState.pending" small class="forward-btn" icon="arrow_forward" @click="save('NEUTRAL')">
       Nicht sicher
     </AppButton>
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
         <span class="underline cursor-pointer" @click="confirm(r)">{{ r.description }}</span>
-        <hr v-if="index !== reasons.length - 1" class="my-2">
+        <hr v-if="index !== reasons.length - 1" class="my-2" />
       </div>
     </BottomDialog>
   </div>
@@ -64,9 +66,8 @@ import useProposals from '~/store/useProposals'
 import useGraphql from '~/composables/useGraphql'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import { Argument } from '~/@types/graphql-types'
-
-type RaesonType = 'CONFUSING'|'MISTAKE'|'DISAGREE'|'OTHER'
-type Raeson = {type: RaesonType, description: string}
+import useNotifications from '~/composables/useNotifications'
+import useFeedback, { Raeson } from '~/composables/useFeedback'
 
 export default defineComponent({
   components: {
@@ -75,12 +76,14 @@ export default defineComponent({
     DecisionCard,
     BottomDialog
   },
-  setup () {
+  setup() {
     const router = useRouter()
     const route = useRoute()
     const { currentProposal: proposal, loadProposal } = useProposals()
     const client = useGraphql()
     const { confirm } = useConfirmationDialog()
+    const { success, error } = useNotifications()
+    const { reasons, createFeedback } = useFeedback()
 
     const args = ref<Argument[]>([])
     const currentArgumentIndex = ref(0)
@@ -98,7 +101,7 @@ export default defineComponent({
       args.value = shuffle(proposal.value!.arguments as Argument[])
     })
 
-    async function save (result: string) {
+    async function save(result: string) {
       const operation: IQueryBuilderOptions = {
         operation: 'upsertOpinion',
         variables: {
@@ -119,14 +122,14 @@ export default defineComponent({
       const { upsertOpinion } = await client.mutation(q.query, q.variables)
 
       if (!upsertOpinion) {
-        console.log('Alarm')
+        error('Es ist ein Fehler aufgetreten')
         return
       }
 
       nextArgument()
     }
 
-    function nextArgument () {
+    function nextArgument() {
       if (currentArgumentIndex.value + 1 === proposal.value!.arguments.length) {
         router.push(`/statement/${id}/voting`)
         return
@@ -142,21 +145,16 @@ export default defineComponent({
       currentArgument,
       currentArgumentIndex,
       feedbackDialog,
-      reasons: [
-        { type: 'CONFUSING', description: 'Der Text ist verwirrend' },
-        { type: 'MISTAKE', description: 'Im Text ist ein Fehler' },
-        { type: 'DISAGREE', description: 'Ich stimme der Formulierung nicht zu' },
-        { type: 'OTHER', description: 'Etwas anderes' }
-      ] as Array<Raeson>,
+      reasons,
       save,
-      goBack () {
+      goBack() {
         if (currentArgumentIndex.value === 0) {
           router.go(-1)
         } else {
           currentArgumentIndex.value -= 1
         }
       },
-      async confirm (reason: Raeson) {
+      async confirm(reason: Raeson) {
         const sendFeedback = await confirm(
           'Feedback absenden?',
           `Möchtest du das Feedback "${reason.description}" wirklich absenden?`
@@ -166,26 +164,10 @@ export default defineComponent({
           return
         }
 
-        const q = mutation({
-          operation: 'createFeedback',
-          variables: {
-            input: {
-              type: 'CreateFeedbackInput',
-              required: true,
-              value: {
-                feedbackable_id: currentArgument.value.id,
-                feedbackable_type: 'App\\Models\\Argument',
-                feedback: reason.type
-              }
-            }
-          },
-          fields: ['id']
-        })
+        const created = await createFeedback(reason, currentArgument.value.id, 'App\\Models\\Argument', 3)
 
-        const { createFeedback } = await client.mutation(q.query, q.variables)
-
-        if (createFeedback) {
-          console.log('Feedback was created')
+        if (created) {
+          success('Dein Feedback wurde abgeschickt')
         }
 
         feedbackDialog.value = false
@@ -195,38 +177,44 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 header {
-  height: 150px;
-  background: #3A4090;
-}
+  height: 120px;
+  background: #3a4090;
 
-header h1 {
-  color: white;
-  font-size: 20pt;
-  font-family: 'Bree Serif';
+  h1 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Bree Serif';
+    @apply pt-4 font-bold text-center;
+  }
 
-  @apply pt-8 font-bold text-center
+  #back-btn {
+    top: 26px;
+  }
 }
 
 .short-statement {
   color: white;
-
-  @apply text-center font-light px-3
+  @apply text-center font-light px-3;
 }
 
 .forward-btn {
   bottom: 60px;
   right: 10px;
   background: rgba(65, 60, 177, 0.66);
-
-  @apply absolute
+  @apply absolute;
 }
 
-.feedback-btn {
-  bottom: 60px;
+#feedback-btn {
   left: 10px;
+  bottom: 80px;
+  @apply absolute cursor-pointer;
+}
 
-  @apply absolute
+#source {
+  left: 10px;
+  bottom: 55px;
+  @apply absolute;
 }
 </style>

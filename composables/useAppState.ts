@@ -1,13 +1,26 @@
-import { computed, readonly, ref } from '@nuxtjs/composition-api'
+import { computed, ref } from '@nuxtjs/composition-api'
 
-const state = ref<'loading'|'ready'>('loading')
-const isReady = computed(() => state.value === 'ready')
+interface Waiter {
+  state: 'loading'|'ready'
+}
+
+const waiters = ref<Waiter[]>([])
+const isReady = computed(() => waiters.value.every(w => w.state === 'ready'))
 export default function () {
   return {
-    state: readonly(state),
     isReady,
-    setReady () {
-      state.value = 'ready'
+    registerWaiter () {
+      const w: Waiter = {
+        state: 'loading'
+      }
+
+      waiters.value.push(w)
+
+      return {
+        setReady () {
+          w.state = 'ready'
+        }
+      }
     }
   }
 }

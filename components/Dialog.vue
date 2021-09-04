@@ -40,7 +40,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .trigger {
   color: black;
 
@@ -54,18 +54,20 @@ export default defineComponent({
   background-color: rgba(255, 255, 255, 0.4);
 
   @apply top-0 left-0 fixed
+
 }
 
 #dialog-content {
   z-index: 20;
   border: 1px solid lightgrey;
   padding: 20px 26px 40px;
-  top: calc(50% - 300px * 0.5);
+  top: 5vh;
+  max-height: 90vh;
   left: calc(50% - min(500px, 80vw) * 0.5);
   width: min(500px, 80vw);
   word-break: break-word;
 
-  @apply absolute bg-white rounded-2xl shadow-2xl
+  @apply absolute bg-white rounded-2xl shadow-2xl overflow-scroll
 }
 
 .close-icon {

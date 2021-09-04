@@ -1,7 +1,7 @@
 <template>
   <section class="stepper">
-    <div v-for="i in [1,2,3,4,5]" :key="i">
-      <div class="step" :class="{ active: step >= i }" @click="onStepSelected(i)">
+    <div v-for="i in [1,2,3,4,5]" :key="i" class="step">
+      <div class="step-content" :class="{ active: step >= i }" @click="onStepSelected(i)">
         {{ i }}
       </div>
     </div>
@@ -44,27 +44,25 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss">
 .stepper {
   display: grid;
   grid-template: auto / 1fr 1fr 1fr 1fr 1fr;
+  @apply mt-5;
 
-  @apply mt-10
-}
+  .step {
+    @apply text-center;
 
-.stepper > div {
-  @apply text-center
-}
+    .step-content {
+      width: 25px;
+      height: 25px;
+      @apply m-auto font-bold rounded shadow-outline bg-white font-black cursor-pointer;
 
-.stepper .step {
-  width: 25px;
-  height: 25px;
-
-  @apply m-auto font-bold rounded shadow-outline bg-white font-black cursor-pointer
-}
-
-.stepper .step.active {
-  background: #3A4090;
-  color: white;
+      &.active {
+        background: #3A4090;
+        color: white;
+      }
+    }
+  }
 }
 </style>

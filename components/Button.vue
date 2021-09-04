@@ -1,6 +1,6 @@
 <template>
-  <div class="btn" :class="{small: small}" :style="{background, color}" @click="$emit('click', $event)">
-    <span class="slot" :style="{color}" :class="{'mr-2': !icon, 'ml-2': Object.keys($slots).length > 0}">
+  <div class="btn" :class="{ small: small }" :style="{ background, color }" @click="$emit('click', $event)">
+    <span class="slot" :style="{ color }" :class="{ 'mr-2': !icon, 'ml-2': Object.keys($slots).length > 0 }">
       <slot />
     </span>
     <div v-if="icon" class="icon">
@@ -31,20 +31,20 @@ export default defineComponent({
       default: () => 'white'
     }
   },
-  setup () {
+  setup() {
     return {}
   }
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .btn {
   width: fit-content;
   border: none;
   outline: none;
   user-select: none;
 
-  @apply rounded-2xl px-1 font-bold cursor-pointer flex items-center
+  @apply rounded-2xl px-1 font-bold cursor-pointer flex items-center;
 }
 
 .btn .slot {
@@ -54,7 +54,7 @@ export default defineComponent({
   outline: none;
   user-select: none;
 
-  @apply inline-block whitespace-no-wrap
+  @apply inline-block whitespace-no-wrap;
 }
 
 .btn .icon {
@@ -62,7 +62,7 @@ export default defineComponent({
   outline: none;
   user-select: none;
 
-  @apply inline-block ml-2 mr-1
+  @apply inline-block ml-2 mr-1;
 }
 
 .btn .material-icons {

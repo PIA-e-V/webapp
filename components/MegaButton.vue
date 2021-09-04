@@ -1,17 +1,11 @@
 <template>
   <div class="mega-button">
-    <span class="material-icons mt-2" style="color:#FFDF57; font-size: 33px;">whatshot</span><br>
-    <p style="line-height: normal;">
-      <span style="font-size: 18px;" class="mt-2 block">{{ supTitle }}</span>
-      <span style="font-size: 30px;">{{ title }}</span>
+    <span class="material-icons mt-2" style="color: #ffdf57; font-size: 33px">whatshot</span><br />
+    <p style="line-height: normal">
+      <span style="font-size: 18px" class="mt-2 block">{{ supTitle }}</span>
+      <span style="font-size: 30px">{{ title }}</span>
     </p>
-    <AppButton
-      class="forward-btn"
-      icon="arrow_forward"
-      background="white"
-      color="#3A4090FF"
-      @click="$emit('click')"
-    >
+    <AppButton class="forward-btn" icon="arrow_forward" background="white" color="#3A4090FF" @click="$emit('click')">
       Los geht's!
     </AppButton>
   </div>
@@ -35,13 +29,13 @@ export default defineComponent({
       default: () => ''
     }
   },
-  setup () {
+  setup() {
     return {}
   }
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .mega-button {
   color: white;
   background: rgba(58, 64, 144, 1);

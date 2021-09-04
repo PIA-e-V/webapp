@@ -5,8 +5,8 @@ FROM node:15
 WORKDIR /var/www/app
 
 COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci
+COPY yarn.lock ./
+RUN yarn install
 
 COPY . .
 RUN npm run build

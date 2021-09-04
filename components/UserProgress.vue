@@ -20,27 +20,27 @@ export default defineComponent({
       default: () => 0
     }
   },
-  setup () {
+  setup() {
     return {}
   }
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .progress-container {
   width: min(90vw, 400px);
 
-  @apply mx-auto mb-2 p-2
+  @apply mx-auto mb-2 p-2;
 }
 
 .progress-container .heading {
-  font-family: 'Bree Serif',serif;
+  font-family: 'Bree Serif', serif;
   font-size: 18pt;
   font-weight: 500;
 }
 
 .user-progress {
-  @apply shadow rounded mx-auto mt-2 p-4 bg-white
+  @apply shadow rounded mx-auto mt-2 p-4 bg-white;
 }
 
 .user-progress .progress-bar-container {
@@ -51,10 +51,10 @@ export default defineComponent({
 
 .user-progress .progress-bar-container .progress {
   height: 15px;
-  background: #3A4090;
+  background: #3a4090;
   transition: width 1s;
   transition-timing-function: ease-out;
 
-  @apply rounded-full
+  @apply rounded-full;
 }
 </style>

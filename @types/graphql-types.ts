@@ -177,6 +177,10 @@ export type Mutation = {
   logout?: Maybe<User>;
   /** Registers an anonymous user to use the app. */
   registerAnonymousUser: LoginResponse;
+  /** Registers an user. */
+  register: RegistrationResponse;
+  /** Verifies an user. */
+  verifyUser: UserVerificationResponse;
   upsertVoting?: Maybe<Voting>;
   deleteVoting: Voting;
 };
@@ -235,6 +239,17 @@ export type MutationUpsertTopicArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationRegisterArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationVerifyUserArgs = {
+  token: Scalars['String'];
 };
 
 
@@ -365,9 +380,11 @@ export type Proposal = {
   id: Scalars['Int'];
   topic_id: Scalars['Int'];
   title: Scalars['String'];
+  type: ProposalType;
   statement: Scalars['String'];
   short_statement: Scalars['String'];
   explanation: Scalars['String'];
+  inverted: Scalars['Boolean'];
   active: Scalars['Boolean'];
   source_of_explanation: Scalars['String'];
   source_of_proposal: Scalars['String'];
@@ -401,6 +418,13 @@ export type ProposalScheduleEntry = {
   updated_at: Scalars['DateTime'];
   proposal: Proposal;
 };
+
+export enum ProposalType {
+  ResolutionRecommendation = 'RESOLUTION_RECOMMENDATION',
+  Bill = 'BILL',
+  ChangeRequest = 'CHANGE_REQUEST',
+  Regulation = 'REGULATION'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -855,6 +879,12 @@ export type QueryVotingsWhereWhereConditionsRelation = {
   condition?: Maybe<QueryVotingsWhereWhereConditions>;
 };
 
+export type RegistrationResponse = {
+  __typename?: 'RegistrationResponse';
+  status: Scalars['Boolean'];
+  message?: Maybe<Scalars['String']>;
+};
+
 export type Role = {
   __typename?: 'Role';
   id: Scalars['Int'];
@@ -974,9 +1004,11 @@ export type UpsertOpinionInput = {
 export type UpsertProposalInput = {
   topic_id: Scalars['Int'];
   title: Scalars['String'];
+  type: ProposalType;
   statement: Scalars['String'];
   short_statement: Scalars['String'];
   explanation: Scalars['String'];
+  inverted: Scalars['Boolean'];
   active: Scalars['Boolean'];
   source_of_explanation: Scalars['String'];
   source_of_proposal: Scalars['String'];
@@ -1029,6 +1061,11 @@ export type UserPaginator = {
   paginatorInfo: PaginatorInfo;
   /** A list of User items. */
   data: Array<User>;
+};
+
+export type UserVerificationResponse = {
+  __typename?: 'UserVerificationResponse';
+  status: Scalars['Boolean'];
 };
 
 export type Voting = {

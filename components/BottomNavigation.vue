@@ -1,10 +1,10 @@
 <template>
   <nav>
     <div class="m-auto">
-      <section class="btn" :class="{active: $route.name === 'index'}" @click="$router.push('/')">
+      <section class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
         <span class="material-icons">home</span>
       </section>
-      <section class="btn" :class="{active: $route.name === 'profile'}" @click="$router.push('/profile')">
+      <section class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
         <span class="material-icons">person</span>
       </section>
     </div>
@@ -15,13 +15,13 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
-  setup () {
+  setup() {
     return {}
   }
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 nav {
   height: 50px;
   width: 100%;
@@ -39,7 +39,7 @@ nav > div > section.btn {
   margin-top: 5px;
   color: grey;
 
-  @apply inline-block rounded-full text-center mx-12 cursor-pointer
+  @apply inline-block rounded-full text-center mx-12 cursor-pointer;
 }
 
 nav > div > section.btn.active {
