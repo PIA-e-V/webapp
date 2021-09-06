@@ -6,14 +6,21 @@ import useGraphql from '~/composables/useGraphql'
 
 const proposalOfTheDay = ref<Proposal>()
 const currentProposal = ref<Proposal>()
-export default function useProposals () {
+export default function useProposals() {
   const client = useGraphql()
 
-  async function loadProposalOfTheDay () {
+  async function loadProposalOfTheDay() {
     const operation: IQueryBuilderOptions = {
       operation: 'proposalOfTheDay',
       fields: [
-        'id', 'title', 'statement', 'explanation', 'short_statement', 'source_of_proposal', 'source_of_explanation', 'color',
+        'id',
+        'title',
+        'statement',
+        'explanation',
+        'short_statement',
+        'source_of_proposal',
+        'source_of_explanation',
+        'color',
         { arguments: ['id', 'statement', 'source'] }
       ]
     }
@@ -25,7 +32,7 @@ export default function useProposals () {
     }
   }
 
-  async function loadProposal (id: number, force = false) {
+  async function loadProposal(id: number, force = false) {
     if (!force && currentProposal.value?.id === id) {
       return
     }
@@ -39,7 +46,15 @@ export default function useProposals () {
         }
       },
       fields: [
-        'id', 'title', 'statement', 'short_statement', 'explanation', 'source_of_proposal', 'source_of_explanation', 'color',
+        'id',
+        'title',
+        'statement',
+        'short_statement',
+        'explanation',
+        'source_of_proposal',
+        'source_of_explanation',
+        'color',
+        'inverted',
         { arguments: ['id', 'statement', 'source'] },
         { latest_voting: ['carried_out_at'] }
       ]

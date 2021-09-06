@@ -23,15 +23,13 @@
     </div>
 
     <div v-if="parties.length > 0" id="legend" style="line-height: 20px">
-      <span style="background: #26E291;" class="rounded-full inline-block" /> Ja &nbsp;
-      <span style="background: #FA6751;" class="rounded-full inline-block" /> Nein &nbsp;
-      <span style="background: #343E94;" class="rounded-full inline-block" /> Enthalten &nbsp;
-      <span style="background: #575A6D;" class="rounded-full inline-block" /> Abwesend
+      <span style="background: #26e291" class="rounded-full inline-block" /> Ja &nbsp;
+      <span style="background: #fa6751" class="rounded-full inline-block" /> Nein &nbsp;
+      <span style="background: #343e94" class="rounded-full inline-block" /> Enthalten &nbsp;
+      <span style="background: #575a6d" class="rounded-full inline-block" /> Abwesend
     </div>
 
-    <AppButton class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')">
-      Zum Matching
-    </AppButton>
+    <AppButton class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')"> Zum Matching </AppButton>
   </div>
 </template>
 
@@ -50,7 +48,7 @@ export default defineComponent({
   components: {
     AppButton
   },
-  setup () {
+  setup() {
     const route = useRoute()
     const { currentProposal: proposal, loadProposal } = useProposals()
     const client = useGraphql()
@@ -83,10 +81,13 @@ export default defineComponent({
 
       if (chamberVotingResponse) {
         voting.value = chamberVotingResponse
-        parties.value = uniqBy(voting.value.childVotings.map(v => ({
-          id: v.party!.id,
-          name: v.party!.name
-        })), 'id') as Party[]
+        parties.value = uniqBy(
+          voting.value.childVotings.map((v) => ({
+            id: v.party!.id,
+            name: v.party!.name
+          })),
+          'id'
+        ) as Party[]
 
         await nextTick()
 
@@ -96,15 +97,19 @@ export default defineComponent({
 
     //  setTimeout(renderCharts, 6000)
 
-    function renderCharts () {
+    function renderCharts() {
       parties.value.forEach((party) => {
-        const childVotings = voting.value.childVotings.filter(v => v.party!.id === party.id)
+        const childVotings = voting.value.childVotings.filter((v) => v.party!.id === party.id)
         const options: ApexOptions = {
           series: [
-            childVotings.find(v => v.outcome === VotingOutcome.Yes)!.count!,
-            childVotings.find(v => v.outcome === VotingOutcome.No)!.count!,
-            childVotings.find(v => v.outcome === VotingOutcome.Abstained)!.count!,
-            childVotings.find(v => v.outcome === VotingOutcome.Absent)!.count!
+            proposal.value!.inverted
+              ? childVotings.find((v) => v.outcome === VotingOutcome.No)!.count!
+              : childVotings.find((v) => v.outcome === VotingOutcome.Yes)!.count!,
+            proposal.value!.inverted
+              ? childVotings.find((v) => v.outcome === VotingOutcome.Yes)!.count!
+              : childVotings.find((v) => v.outcome === VotingOutcome.No)!.count!,
+            childVotings.find((v) => v.outcome === VotingOutcome.Abstained)!.count!,
+            childVotings.find((v) => v.outcome === VotingOutcome.Absent)!.count!
           ],
           labels: ['Ja', 'Nein', 'Enthalten', 'Abwesend'],
           dataLabels: {
@@ -134,14 +139,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 header {
   height: 120px;
-  background: #3A4090;
+  background: #3a4090;
 
   h1 {
     color: white;
     font-size: 20pt;
     font-family: 'Bree Serif';
 
-    @apply pt-4 font-bold text-center
+    @apply pt-4 font-bold text-center;
   }
 
   #back-btn {
@@ -152,22 +157,22 @@ header {
 .short-statement {
   color: white;
 
-  @apply text-center font-light px-3
+  @apply text-center font-light px-3;
 }
 
 h2 {
-  @apply font-bold
+  @apply font-bold;
 }
 
 .forward-btn {
   bottom: 60px;
   left: calc(50% - 75px);
 
-  @apply absolute
+  @apply absolute;
 }
 
 #charts {
-  @apply grid auto-rows-auto grid-cols-3 mt-8 row-gap-2 mx-auto
+  @apply grid auto-rows-auto grid-cols-3 mt-8 row-gap-2 mx-auto;
 }
 
 #legend {
