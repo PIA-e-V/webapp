@@ -2,6 +2,11 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  // Environment config
+  env: {
+    apiBaseUrl: process.env.API_BASE_URL || ''
+  },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
@@ -34,15 +39,11 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
-    link: [
-      { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-    ]
+    link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    'material-design-icons', '~/assets/main'
-  ],
+  css: ['material-design-icons', '~/assets/main'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -85,8 +86,7 @@ export default {
   },
 
   tailwindcss: {
-    config: {
-    }
+    config: {}
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
