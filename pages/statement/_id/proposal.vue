@@ -120,7 +120,7 @@ export default defineComponent({
           return
         }
 
-        const created = await createFeedback(reason, id, 'App\\Models\\Proposal', 4)
+        const created = await createFeedback(reason, props.proposal.id, 'App\\Models\\Proposal', 4)
 
         if (created) {
           success('Dein Feedback wurde abgeschickt')
