@@ -1,10 +1,15 @@
 <template>
   <div>
-    <UserProgress :value="progress" />
+    <MegaButton title="Statement" sup-title="Checke dein heutiges" class="mt-4" @click="clicked" />
 
-    <MegaButton title="Statement" sup-title="Checke dein heutiges" @click="clicked" />
+    <h1 class="pl-6 pt-4">Fortschritt</h1>
 
-    <h1 class="pl-6 pt-4" style="font-size: 18pt; font-family: 'Bree Serif', serif; font-weight: 500">Statements</h1>
+    <div class="grid px-6 pt-2" style="grid-template-columns: 50px auto">
+      <div style="line-height: 30px; font-size: 18px">{{ `${doneProposals.length}/30` }}</div>
+      <div><UserProgress :value="progress" /></div>
+    </div>
+
+    <h1 class="pl-6 pt-4">Statements</h1>
 
     <h2 class="pl-6 pt-3 font-bold" style="line-height: 30px">
       Offen<span v-if="fetchState.timestamp && openProposals.length > 0"> ({{ openProposals.length }})</span>
@@ -64,6 +69,7 @@ import ProposalCard from '~/components/ProposalCard.vue'
 import useProposals from '~/store/useProposals'
 import useGraphql from '~/composables/useGraphql'
 import { Proposal } from '~/@types/graphql-types'
+import useUser from '~/store/useUser'
 
 export default defineComponent({
   components: {
@@ -136,6 +142,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  font-size: 18pt;
+  font-family: 'Bree Serif', serif;
+  font-weight: 500;
+}
+
 .statements {
   width: 100%;
   overflow-x: scroll;

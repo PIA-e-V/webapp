@@ -27,7 +27,7 @@
       </div>
     </section>
 
-    <h1 v-show="fetchState.timestamp" class="pl-6 mb-2">Gewichtung</h1>
+    <h1 v-show="!fetchState.pending" class="pl-6 mb-2">Gewichtung</h1>
     <section v-show="fetchState.timestamp" id="weightings">
       <div v-for="topic in topics" :key="topic.id">
         <h2>{{ topic.title }}</h2>
@@ -41,10 +41,6 @@
         />
       </div>
     </section>
-
-    <!--    <Button v-if="partyScores.length > 0" id="share-btn" small icon="share" @click="share">-->
-    <!--      Teilen-->
-    <!--    </Button>-->
   </div>
 </template>
 
@@ -206,6 +202,12 @@ header {
 
     @apply font-light px-5;
   }
+}
+
+h1 {
+  font-size: 18pt;
+  font-family: 'Bree Serif', serif;
+  font-weight: 500;
 }
 
 #share-btn {

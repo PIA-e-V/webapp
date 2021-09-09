@@ -119,7 +119,7 @@ export default defineComponent({
 
     function nextArgument() {
       if (currentArgumentIndex.value + 1 === props.proposal.arguments.length) {
-        router.push(`/statement/${props.proposal.id}/voting`)
+        router.push(`/statement/${props.proposal.id}/proposal`)
         return
       }
 
