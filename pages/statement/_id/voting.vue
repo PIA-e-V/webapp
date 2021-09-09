@@ -128,29 +128,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-header {
-  height: 120px;
-  background: #3a4090;
-
-  h1 {
-    color: white;
-    font-size: 20pt;
-    font-family: 'Bree Serif';
-
-    @apply pt-4 font-bold text-center;
-  }
-
-  #back-btn {
-    top: 26px;
-  }
-}
-
-.short-statement {
-  color: white;
-
-  @apply text-center font-light px-3;
-}
-
 h2 {
   @apply font-bold;
 }
