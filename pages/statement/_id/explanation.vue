@@ -1,21 +1,12 @@
 <template>
   <div>
-    <header>
-      <BackButton />
-
-      <h1>Worum geht's?</h1>
-      <div class="short-statement">
-        <span v-if="!fetchState.pending">{{ proposal.short_statement }}</span>
-      </div>
-    </header>
-
     <div class="px-4">
       <Stepper :step="2" />
 
-      <section v-if="!fetchState.pending" class="explanation" v-html="proposal.explanation" />
+      <section class="explanation" v-html="proposal.explanation" />
     </div>
 
-    <div v-if="!fetchState.pending" id="source">
+    <div id="source">
       <Dialog :value="proposal.source_of_explanation">
         <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
           <div><span class="material-icons">info</span></div>
@@ -24,14 +15,21 @@
       </Dialog>
     </div>
 
-    <div v-if="!fetchState.pending" id="feedback-btn" @click="feedbackDialog = true">
+    <div id="feedback-btn" @click="feedbackDialog = true">
       <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">
         <div><span class="material-icons">feedback</span></div>
         <span class="underline" style="line-height: 18px">Feedback</span>
       </div>
     </div>
 
-    <AppButton class="forward-btn" small icon="arrow_forward" @click="nextStep"> Weiter gehts </AppButton>
+    <AppButton
+      class="forward-btn"
+      small
+      icon="arrow_forward"
+      @click="$router.push(`/statement/${proposal.id}/arguments`)"
+    >
+      Weiter gehts
+    </AppButton>
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
@@ -43,39 +41,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useFetch, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { PropType, defineComponent, ref } from '@nuxtjs/composition-api'
 import AppButton from '~/components/Button.vue'
-import useProposals from '~/store/useProposals'
 import useFeedback, { Raeson } from '~/composables/useFeedback'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import useNotifications from '~/composables/useNotifications'
+import { Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
     AppButton
   },
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const { currentProposal: proposal, loadProposal } = useProposals()
+  props: {
+    proposal: {
+      type: Object as PropType<Proposal>,
+      required: true
+    }
+  },
+  setup(props, ctx) {
+    ctx.emit('titleChanged', "Worum geht's?")
+
     const { confirm } = useConfirmationDialog()
     const { success } = useNotifications()
     const { reasons, createFeedback } = useFeedback()
 
-    const id = parseInt(route.value.params.id)
-    const { fetchState } = useFetch(async () => {
-      await loadProposal(id)
-    })
     const feedbackDialog = ref(false)
 
     return {
-      proposal,
-      fetchState,
       reasons,
       feedbackDialog,
-      nextStep() {
-        router.push(`/statement/${id}/arguments`)
-      },
       async confirm(reason: Raeson) {
         const sendFeedback = await confirm(
           'Feedback absenden?',
@@ -100,28 +94,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-header {
-  height: 120px;
-  background: #3a4090;
-
-  h1 {
-    color: white;
-    font-size: 20pt;
-    font-family: 'Bree Serif';
-    @apply pt-4 font-bold text-center;
-  }
-
-  #back-btn {
-    top: 26px;
-  }
-}
-
-.short-statement {
-  color: white;
-
-  @apply text-center font-light px-3;
-}
-
 .explanation {
   height: 45vh;
   color: #5e5e5e;

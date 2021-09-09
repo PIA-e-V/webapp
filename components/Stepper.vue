@@ -1,6 +1,6 @@
 <template>
   <section class="stepper">
-    <div v-for="i in [1,2,3,4,5]" :key="i" class="step">
+    <div v-for="i in [1, 2, 3, 4, 5]" :key="i" class="step">
       <div class="step-content" :class="{ active: step >= i }" @click="onStepSelected(i)">
         {{ i }}
       </div>
@@ -12,7 +12,7 @@
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 import useProposals from '~/store/useProposals'
 
-type Step = 1|2|3|4|5
+type Step = 1 | 2 | 3 | 4 | 5
 
 export default defineComponent({
   props: {
@@ -21,22 +21,32 @@ export default defineComponent({
       default: 1
     }
   },
-  setup () {
+  setup() {
     const router = useRouter()
     const { currentProposal } = useProposals()
 
     return {
-      onStepSelected (step: Step) {
+      onStepSelected(step: Step) {
         if (!currentProposal.value) {
           return
         }
 
         switch (step) {
-          case 1: router.push(`/statement/${currentProposal.value.id}`); break
-          case 2: router.push(`/statement/${currentProposal.value.id}/explanation`); break
-          case 3: router.push(`/statement/${currentProposal.value.id}/arguments`); break
-          case 4: router.push(`/statement/${currentProposal.value.id}/voting`); break
-          case 5: router.push(`/statement/${currentProposal.value.id}/result`); break
+          case 1:
+            router.push(`/statement/${currentProposal.value.id}`)
+            break
+          case 2:
+            router.push(`/statement/${currentProposal.value.id}/explanation`)
+            break
+          case 3:
+            router.push(`/statement/${currentProposal.value.id}/arguments`)
+            break
+          case 4:
+            router.push(`/statement/${currentProposal.value.id}/proposal`)
+            break
+          case 5:
+            router.push(`/statement/${currentProposal.value.id}/voting`)
+            break
         }
       }
     }
@@ -59,7 +69,7 @@ export default defineComponent({
       @apply m-auto font-bold rounded shadow-outline bg-white font-black cursor-pointer;
 
       &.active {
-        background: #3A4090;
+        background: #3a4090;
         color: white;
       }
     }

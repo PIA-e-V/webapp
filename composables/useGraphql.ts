@@ -5,8 +5,6 @@ import { useContext } from '@nuxtjs/composition-api'
 export default function () {
   const { env } = useContext()
 
-  console.log(env)
-
   return {
     async query(query: string, parameters: Record<string, any> = {}): Promise<Query> {
       const q = gql(`${query}`)

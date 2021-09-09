@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="px-4">
-      <Stepper :step="3" />
+      <Stepper :step="4" />
 
       <DecisionCard
-        :value="currentArgument.statement"
-        :index="index"
+        :value="proposal.statement"
         :decisions="[
-          { label: 'Stimme nicht zu', result: 'DISAGREE', icon: 'close' },
-          { label: 'Stimme zu', result: 'AGREE', icon: 'favorite' }
+          { label: 'Dagegen', result: 'DISAGREE', icon: 'close' },
+          { label: 'Neutral', result: 'NEUTRAL', icon: 'thumbs_up_down' },
+          { label: 'Dafür', result: 'AGREE', icon: 'favorite' }
         ]"
         @decision="save"
       />
@@ -22,7 +22,7 @@
     </div>
 
     <div id="source">
-      <Dialog :value="currentArgument.source">
+      <Dialog :value="proposal.source_of_proposal">
         <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
           <div><span class="material-icons">info</span></div>
           <span>Quelle</span>
@@ -30,7 +30,9 @@
       </Dialog>
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="save('NEUTRAL')"> Nicht sicher </AppButton>
+    <AppButton class="forward-btn" small icon="arrow_forward" @click="$router.push(`/statement/${proposal.id}/voting`)">
+      Überspringen
+    </AppButton>
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
@@ -42,26 +44,23 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
+import { PropType, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
 import IQueryBuilderOptions from 'gql-query-builder/build/IQueryBuilderOptions'
 import { mutation } from 'gql-query-builder'
-import { shuffle } from 'lodash'
 import Stepper from '~/components/Stepper.vue'
 import AppButton from '~/components/Button.vue'
-import DecisionCard, { Index } from '~/components/DecisionCard.vue'
-import BottomDialog from '~/components/BottomDialog.vue'
+import DecisionCard from '~/components/DecisionCard.vue'
 import useGraphql from '~/composables/useGraphql'
-import useConfirmationDialog from '~/composables/useConfirmationDialog'
-import { Argument, Proposal } from '~/@types/graphql-types'
 import useNotifications from '~/composables/useNotifications'
+import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import useFeedback, { Raeson } from '~/composables/useFeedback'
+import { Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
     Stepper,
-    AppButton,
     DecisionCard,
-    BottomDialog
+    AppButton
   },
   props: {
     proposal: {
@@ -70,24 +69,15 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Argumente')
+    ctx.emit('titleChanged', 'Abstimmung')
 
     const router = useRouter()
     const client = useGraphql()
     const { confirm } = useConfirmationDialog()
-    const { success, error } = useNotifications()
+    const { success } = useNotifications()
     const { reasons, createFeedback } = useFeedback()
 
-    const args = ref<Argument[]>([])
-    const currentArgumentIndex = ref(0)
     const feedbackDialog = ref(false)
-    const currentArgument = computed(() => args.value[currentArgumentIndex.value])
-    const index = computed<Index>(() => ({
-      total: props.proposal.arguments.length,
-      current: currentArgumentIndex.value + 1
-    }))
-
-    args.value = shuffle(props.proposal.arguments as Argument[])
 
     async function save(result: string) {
       const operation: IQueryBuilderOptions = {
@@ -97,8 +87,8 @@ export default defineComponent({
             type: 'UpsertOpinionInput',
             required: true,
             value: {
-              opinionable_id: currentArgument.value!.id,
-              opinionable_type: 'App\\Models\\Argument',
+              opinionable_id: props.proposal.id,
+              opinionable_type: 'App\\Models\\Proposal',
               position: result
             }
           }
@@ -109,48 +99,28 @@ export default defineComponent({
       const q = mutation(operation)
       const { upsertOpinion } = await client.mutation(q.query, q.variables)
 
-      if (!upsertOpinion) {
-        error('Es ist ein Fehler aufgetreten')
-        return
-      }
-
-      nextArgument()
-    }
-
-    function nextArgument() {
-      if (currentArgumentIndex.value + 1 === props.proposal.arguments.length) {
+      if (upsertOpinion) {
         router.push(`/statement/${props.proposal.id}/voting`)
-        return
+      } else {
+        console.log('Alarm')
       }
-
-      currentArgumentIndex.value += 1
     }
 
     return {
-      index,
-      currentArgument,
-      currentArgumentIndex,
-      feedbackDialog,
       reasons,
+      feedbackDialog,
       save,
-      goBack() {
-        if (currentArgumentIndex.value === 0) {
-          router.go(-1)
-        } else {
-          currentArgumentIndex.value -= 1
-        }
-      },
       async confirm(reason: Raeson) {
         const sendFeedback = await confirm(
           'Feedback absenden?',
           `Möchtest du das Feedback "${reason.description}" wirklich absenden?`
         )
-        if (!sendFeedback || !currentArgument.value) {
+        if (!sendFeedback) {
           feedbackDialog.value = false
           return
         }
 
-        const created = await createFeedback(reason, currentArgument.value.id, 'App\\Models\\Argument', 3)
+        const created = await createFeedback(reason, id, 'App\\Models\\Proposal', 4)
 
         if (created) {
           success('Dein Feedback wurde abgeschickt')
@@ -164,11 +134,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.short-statement {
-  color: white;
-  @apply text-center font-light px-3;
-}
-
 .forward-btn {
   bottom: 60px;
   right: 10px;
