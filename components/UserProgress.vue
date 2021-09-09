@@ -27,6 +27,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .progress-container {
   width: min(90vw, 400px);
 
@@ -51,7 +53,7 @@ export default defineComponent({
 
 .user-progress .progress-bar-container .progress {
   height: 15px;
-  background: #3a4090;
+  background: $primary;
   transition: width 1s;
   transition-timing-function: ease-out;
 

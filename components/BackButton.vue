@@ -41,13 +41,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 #back-btn {
   width: 25px;
   height: 25px;
   line-height: 25px;
   top: 42px;
   left: 20px;
-  color: #3a4090ff;
+  color: $primary;
   outline: none;
   user-select: none;
 

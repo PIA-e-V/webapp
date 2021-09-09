@@ -3,13 +3,15 @@
     <section class="card">
       <span class="description" v-html="value" />
 
-      <section v-if="index" class="index">
-        {{ index.current }}/{{ index.total }}
-      </section>
-      <section v-else style="height: 30px;" />
+      <section v-if="index" class="index">{{ index.current }}/{{ index.total }}</section>
+      <section v-else style="height: 30px" />
     </section>
 
-    <div v-if="decisions.length > 0" class="btn-container" :style="`grid-template-columns: repeat(${decisions.length},minmax(0,1fr))`">
+    <div
+      v-if="decisions.length > 0"
+      class="btn-container"
+      :style="`grid-template-columns: repeat(${decisions.length},minmax(0,1fr))`"
+    >
       <button v-for="d in decisions" :key="d.result" class="decision-btn" @click="$emit('decision', d.result)">
         <span class="material-icons">{{ d.icon }}</span>
       </button>
@@ -50,13 +52,15 @@ export default defineComponent({
     }
   },
   emits: ['decision'],
-  setup () {
+  setup() {
     return {}
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .card {
   max-width: 600px;
   @apply bg-white mx-auto mt-5 p-2 pb-3 rounded-2xl shadow-lg text-center font-light;
@@ -70,24 +74,24 @@ export default defineComponent({
 }
 
 .card .index {
-  background: #3A4090;
+  background: $primary;
   height: 30px;
   width: 30px;
   line-height: 30px;
   font-size: 10pt;
   color: white;
 
-  @apply rounded-3xl font-bold ml-auto mr-1 mt-4
+  @apply rounded-3xl font-bold ml-auto mr-1 mt-4;
 }
 
 .decision-btn {
-  background: #3A4090;
+  background: $primary;
   color: white;
   width: 50px;
   height: 50px;
   outline: none;
 
-  @apply rounded-full m-auto text-center cursor-pointer
+  @apply rounded-full m-auto text-center cursor-pointer;
 }
 
 .decision-btn .material-icons {
@@ -98,6 +102,6 @@ export default defineComponent({
 .btn-container {
   max-width: 600px;
 
-  @apply grid grid-rows-2 gap-1 mx-auto px-8 -mt-6 text-center
+  @apply grid grid-rows-2 gap-1 mx-auto px-8 -mt-6 text-center;
 }
 </style>

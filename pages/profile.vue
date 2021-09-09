@@ -4,8 +4,9 @@
       <BackButton path="/" />
 
       <h1>Politisches Profil</h1>
-      <div>
-        Dein Profil wurde auf Basis von <span class="underline">{{ matchCount }} Statements</span> erstellt.
+      <div class="description">
+        Dein Profil wurde auf Basis von <span class="underline">{{ matchCount }} Statements</span> erstellt. <br />
+        Je mehr Statements du beantortestet, desto genauer wird dein Profil.
       </div>
     </header>
 
@@ -15,9 +16,8 @@
 
       Du hast noch keine Statements beantwortet. Beantworte Statements bevor du dein politisches Profil sehen kannst.<br /><br />
 
-      <nuxt-link to="/statements/open">
-        <span class="font-bold underline">Klicke hier</span> </nuxt-link
-      >, um dir ein Statement auszusuchen.
+      <nuxt-link to="/statements/open"> <span class="font-bold underline">Klicke hier</span> </nuxt-link>, um dir ein
+      Statement auszusuchen.
     </h2>
 
     <section id="capture" class="px-2 pb-4 mt-5 grid grid-cols-3 sm:grid-cols-3 auto-rows-fr mx-auto">
@@ -27,6 +27,7 @@
       </div>
     </section>
 
+    <h1 v-show="fetchState.timestamp" class="pl-6 mb-2">Gewichtung</h1>
     <section v-show="fetchState.timestamp" id="weightings">
       <div v-for="topic in topics" :key="topic.id">
         <h2>{{ topic.title }}</h2>
@@ -181,22 +182,29 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 header {
   height: 150px;
-  background: #3a4090;
+  background: $primary;
 
   h1 {
     color: white;
     font-size: 20pt;
     font-family: 'Bree Serif';
 
-    @apply pt-8 font-bold text-center;
+    @apply pt-4 font-bold text-center;
   }
 
-  div {
-    color: white;
+  #back-btn {
+    top: 26px;
+  }
 
-    @apply text-center font-light px-3;
+  .description {
+    color: white;
+    line-height: 19px;
+
+    @apply font-light px-5;
   }
 }
 

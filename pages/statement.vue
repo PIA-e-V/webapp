@@ -41,9 +41,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 header {
   height: 120px;
-  background: #3a4090;
+  background: $primary;
 
   h1 {
     color: white;

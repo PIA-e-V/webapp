@@ -55,6 +55,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '/assets/_variables.scss';
+
 .stepper {
   display: grid;
   grid-template: auto / 1fr 1fr 1fr 1fr 1fr;
@@ -69,7 +71,7 @@ export default defineComponent({
       @apply m-auto font-bold rounded shadow-outline bg-white font-black cursor-pointer;
 
       &.active {
-        background: #3a4090;
+        background: $primary;
         color: white;
       }
     }

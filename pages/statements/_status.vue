@@ -85,9 +85,11 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 header {
   height: 150px;
-  background: #3a4090;
+  background: $primary;
 
   @apply relative;
 
