@@ -2,10 +2,12 @@
   <nav>
     <div class="m-auto">
       <section class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
-        <span class="material-icons">home</span>
+        <span class="material-icons">how_to_vote</span>
+        <p class="-mt-2">Anträge</p>
       </section>
       <section class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
-        <span class="material-icons">person</span>
+        <span class="material-icons" style="transform: rotate(90deg)">bar_chart</span>
+        <p class="-mt-2">Profil</p>
       </section>
     </div>
   </nav>
@@ -23,30 +25,22 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 nav {
-  height: 50px;
-  width: 100%;
-  background: #f5f5f5;
-}
+  height: 80px;
+  border-top: 1px solid #cccccc;
+  @apply bg-white w-full;
 
-nav > div {
-  width: fit-content;
-}
+  & > div {
+    width: fit-content;
 
-nav > div > section.btn {
-  /*background: #eaeaea;*/
-  height: 40px;
-  width: 40px;
-  margin-top: 5px;
-  color: grey;
+    & > section.btn {
+      height: 40px;
 
-  @apply inline-block rounded-full text-center mx-12 cursor-pointer;
+      @apply inline-block rounded-full text-center mx-12 cursor-pointer;
+    }
+  }
 }
 
 nav > div > section.btn.active {
   color: black;
-}
-
-nav > div > section.btn span {
-  line-height: 40px;
 }
 </style>

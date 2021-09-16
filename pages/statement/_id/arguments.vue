@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="px-4">
-      <Stepper :step="3" />
-
       <DecisionCard
         :value="currentArgument.statement"
         :index="index"

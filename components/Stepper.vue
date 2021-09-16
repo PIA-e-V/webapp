@@ -1,9 +1,7 @@
 <template>
   <section class="stepper">
-    <div v-for="i in [1, 2, 3, 4, 5]" :key="i" class="step">
-      <div class="step-content" :class="{ active: step >= i }" @click="onStepSelected(i)">
-        {{ i }}
-      </div>
+    <div v-for="i in [1, 2, 3, 4]" :key="i" class="step">
+      <div class="step-content" :class="{ active: step >= i }"></div>
     </div>
   </section>
 </template>
@@ -20,36 +18,6 @@ export default defineComponent({
       type: Number,
       default: 1
     }
-  },
-  setup() {
-    const router = useRouter()
-    const { currentProposal } = useProposals()
-
-    return {
-      onStepSelected(step: Step) {
-        if (!currentProposal.value) {
-          return
-        }
-
-        switch (step) {
-          case 1:
-            router.push(`/statement/${currentProposal.value.id}`)
-            break
-          case 2:
-            router.push(`/statement/${currentProposal.value.id}/explanation`)
-            break
-          case 3:
-            router.push(`/statement/${currentProposal.value.id}/arguments`)
-            break
-          case 4:
-            router.push(`/statement/${currentProposal.value.id}/proposal`)
-            break
-          case 5:
-            router.push(`/statement/${currentProposal.value.id}/voting`)
-            break
-        }
-      }
-    }
   }
 })
 </script>
@@ -59,20 +27,20 @@ export default defineComponent({
 
 .stepper {
   display: grid;
-  grid-template: auto / 1fr 1fr 1fr 1fr 1fr;
-  @apply mt-5;
+  grid-template: auto / 1fr 1fr 1fr 1fr;
 
   .step {
     @apply text-center;
 
     .step-content {
-      width: 25px;
-      height: 25px;
-      @apply m-auto font-bold rounded shadow-outline bg-white font-black cursor-pointer;
+      width: 60%;
+      height: 5px;
+      border-radius: 10px;
+      background: #e7e7e7;
+      @apply m-auto;
 
       &.active {
         background: $primary;
-        color: white;
       }
     }
   }

@@ -1,15 +1,21 @@
 <template>
   <div>
-    <header>
-      <BackButton />
+    <transition name="fade">
+      <header v-if="fetchState.timestamp">
+        <div class="title-bar">
+          <div>
+            <span class="material-icons">arrow_back_ios</span>
+          </div>
+          <h1>{{ title }}</h1>
+        </div>
 
-      <h1>{{ title }}</h1>
-      <div v-if="fetchState.timestamp" class="short-statement">
-        <span>{{ proposal.short_statement }}</span>
-      </div>
-    </header>
+        <Stepper class="mt-2" />
+      </header>
+    </transition>
 
-    <NuxtChild v-if="fetchState.timestamp" :proposal="proposal" @titleChanged="titleChanged" />
+    <transition name="fade">
+      <NuxtChild v-if="fetchState.timestamp" :proposal="proposal" @titleChanged="titleChanged" />
+    </transition>
   </div>
 </template>
 
@@ -44,24 +50,30 @@ export default defineComponent({
 @import '/assets/_variables.scss';
 
 header {
-  height: 120px;
-  background: $primary;
+  @apply sticky top-0 bg-white z-10 pb-1;
 
-  h1 {
-    color: white;
-    font-size: 20pt;
-    font-family: 'Bree Serif';
-    @apply pt-4 font-bold text-center;
-  }
+  .title-bar {
+    height: 40px;
+    $sideWidth: 50px;
+    grid-template-columns: $sideWidth auto $sideWidth;
+    @apply grid;
 
-  #back-btn {
-    top: 26px;
-  }
+    div {
+      line-height: 38px;
+      @apply text-center h-full;
 
-  .short-statement {
-    color: white;
+      span {
+        @apply inline-block align-middle;
+      }
+    }
 
-    @apply text-center font-light px-3;
+    h1 {
+      font-size: 22px;
+      font-weight: 500;
+      font-family: 'Barlow';
+      line-height: 40px;
+      @apply text-center;
+    }
   }
 }
 </style>

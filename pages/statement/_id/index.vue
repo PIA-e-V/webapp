@@ -1,30 +1,25 @@
 <template>
   <div>
     <div class="px-4">
-      <Stepper />
-
-      <transition name="fade">
-        <Statement :proposal="proposal" />
-      </transition>
+      <StatementCard :proposal="proposal" />
     </div>
 
-    <transition name="fade">
-      <div id="source">
-        <Dialog :value="proposal.source_of_proposal">
-          <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
-            <div><span class="material-icons">info</span></div>
-            <span>Quelle</span>
-          </div>
-        </Dialog>
-      </div>
-    </transition>
+    <div class="explanation">
+      <h1>Worum geht's?</h1>
 
-    <AppButton class="forward-btn" small icon="arrow_forward" @click="start"> Weiter gehts </AppButton>
+      <div v-html="proposal.explanation" />
+
+      <h1 class="mt-2">Quellen</h1>
+
+      <div v-html="proposal.source_of_explanation" />
+    </div>
+
+    <AppButton class="forward-btn" small @click="start">Voten</AppButton>
   </div>
 </template>
 
 <script lang="ts">
-import { PropType, Ref, defineComponent, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, PropType, useRouter } from '@nuxtjs/composition-api'
 import AppButton from '~/components/Button.vue'
 import { Proposal } from '~/@types/graphql-types'
 
@@ -39,13 +34,13 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Statement')
+    ctx.emit('titleChanged', 'Antrag im Bundestag')
 
     const router = useRouter()
 
     return {
       start() {
-        router.push(`/statement/${props.proposal.id}/explanation`)
+        router.push(`/statement/${props.proposal.id}/arguments`)
       }
     }
   }
@@ -53,17 +48,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.forward-btn {
-  bottom: 60px;
-  right: 10px;
+.explanation {
+  @apply px-4 mt-2 mb-12 w-full overflow-x-hidden break-words;
 
-  @apply absolute;
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+  }
 }
 
-#source {
-  left: 10px;
-  bottom: 55px;
-
+.forward-btn {
+  bottom: 90px;
+  right: calc(50% - (56.5px / 2));
   @apply absolute;
 }
 </style>

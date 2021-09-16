@@ -56,7 +56,8 @@ export default function useProposals() {
         'color',
         'inverted',
         { arguments: ['id', 'statement', 'source'] },
-        { latest_voting: ['carried_out_at'] }
+        { latest_voting: ['carried_out_at'] },
+        { topic: ['icon'] }
       ]
     }
 
