@@ -4,16 +4,14 @@
 
     <span class="date" v-html="formattedDate" />
 
-    <div class="bg-icon">
-      <span class="material-icons">{{ proposal.topic.icon }}</span>
-    </div>
+    <span class="material-icons bg-icon">{{ proposal.topic.icon }}</span>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, computed, PropType } from '@nuxtjs/composition-api'
-import moment from 'moment'
 import { Proposal } from '~/@types/graphql-types'
+import moment from 'moment'
 
 export default defineComponent({
   props: {
@@ -55,15 +53,13 @@ export default defineComponent({
     font-weight: 400;
   }
 
-  .bg-icon {
-    top: calc(50% - 10rem);
-    right: -150px;
+  span.bg-icon.material-icons {
+    bottom: -20px;
+    right: -100px;
+    color: #ffffff1a;
+    font-size: 20rem;
+    line-height: 0.5;
     @apply absolute;
-
-    span {
-      color: #ffffff1a;
-      font-size: 20rem;
-    }
   }
 }
 </style>
