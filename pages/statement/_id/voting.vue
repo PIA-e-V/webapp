@@ -45,7 +45,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Parteipositionen')
+    ctx.emit('stepChanged', 4)
 
     const client = useGraphql()
 

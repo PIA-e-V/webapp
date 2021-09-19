@@ -69,7 +69,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Abstimmung')
+    ctx.emit('stepChanged', 3)
 
     const router = useRouter()
     const client = useGraphql()

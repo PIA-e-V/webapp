@@ -7,10 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRouter } from '@nuxtjs/composition-api'
-import useProposals from '~/store/useProposals'
-
-type Step = 1 | 2 | 3 | 4 | 5
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {

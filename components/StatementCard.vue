@@ -40,7 +40,7 @@ export default defineComponent({
   background: $primary;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  @apply mx-auto text-white mt-5 px-4 pt-1 pb-5 relative overflow-hidden;
+  @apply mx-auto text-white px-4 pt-1 pb-5 relative overflow-hidden;
 
   .heading {
     font-size: 20px;

@@ -1,34 +1,53 @@
 <template>
-  <div>
-    <div class="px-4">
-      <DecisionCard
-        :value="currentArgument.statement"
-        :index="index"
-        :decisions="[
-          { label: 'Stimme nicht zu', result: 'DISAGREE', icon: 'close' },
-          { label: 'Stimme zu', result: 'AGREE', icon: 'favorite' }
-        ]"
-        @decision="save"
-      />
-    </div>
+  <div class="argument-container">
+    <div class="px-4 h-full">
+      <p class="short-statement">{{ proposal.short_statement }}</p>
 
-    <div id="feedback-btn" @click="feedbackDialog = true">
-      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">
-        <div><span class="material-icons">feedback</span></div>
-        <span class="underline" style="line-height: 18px">Feedback</span>
+      <div class="argument-card">
+        <header>Argument {{ index.current }}/{{ index.total }}</header>
+
+        <section class="content">{{ currentArgument.statement }}</section>
       </div>
     </div>
 
-    <div id="source">
-      <Dialog :value="currentArgument.source">
-        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
-          <div><span class="material-icons">info</span></div>
-          <span>Quelle</span>
+    <div class="action-buttons">
+      <div>
+        <div class="btn">
+          <span class="material-icons red">close</span>
         </div>
-      </Dialog>
+        Lehne ab
+      </div>
+      <div>
+        <div class="btn">
+          <span class="material-icons gray">help_outline</span>
+        </div>
+        Neutral
+      </div>
+      <div>
+        <div class="btn">
+          <span class="material-icons green">done</span>
+        </div>
+        Stimme zu
+      </div>
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="save('NEUTRAL')"> Nicht sicher </AppButton>
+    <!--    <div id="feedback-btn" @click="feedbackDialog = true">-->
+    <!--      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">-->
+    <!--        <div><span class="material-icons">feedback</span></div>-->
+    <!--        <span class="underline" style="line-height: 18px">Feedback</span>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!--    <div id="source">-->
+    <!--      <Dialog :value="currentArgument.source">-->
+    <!--        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">-->
+    <!--          <div><span class="material-icons">info</span></div>-->
+    <!--          <span>Quelle</span>-->
+    <!--        </div>-->
+    <!--      </Dialog>-->
+    <!--    </div>-->
+
+    <!--    <AppButton small class="forward-btn" icon="arrow_forward" @click="save('NEUTRAL')"> Nicht sicher </AppButton>-->
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
@@ -68,7 +87,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Argumente')
+    ctx.emit('stepChanged', 2)
 
     const router = useRouter()
     const client = useGraphql()
@@ -162,9 +181,51 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.short-statement {
-  color: white;
-  @apply text-center font-light px-3;
+.argument-container {
+  .short-statement {
+    font-size: 20px;
+    font-weight: 500;
+    @apply mt-2 mb-4;
+  }
+
+  .argument-card {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    @apply rounded-xl p-2 mb-2;
+
+    header {
+      font-size: 18px;
+      @apply mb-4;
+    }
+  }
+
+  .action-buttons {
+    padding: 10px 0;
+    @apply grid grid-cols-3 text-center sticky bg-white w-full bottom-0;
+
+    .btn {
+      border: 2px solid #dcdcdc;
+      width: 60px;
+      height: 60px;
+      @apply rounded-full mx-auto;
+
+      .material-icons {
+        line-height: 56px;
+        font-size: 40px;
+
+        &.red {
+          color: #f93a3a;
+        }
+
+        &.gray {
+          color: #4d4d4d;
+        }
+
+        &.green {
+          color: #00ec89;
+        }
+      }
+    }
+  }
 }
 
 .forward-btn {

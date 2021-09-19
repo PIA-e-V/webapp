@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="px-4">
+    <div class="px-4 pt-5">
       <StatementCard :proposal="proposal" />
     </div>
 
@@ -34,7 +34,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('titleChanged', 'Antrag im Bundestag')
+    ctx.emit('stepChanged', 1)
 
     const router = useRouter()
 
@@ -58,8 +58,7 @@ export default defineComponent({
 }
 
 .forward-btn {
-  bottom: 90px;
-  right: calc(50% - (56.5px / 2));
-  @apply absolute;
+  bottom: 10px;
+  @apply sticky m-auto;
 }
 </style>

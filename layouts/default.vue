@@ -16,7 +16,7 @@
           <span class="material-icons">{{ menu ? 'close' : 'menu' }}</span>
         </button>
 
-        <div>
+        <div class="h-full">
           <Nuxt />
         </div>
       </div>
