@@ -1,6 +1,6 @@
 <template>
   <div class="argument-container">
-    <div class="px-4 h-full">
+    <div class="px-4 h-full overflow-scroll">
       <p class="short-statement">{{ proposal.short_statement }}</p>
 
       <div class="argument-card">
@@ -182,10 +182,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .argument-container {
+  height: calc(100% - 104px);
+
   .short-statement {
     font-size: 20px;
     font-weight: 500;
-    @apply mt-2 mb-4;
+    @apply pt-2 mb-4;
   }
 
   .argument-card {
