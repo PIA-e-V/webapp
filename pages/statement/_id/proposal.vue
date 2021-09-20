@@ -1,38 +1,40 @@
 <template>
   <div>
     <div class="px-4">
-      <Stepper :step="4" />
+      <h2>Was ist deine Meinung zu dem Antrag?</h2>
 
-      <DecisionCard
-        :value="proposal.statement"
-        :decisions="[
-          { label: 'Dagegen', result: 'DISAGREE', icon: 'close' },
-          { label: 'Neutral', result: 'NEUTRAL', icon: 'thumbs_up_down' },
-          { label: 'Dafür', result: 'AGREE', icon: 'favorite' }
-        ]"
-        @decision="save"
-      />
+      <StatementCard :proposal="proposal" />
+
+      <!--      <DecisionCard-->
+      <!--        :value="proposal.statement"-->
+      <!--        :decisions="[-->
+      <!--          { label: 'Dagegen', result: 'DISAGREE', icon: 'close' },-->
+      <!--          { label: 'Neutral', result: 'NEUTRAL', icon: 'thumbs_up_down' },-->
+      <!--          { label: 'Dafür', result: 'AGREE', icon: 'favorite' }-->
+      <!--        ]"-->
+      <!--        @decision="save"-->
+      <!--      />-->
     </div>
 
-    <div id="feedback-btn" @click="feedbackDialog = true">
-      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">
-        <div><span class="material-icons">feedback</span></div>
-        <span class="underline" style="line-height: 18px">Feedback</span>
-      </div>
-    </div>
+    <!--    <div id="feedback-btn" @click="feedbackDialog = true">-->
+    <!--      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">-->
+    <!--        <div><span class="material-icons">feedback</span></div>-->
+    <!--        <span class="underline" style="line-height: 18px">Feedback</span>-->
+    <!--      </div>-->
+    <!--    </div>-->
 
-    <div id="source">
-      <Dialog :value="proposal.source_of_proposal">
-        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">
-          <div><span class="material-icons">info</span></div>
-          <span>Quelle</span>
-        </div>
-      </Dialog>
-    </div>
+    <!--    <div id="source">-->
+    <!--      <Dialog :value="proposal.source_of_proposal">-->
+    <!--        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">-->
+    <!--          <div><span class="material-icons">info</span></div>-->
+    <!--          <span>Quelle</span>-->
+    <!--        </div>-->
+    <!--      </Dialog>-->
+    <!--    </div>-->
 
-    <AppButton class="forward-btn" small icon="arrow_forward" @click="$router.push(`/statement/${proposal.id}/voting`)">
-      Überspringen
-    </AppButton>
+    <!--    <AppButton class="forward-btn" small icon="arrow_forward" @click="$router.push(`/statement/${proposal.id}/voting`)">-->
+    <!--      Überspringen-->
+    <!--    </AppButton>-->
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
@@ -134,6 +136,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  @apply pt-2 mb-4;
+}
+
 .forward-btn {
   bottom: 60px;
   right: 10px;

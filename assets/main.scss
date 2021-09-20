@@ -45,3 +45,15 @@ h1 {
 .slide-in-left-enter, .slide-in-left-leave-to {
   transform: translateX(-320px);
 }
+
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: .3s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(-100%, 0);
+}

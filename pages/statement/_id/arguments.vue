@@ -1,29 +1,37 @@
 <template>
   <div class="argument-container">
-    <div class="px-4 h-full overflow-scroll">
-      <p class="short-statement">{{ proposal.short_statement }}</p>
+    <div class="h-full overflow-scroll flex flex-col">
+      <p class="short-statement px-4">{{ proposal.short_statement }}</p>
 
-      <div class="argument-card">
-        <header>Argument {{ index.current }}/{{ index.total }}</header>
+      <transition-group
+        tag="div"
+        class="argument-slider"
+        name="slide"
+        @enter="transitionActive = true"
+        @leave="transitionActive = false"
+      >
+        <div v-for="a in [currentArgument]" :key="a.id" class="argument-card">
+          <header>Argument {{ index.current }}/{{ index.total }}</header>
 
-        <section class="content">{{ currentArgument.statement }}</section>
-      </div>
+          <section class="content">{{ currentArgument.statement }}</section>
+        </div>
+      </transition-group>
     </div>
 
     <div class="action-buttons">
-      <div>
+      <div @click="save('DISAGREE')">
         <div class="btn">
           <span class="material-icons red">close</span>
         </div>
         Lehne ab
       </div>
-      <div>
+      <div @click="save('NEUTRAL')">
         <div class="btn">
           <span class="material-icons gray">help_outline</span>
         </div>
         Neutral
       </div>
-      <div>
+      <div @click="save('AGREE')">
         <div class="btn">
           <span class="material-icons green">done</span>
         </div>
@@ -46,8 +54,6 @@
     <!--        </div>-->
     <!--      </Dialog>-->
     <!--    </div>-->
-
-    <!--    <AppButton small class="forward-btn" icon="arrow_forward" @click="save('NEUTRAL')"> Nicht sicher </AppButton>-->
 
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
@@ -143,8 +149,10 @@ export default defineComponent({
       currentArgumentIndex.value += 1
     }
 
+    const transitionActive = ref(false)
     return {
       index,
+      transitionActive,
       currentArgument,
       currentArgumentIndex,
       feedbackDialog,
@@ -187,16 +195,23 @@ export default defineComponent({
   .short-statement {
     font-size: 20px;
     font-weight: 500;
-    @apply pt-2 mb-4;
+    @apply pt-2;
   }
 
-  .argument-card {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    @apply rounded-xl p-2 mb-2;
+  .argument-slider {
+    @apply relative overflow-x-hidden overflow-y-scroll flex-grow;
 
-    header {
-      font-size: 18px;
-      @apply mb-4;
+    .argument-card {
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: calc(100% - 2rem);
+      left: 1rem;
+      top: 1rem;
+      @apply rounded-xl p-2 mx-auto absolute;
+
+      header {
+        font-size: 18px;
+        @apply mb-4;
+      }
     }
   }
 
