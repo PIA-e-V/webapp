@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="px-4">
-      <Stepper :step="5" />
-
       <div id="charts">
         <section v-for="p in parties" :key="p.id">
           <div :id="`chart-${p.id}`" />
