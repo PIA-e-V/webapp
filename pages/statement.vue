@@ -3,7 +3,7 @@
     <transition name="fade">
       <header v-if="fetchState.timestamp">
         <div class="title-bar">
-          <div class="back-btn">
+          <div class="back-btn" @click="$router.back()">
             <span class="material-icons">arrow_back_ios</span>
           </div>
           <h1>{{ title }}</h1>
@@ -72,7 +72,7 @@ header {
     .back-btn {
       line-height: 38px;
       width: 50px;
-      @apply text-center h-full;
+      @apply text-center h-full cursor-pointer z-10 relative;
 
       span {
         @apply inline-block align-middle;
