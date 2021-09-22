@@ -7,13 +7,39 @@
         tag="div"
         class="argument-slider"
         name="slide"
-        @enter="transitionActive = true"
-        @leave="transitionActive = false"
+        @enter="transitions.slide = true"
+        @leave="transitions.slide = false"
       >
         <div v-for="a in [currentArgument]" :key="a.id" class="argument-card">
-          <header>Argument {{ index.current }}/{{ index.total }}</header>
+          <transition name="fade" @after-leave="transitions.fade = false">
+            <div v-if="!transitions.fade && !showSources">
+              <header>Argument {{ index.current }}/{{ index.total }}</header>
 
-          <section class="content">{{ currentArgument.statement }}</section>
+              <section class="content">{{ currentArgument.statement }}</section>
+
+              <div
+                class="sources"
+                @click="
+                  transitions.fade = true
+                  showSources = true
+                "
+              >
+                <span>Quellen</span> <span class="material-icons">info</span>
+              </div>
+            </div>
+          </transition>
+          <transition name="fade" @after-leave="transitions.fade = false">
+            <div
+              v-if="!transitions.fade && showSources"
+              class="cursor-pointer"
+              @click="
+                transitions.fade = true
+                showSources = false
+              "
+            >
+              <div v-html="currentArgument.source"></div>
+            </div>
+          </transition>
         </div>
       </transition-group>
     </div>
@@ -65,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent, ref, useRouter } from '@nuxtjs/composition-api'
+import { PropType, computed, defineComponent, ref, useRouter, reactive } from '@nuxtjs/composition-api'
 import IQueryBuilderOptions from 'gql-query-builder/build/IQueryBuilderOptions'
 import { mutation } from 'gql-query-builder'
 import { shuffle } from 'lodash'
@@ -103,6 +129,7 @@ export default defineComponent({
 
     const args = ref<Argument[]>([])
     const currentArgumentIndex = ref(0)
+    const showSources = ref(false)
     const feedbackDialog = ref(false)
     const currentArgument = computed(() => args.value[currentArgumentIndex.value])
     const index = computed<Index>(() => ({
@@ -149,13 +176,17 @@ export default defineComponent({
       currentArgumentIndex.value += 1
     }
 
-    const transitionActive = ref(false)
+    const transitions = reactive({
+      slide: false,
+      fade: false
+    })
     return {
       index,
-      transitionActive,
+      transitions,
       currentArgument,
       currentArgumentIndex,
       feedbackDialog,
+      showSources,
       reasons,
       save,
       goBack() {
@@ -189,6 +220,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .argument-container {
   height: calc(100% - 104px);
 
@@ -202,15 +235,29 @@ export default defineComponent({
     @apply relative overflow-x-hidden overflow-y-scroll flex-grow;
 
     .argument-card {
+      background: $primary;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       width: calc(100% - 2rem);
       left: 1rem;
       top: 1rem;
-      @apply rounded-xl p-2 mx-auto absolute;
+      @apply rounded-xl text-white p-3 mx-auto absolute;
 
       header {
         font-size: 18px;
-        @apply mb-4;
+        @apply mb-4 font-bold;
+      }
+
+      .sources {
+        @apply mt-4 text-right cursor-pointer float-right;
+
+        .material-icons {
+          vertical-align: bottom;
+          font-size: 22px !important;
+        }
+      }
+
+      &.slide-enter-to {
+        @apply ml-2;
       }
     }
   }
@@ -218,6 +265,10 @@ export default defineComponent({
   .action-buttons {
     padding: 10px 0;
     @apply grid grid-cols-3 text-center sticky bg-white w-full bottom-0;
+
+    & > div {
+      @apply cursor-pointer;
+    }
 
     .btn {
       border: 2px solid #dcdcdc;
