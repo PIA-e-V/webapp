@@ -6,7 +6,7 @@
 
     <span class="date" v-html="date" />
 
-    <span class="material-icons bg-icon">{{ icon }}</span>
+    <img :src="icon" class="icon" alt="Type" />
   </section>
 </template>
 
@@ -33,7 +33,7 @@ export default defineComponent({
       feedable,
       date,
       title: computed(() => feedable.value.short_statement),
-      icon: computed(() => feedable.value.topic.icon),
+      icon: computed(() => `/icons/navigation/${feedable.value.__typename === 'Proposal' ? 'bills.svg' : 'news.svg'}`),
       openItem() {
         if (props.item.feedable.__typename === 'Proposal') {
           router.push(`/statement/${props.item.feedable.id}`)
@@ -71,12 +71,10 @@ export default defineComponent({
     @apply pl-2;
   }
 
-  span.bg-icon.material-icons {
-    bottom: -20px;
-    right: -100px;
-    color: #ffffff1a;
-    font-size: 20rem;
-    line-height: 0.5;
+  .icon {
+    right: 10px;
+    bottom: 10px;
+    width: 30px;
     @apply absolute;
   }
 }
