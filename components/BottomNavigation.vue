@@ -1,14 +1,41 @@
 <template>
   <nav>
-    <div class="m-auto">
-      <section class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
-        <span class="material-icons">how_to_vote</span>
-        <p class="-mt-2">Anträge</p>
-      </section>
-      <section class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
-        <span class="material-icons" style="transform: rotate(90deg)">bar_chart</span>
-        <p class="-mt-2">Profil</p>
-      </section>
+    <div class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
+      <div class="icon">
+        <img src="/icons/navigation/home.svg" alt="Home" />
+        <!--        <object data="/icons/navigation/home.svg" type="image/svg+xml">-->
+        <!--          <img src="/icons/navigation/home.svg" alt="Home" />-->
+        <!--        </object>-->
+      </div>
+      <div class="label">Home</div>
+    </div>
+
+    <div class="btn" :class="{ active: $route.name.startsWith('statement-id') }">
+      <div class="icon">
+        <img src="/icons/navigation/bills.svg" alt="Anträge" />
+      </div>
+      <div class="label">Anträge</div>
+    </div>
+
+    <div class="btn">
+      <div class="icon">
+        <img src="/icons/navigation/news.svg" alt="News" />
+      </div>
+      <div class="label">News</div>
+    </div>
+
+    <div class="btn">
+      <div class="icon">
+        <img src="/icons/navigation/petitions.svg" alt="Petitionen" />
+      </div>
+      <div class="label">Petitionen</div>
+    </div>
+
+    <div class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
+      <div class="icon">
+        <img src="/icons/navigation/profile.svg" alt="Profil" />
+      </div>
+      <div class="label">Profil</div>
     </div>
   </nav>
 </template>
@@ -24,18 +51,34 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 nav {
-  height: 80px;
+  height: 50px;
   border-top: 1px solid #cccccc;
-  @apply bg-white w-full;
+  @apply bg-white w-full flex flex-row;
 
-  & > div {
-    width: fit-content;
+  .btn {
+    height: 40px;
+    margin: 5px 0;
+    @apply flex-grow text-center cursor-pointer;
 
-    & > section.btn {
-      height: 40px;
+    .icon {
+      svg,
+      img,
+      object {
+        height: 25px;
+        @apply mx-auto;
+      }
+    }
 
-      @apply inline-block rounded-full text-center mx-12 cursor-pointer;
+    &.active .label {
+      color: $primary;
+    }
+
+    .label {
+      height: 15px;
+      line-height: 15px;
     }
   }
 }
