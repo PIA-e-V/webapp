@@ -1,61 +1,65 @@
 <template>
   <div>
-    <MegaButton title="Statement" sup-title="Checke dein heutiges" class="mt-4" @click="clicked" />
+    <!--    <h1 class="pl-6 pt-4">Fortschritt</h1>-->
 
-    <h1 class="pl-6 pt-4">Fortschritt</h1>
+    <!--    <div class="grid px-6 pt-2" style="grid-template-columns: 50px auto">-->
+    <!--      <div style="line-height: 30px; font-size: 18px">{{ `${doneProposals.length}/30` }}</div>-->
+    <!--      <div><UserProgress :value="progress" /></div>-->
+    <!--    </div>-->
 
-    <div class="grid px-6 pt-2" style="grid-template-columns: 50px auto">
-      <div style="line-height: 30px; font-size: 18px">{{ `${doneProposals.length}/30` }}</div>
-      <div><UserProgress :value="progress" /></div>
+    <div class="px-2">
+      <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
     </div>
 
-    <h1 class="pl-6 pt-4">Statements</h1>
+    <!--    <hr class="mt-2" />-->
 
-    <h2 class="pl-6 pt-3 font-bold" style="line-height: 30px">
-      Offen<span v-if="fetchState.timestamp && openProposals.length > 0"> ({{ openProposals.length }})</span>
+    <!--    <h1 class="pl-6 pt-4">Statements</h1>-->
 
-      <Button
-        v-if="fetchState.timestamp && openProposals.length > 0"
-        class="see-all-btn"
-        icon="arrow_forward"
-        background="white"
-        color="#3A4090"
-        small
-        @click="$router.push('/statements/open')"
-      >
-        Übersicht
-      </Button>
-    </h2>
-    <h3 v-show="fetchState.pending" class="pl-6 pt-6">Lade Statements ...</h3>
-    <h3 v-show="fetchState.timestamp && openProposals.length === 0" class="pl-6 pt-6">
-      Keine offenen Statements verfügbar
-    </h3>
-    <section class="statements">
-      <ProposalCard v-for="proposal in openProposals" :key="proposal.id" :value="proposal" />
-    </section>
+    <!--    <h2 class="pl-6 pt-3 font-bold" style="line-height: 30px">-->
+    <!--      Offen<span v-if="fetchState.timestamp && openProposals.length > 0"> ({{ openProposals.length }})</span>-->
 
-    <h2 class="pl-6 pt-3 font-bold" style="line-height: 30px">
-      Erledigt<span v-if="fetchState.timestamp && doneProposals.length > 0"> ({{ doneProposals.length }})</span>
+    <!--      <Button-->
+    <!--        v-if="fetchState.timestamp && openProposals.length > 0"-->
+    <!--        class="see-all-btn"-->
+    <!--        icon="arrow_forward"-->
+    <!--        background="white"-->
+    <!--        color="#3A4090"-->
+    <!--        small-->
+    <!--        @click="$router.push('/statements/open')"-->
+    <!--      >-->
+    <!--        Übersicht-->
+    <!--      </Button>-->
+    <!--    </h2>-->
+    <!--    <h3 v-show="fetchState.pending" class="pl-6 pt-6">Lade Statements ...</h3>-->
+    <!--    <h3 v-show="fetchState.timestamp && openProposals.length === 0" class="pl-6 pt-6">-->
+    <!--      Keine offenen Statements verfügbar-->
+    <!--    </h3>-->
+    <!--    <section class="statements">-->
+    <!--      <ProposalCard v-for="proposal in openProposals" :key="proposal.id" :value="proposal" />-->
+    <!--    </section>-->
 
-      <Button
-        v-if="fetchState.timestamp && doneProposals.length > 0"
-        class="float-right see-all-btn"
-        icon="arrow_forward"
-        background="white"
-        color="#3A4090"
-        small
-        @click="$router.push('/statements/done')"
-      >
-        Übersicht
-      </Button>
-    </h2>
-    <h3 v-show="fetchState.pending" class="pl-6 pt-6">Lade Statements ...</h3>
-    <h3 v-show="fetchState.timestamp && doneProposals.length === 0" class="pl-6 pt-6">
-      Bisher keine Statements abgeschlossen
-    </h3>
-    <section class="statements">
-      <ProposalCard v-for="proposal in doneProposals" :key="proposal.id" :value="proposal" />
-    </section>
+    <!--    <h2 class="pl-6 pt-3 font-bold" style="line-height: 30px">-->
+    <!--      Erledigt<span v-if="fetchState.timestamp && doneProposals.length > 0"> ({{ doneProposals.length }})</span>-->
+
+    <!--      <Button-->
+    <!--        v-if="fetchState.timestamp && doneProposals.length > 0"-->
+    <!--        class="float-right see-all-btn"-->
+    <!--        icon="arrow_forward"-->
+    <!--        background="white"-->
+    <!--        color="#3A4090"-->
+    <!--        small-->
+    <!--        @click="$router.push('/statements/done')"-->
+    <!--      >-->
+    <!--        Übersicht-->
+    <!--      </Button>-->
+    <!--    </h2>-->
+    <!--    <h3 v-show="fetchState.pending" class="pl-6 pt-6">Lade Statements ...</h3>-->
+    <!--    <h3 v-show="fetchState.timestamp && doneProposals.length === 0" class="pl-6 pt-6">-->
+    <!--      Bisher keine Statements abgeschlossen-->
+    <!--    </h3>-->
+    <!--    <section class="statements">-->
+    <!--      <ProposalCard v-for="proposal in doneProposals" :key="proposal.id" :value="proposal" />-->
+    <!--    </section>-->
   </div>
 </template>
 
@@ -64,17 +68,14 @@ import { defineComponent, onMounted, ref, useFetch, useRouter } from '@nuxtjs/co
 import IQueryBuilderOptions from 'gql-query-builder/build/IQueryBuilderOptions'
 import { query } from 'gql-query-builder'
 import UserProgress from '~/components/UserProgress.vue'
-import MegaButton from '~/components/MegaButton.vue'
 import ProposalCard from '~/components/ProposalCard.vue'
 import useProposals from '~/store/useProposals'
 import useGraphql from '~/composables/useGraphql'
-import { Proposal } from '~/@types/graphql-types'
-import useUser from '~/store/useUser'
+import { FeedItem, Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
     UserProgress,
-    MegaButton,
     ProposalCard
   },
   layout: 'header',
@@ -82,6 +83,8 @@ export default defineComponent({
     const router = useRouter()
     const { loadProposalOfTheDay, proposalOfTheDay } = useProposals()
     const client = useGraphql()
+
+    const feedItems = ref<FeedItem[]>([])
 
     const progress = ref(0)
     const openProposals = ref<Proposal[]>([])
@@ -92,30 +95,47 @@ export default defineComponent({
     }
 
     const { fetchState } = useFetch(async () => {
-      await loadProposalOfTheDay()
+      const q = `query {
+        feed {
+          id active_from
+          feedable {
+            __typename
+            ...on Proposal {
+              id short_statement topic { icon }
+            }
+            ... on Statement {
+              id short_statement topic { icon }
+            }
+          }
+        }
+      }`
 
-      const proposalFields = [
-        'id',
-        'title',
-        'short_statement',
-        // { arguments: ['id', 'statement', 'source'] },
-        { topic: ['title', 'icon'] }
-      ]
-      const operation: IQueryBuilderOptions = {
-        operation: 'me',
-        fields: ['statement_progress', { doneProposals: proposalFields }, { openProposals: proposalFields }]
-      }
+      const { feed } = await client.query(q)
 
-      const q = query(operation)
-      const { me: meResponse } = await client.query(q.query, q.variables)
+      feedItems.value = feed
 
-      if (meResponse) {
-        progress.value = meResponse.statement_progress
-        openProposals.value = meResponse.openProposals
-        doneProposals.value = meResponse.doneProposals
-
-        localStorage.setItem('user-progress', progress.value.toString())
-      }
+      // const proposalFields = [
+      //   'id',
+      //   'title',
+      //   'short_statement',
+      //   // { arguments: ['id', 'statement', 'source'] },
+      //   { topic: ['title', 'icon'] }
+      // ]
+      // const operation: IQueryBuilderOptions = {
+      //   operation: 'me',
+      //   fields: ['statement_progress', { doneProposals: proposalFields }, { openProposals: proposalFields }]
+      // }
+      //
+      // const q = query(operation)
+      // const { me: meResponse } = await client.query(q.query, q.variables)
+      //
+      // if (meResponse) {
+      //   progress.value = meResponse.statement_progress
+      //   openProposals.value = meResponse.openProposals
+      //   doneProposals.value = meResponse.doneProposals
+      //
+      //   localStorage.setItem('user-progress', progress.value.toString())
+      // }
     })
 
     onMounted(() => {
@@ -125,6 +145,7 @@ export default defineComponent({
     })
 
     return {
+      feedItems,
       progress,
       openProposals,
       doneProposals,

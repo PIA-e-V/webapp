@@ -3,26 +3,26 @@
     <SplashScreen @after-leave="transitionActive = false" />
 
     <div v-if="isReady && !transitionActive" id="header">
-      <div v-if="$route.path === '/'" class="grid auto-rows-auto" style="grid-template-columns: 90px auto">
+      <div v-if="$route.path === '/'" class="grid auto-rows-auto" style="grid-template-columns: auto">
+        <!--        <div>-->
+        <!--          <Button-->
+        <!--            small-->
+        <!--            background="white"-->
+        <!--            color="black"-->
+        <!--            class="mt-8 mx-auto"-->
+        <!--            style="border-radius: 10px !important"-->
+        <!--            @click="!isAuthenticated ? $router.push('/login') : logout()"-->
+        <!--          >-->
+        <!--            {{ isAuthenticated ? 'Log out' : 'Log in' }}-->
+        <!--          </Button>-->
+        <!--        </div>-->
         <div>
-          <Button
-            small
-            background="white"
-            color="black"
-            class="mt-8 mx-auto"
-            style="border-radius: 10px !important"
-            @click="!isAuthenticated ? $router.push('/login') : logout()"
-          >
-            {{ isAuthenticated ? 'Log out' : 'Log in' }}
-          </Button>
-        </div>
-        <div>
-          <img class="logo mt-6" src="/logo.png" alt="Logo" />
+          <img class="logo mt-4" src="/logo.svg" alt="Logo" />
         </div>
       </div>
 
       <div v-else>
-        <img class="logo pt-6" style="height: 70px; max-height: unset" src="/logo.png" alt="Logo" />
+        <img class="logo pt-6" style="height: 70px; max-height: unset" src="/logo.svg" alt="Logo" />
       </div>
     </div>
 
@@ -111,24 +111,20 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #header {
-  height: 100px;
-  /*background: url('/header.svg') no-repeat;*/
-  background: rgba(58, 64, 144, 1);
-  background-size: 100%;
-
+  height: 70px;
   @apply sticky top-0 left-0 z-10;
-}
 
-#header .logo {
-  max-height: 50px;
-  max-width: calc(100% - 20px);
+  .logo {
+    max-height: 50px;
+    max-width: calc(100% - 20px);
 
-  @apply block mx-auto;
+    @apply block mx-auto;
+  }
 }
 
 #main-container {
   height: 100vh;
-  height: calc(var(--vh, 1vh) * 100 - 150px);
+  height: calc(var(--vh, 1vh) * 100 - 120px);
 
   overflow-y: scroll;
 

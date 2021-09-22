@@ -91,6 +91,7 @@ export type CreateArgumentBelongsToMany = {
 export type CreateFeedbackInput = {
   feedbackable_id: Scalars['Int'];
   feedbackable_type: Scalars['String'];
+  step: Scalars['Int'];
   feedback: Scalars['String'];
 };
 
@@ -104,11 +105,25 @@ export type CreateProposalBelongsToMany = {
 
 
 
+export type FeedItem = {
+  __typename?: 'FeedItem';
+  id: Scalars['Int'];
+  feedable_id: Scalars['Int'];
+  feedable_type: Scalars['String'];
+  active_from: Scalars['DateTime'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  feedable: Feedable;
+};
+
+export type Feedable = Proposal | Statement;
+
 export type Feedback = {
   __typename?: 'Feedback';
   id: Scalars['Int'];
   feedbackable_id: Scalars['Int'];
   feedbackable_type: Scalars['String'];
+  step: Scalars['Int'];
   feedback: Scalars['String'];
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
@@ -125,11 +140,6 @@ export type FeedbackPaginator = {
 };
 
 export type Feedbackable = Argument | Proposal;
-
-export enum FurtherProposalsStatus {
-  Open = 'OPEN',
-  Done = 'DONE'
-}
 
 export type Legislature = {
   __typename?: 'Legislature';
@@ -170,6 +180,8 @@ export type Mutation = {
   deleteProposalScheduleEntryByDate?: Maybe<ProposalScheduleEntry>;
   upsertProposal?: Maybe<Proposal>;
   deleteProposal: Proposal;
+  upsertStatement?: Maybe<Statement>;
+  deleteStatement: Statement;
   upsertTopic?: Maybe<Topic>;
   /** Log in to a new session and get the user. */
   login: LoginResponse;
@@ -226,6 +238,17 @@ export type MutationUpsertProposalArgs = {
 
 
 export type MutationDeleteProposalArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationUpsertStatementArgs = {
+  id?: Maybe<Scalars['Int']>;
+  input: UpsertStatementInput;
+};
+
+
+export type MutationDeleteStatementArgs = {
   id: Scalars['Int'];
 };
 
@@ -393,6 +416,7 @@ export type Proposal = {
   updated_at: Scalars['DateTime'];
   short_title: Scalars['String'];
   latest_voting?: Maybe<Voting>;
+  has_voting: Scalars['Boolean'];
   parties: Array<Party>;
   votings: Array<Voting>;
   arguments: Array<Argument>;
@@ -432,6 +456,7 @@ export type Query = {
   chambers: Array<Chamber>;
   chamber?: Maybe<Chamber>;
   country?: Maybe<Country>;
+  feed: Array<FeedItem>;
   legislature?: Maybe<Legislature>;
   activeLegislature?: Maybe<Legislature>;
   opinion?: Maybe<Opinion>;
@@ -441,6 +466,7 @@ export type Query = {
   proposalScheduleEntries: Array<ProposalScheduleEntry>;
   proposal?: Maybe<Proposal>;
   proposalOfTheDay: Proposal;
+  statement?: Maybe<Statement>;
   usersPerWeek: Array<WeekUserCount>;
   totalUsers: Scalars['Int'];
   topics: Array<Topic>;
@@ -459,6 +485,7 @@ export type Query = {
   opinions?: Maybe<OpinionPaginator>;
   parliaments?: Maybe<ParliamentPaginator>;
   proposals?: Maybe<ProposalPaginator>;
+  statements?: Maybe<StatementPaginator>;
   /** Get all users. */
   users?: Maybe<UserPaginator>;
   votings?: Maybe<VotingPaginator>;
@@ -506,6 +533,11 @@ export type QueryProposalScheduleEntriesArgs = {
 
 
 export type QueryProposalArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryStatementArgs = {
   id: Scalars['Int'];
 };
 
@@ -586,6 +618,14 @@ export type QueryParliamentsArgs = {
 export type QueryProposalsArgs = {
   where?: Maybe<QueryProposalsWhereWhereConditions>;
   orderBy?: Maybe<Array<QueryProposalsOrderByOrderByClause>>;
+  first?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryStatementsArgs = {
+  where?: Maybe<QueryStatementsWhereWhereConditions>;
+  orderBy?: Maybe<Array<QueryStatementsOrderByOrderByClause>>;
   first?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -783,6 +823,58 @@ export type QueryProposalsWhereWhereConditionsRelation = {
   condition?: Maybe<QueryProposalsWhereWhereConditions>;
 };
 
+/** Allowed column names for the `orderBy` argument on field `statements` on type `Query`. */
+export enum QueryStatementsOrderByColumn {
+  Id = 'ID',
+  Title = 'TITLE',
+  Statement = 'STATEMENT'
+}
+
+/** Order by clause for the `orderBy` argument on the query `statements`. */
+export type QueryStatementsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryStatementsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for the `where` argument on field `statements` on type `Query`. */
+export enum QueryStatementsWhereColumn {
+  Id = 'ID',
+  Title = 'TITLE',
+  Statement = 'STATEMENT',
+  ShortStatement = 'SHORT_STATEMENT',
+  Active = 'ACTIVE'
+}
+
+/** Dynamic WHERE conditions for the `where` argument on the query `statements`. */
+export type QueryStatementsWhereWhereConditions = {
+  /** The column that is used for the condition. */
+  column?: Maybe<QueryStatementsWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: Maybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: Maybe<Scalars['Mixed']>;
+  /** A set of conditions that requires all conditions to match. */
+  AND?: Maybe<Array<QueryStatementsWhereWhereConditions>>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: Maybe<Array<QueryStatementsWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: Maybe<QueryStatementsWhereWhereConditionsRelation>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `statements`. */
+export type QueryStatementsWhereWhereConditionsRelation = {
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+  /** The comparison operator to test against the amount. */
+  operator?: Maybe<SqlOperator>;
+  /** The amount to test. */
+  amount?: Maybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: Maybe<QueryStatementsWhereWhereConditions>;
+};
+
 /** Allowed column names for the `orderBy` argument on field `topics` on type `Query`. */
 export enum QueryTopicsOrderByColumn {
   Id = 'ID',
@@ -955,6 +1047,32 @@ export enum SortOrder {
   Desc = 'DESC'
 }
 
+export type Statement = {
+  __typename?: 'Statement';
+  id: Scalars['Int'];
+  topic_id: Scalars['Int'];
+  title: Scalars['String'];
+  statement: Scalars['String'];
+  short_statement: Scalars['String'];
+  explanation: Scalars['String'];
+  source_of_explanation: Scalars['String'];
+  active: Scalars['Boolean'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  topic: Topic;
+  arguments: Array<Argument>;
+  opinions: Array<Opinion>;
+};
+
+/** A paginated list of Statement items. */
+export type StatementPaginator = {
+  __typename?: 'StatementPaginator';
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+  /** A list of Statement items. */
+  data: Array<Statement>;
+};
+
 export type Topic = {
   __typename?: 'Topic';
   id: Scalars['Int'];
@@ -1018,6 +1136,17 @@ export type UpsertProposalInput = {
 export type UpsertProposalScheduleEntryInput = {
   proposal_id: Scalars['Int'];
   show_at: Scalars['Date'];
+};
+
+export type UpsertStatementInput = {
+  topic_id: Scalars['Int'];
+  title: Scalars['String'];
+  statement: Scalars['String'];
+  short_statement: Scalars['String'];
+  explanation: Scalars['String'];
+  source_of_explanation: Scalars['String'];
+  active: Scalars['Boolean'];
+  arguments?: Maybe<CreateArgumentBelongsToMany>;
 };
 
 export type UpsertTopicInput = {

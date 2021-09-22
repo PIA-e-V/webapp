@@ -1,0 +1,83 @@
+<template>
+  <section class="card" @click="openItem">
+    <img :src="`/feed/${item.feedable.__typename.toLowerCase()}.jpg`" alt="Teaser" />
+
+    <h2 class="heading" v-html="title" />
+
+    <span class="date" v-html="date" />
+
+    <span class="material-icons bg-icon">{{ icon }}</span>
+  </section>
+</template>
+
+<script lang="ts">
+import { defineComponent, computed, PropType, ref, useRouter } from '@nuxtjs/composition-api'
+import { FeedItem, Proposal } from '~/@types/graphql-types'
+import moment from 'moment'
+
+export default defineComponent({
+  props: {
+    item: {
+      type: Object as PropType<FeedItem>,
+      required: true
+    }
+  },
+  setup(props) {
+    const feedable = computed(() => props.item.feedable)
+    const date = ref('Noch nicht abgestimmt')
+    const router = useRouter()
+
+    date.value = moment(props.item.active_from).locale('de').format('dd, Do MMMM YYYY')
+
+    return {
+      feedable,
+      date,
+      title: computed(() => feedable.value.short_statement),
+      icon: computed(() => feedable.value.topic.icon),
+      openItem() {
+        if (props.item.feedable.__typename === 'Proposal') {
+          router.push(`/statement/${props.item.feedable.id}`)
+        }
+      }
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
+.card {
+  max-width: 600px;
+  //background: $primary;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #c4c4c4;
+  @apply mx-auto pb-2 relative overflow-hidden cursor-pointer;
+
+  img {
+    width: 100%;
+  }
+
+  .heading {
+    font-size: 20px;
+    font-weight: 600;
+    @apply mt-2 mb-5 px-2;
+  }
+
+  .date {
+    font-size: 14px;
+    font-weight: 400;
+    @apply pl-2;
+  }
+
+  span.bg-icon.material-icons {
+    bottom: -20px;
+    right: -100px;
+    color: #ffffff1a;
+    font-size: 20rem;
+    line-height: 0.5;
+    @apply absolute;
+  }
+}
+</style>
