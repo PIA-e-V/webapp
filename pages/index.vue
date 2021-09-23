@@ -8,7 +8,9 @@
     <!--    </div>-->
 
     <div class="px-2">
-      <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
+      <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
+        <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
+      </div>
     </div>
 
     <!--    <hr class="mt-2" />-->
