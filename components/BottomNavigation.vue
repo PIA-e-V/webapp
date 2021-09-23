@@ -2,7 +2,7 @@
   <nav>
     <div class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
       <div class="icon">
-        <img src="/icons/navigation/home.svg" alt="Home" />
+        <img :src="`/icons/navigation/home${$route.name === 'index' ? '_active' : ''}.svg`" alt="Home" />
         <!--        <object data="/icons/navigation/home.svg" type="image/svg+xml">-->
         <!--          <img src="/icons/navigation/home.svg" alt="Home" />-->
         <!--        </object>-->
@@ -12,7 +12,10 @@
 
     <div class="btn" :class="{ active: $route.name.startsWith('statement-id') }">
       <div class="icon">
-        <img src="/icons/navigation/bills.svg" alt="Anträge" />
+        <img
+          :src="`/icons/navigation/bills${$route.name.startsWith('statement-id') ? '_active' : ''}.svg`"
+          alt="Anträge"
+        />
       </div>
       <div class="label">Anträge</div>
     </div>
@@ -33,7 +36,7 @@
 
     <div class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
       <div class="icon">
-        <img src="/icons/navigation/profile.svg" alt="Profil" />
+        <img :src="`/icons/navigation/profile${$route.name === 'profile' ? '_active' : ''}.svg`" alt="Profil" />
       </div>
       <div class="label">Profil</div>
     </div>
