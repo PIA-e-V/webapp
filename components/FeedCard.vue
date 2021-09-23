@@ -53,7 +53,7 @@ export default defineComponent({
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border: 1px solid #c4c4c4;
-  @apply mx-auto pb-2 relative overflow-hidden cursor-pointer;
+  @apply mx-auto pb-2 relative overflow-hidden cursor-pointer outline-none select-none;
 
   img {
     width: 100%;

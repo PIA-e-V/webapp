@@ -116,6 +116,12 @@ export type FeedItem = {
   feedable: Feedable;
 };
 
+export enum FeedType {
+  Proposals = 'PROPOSALS',
+  News = 'NEWS',
+  Petitions = 'PETITIONS'
+}
+
 export type Feedable = Proposal | Statement;
 
 export type Feedback = {
@@ -457,6 +463,7 @@ export type Query = {
   chamber?: Maybe<Chamber>;
   country?: Maybe<Country>;
   feed: Array<FeedItem>;
+  feedByType: Array<FeedItem>;
   legislature?: Maybe<Legislature>;
   activeLegislature?: Maybe<Legislature>;
   opinion?: Maybe<Opinion>;
@@ -504,6 +511,16 @@ export type QueryChamberArgs = {
 
 export type QueryCountryArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryFeedArgs = {
+  where?: Maybe<QueryFeedWhereWhereConditions>;
+};
+
+
+export type QueryFeedByTypeArgs = {
+  type: FeedType;
 };
 
 
@@ -689,6 +706,39 @@ export type QueryArgumentsWhereWhereConditionsRelation = {
   amount?: Maybe<Scalars['Int']>;
   /** Additional condition logic. */
   condition?: Maybe<QueryArgumentsWhereWhereConditions>;
+};
+
+/** Allowed column names for the `where` argument on field `feed` on type `Query`. */
+export enum QueryFeedWhereColumn {
+  ActiveFrom = 'ACTIVE_FROM'
+}
+
+/** Dynamic WHERE conditions for the `where` argument on the query `feed`. */
+export type QueryFeedWhereWhereConditions = {
+  /** The column that is used for the condition. */
+  column?: Maybe<QueryFeedWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: Maybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: Maybe<Scalars['Mixed']>;
+  /** A set of conditions that requires all conditions to match. */
+  AND?: Maybe<Array<QueryFeedWhereWhereConditions>>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: Maybe<Array<QueryFeedWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: Maybe<QueryFeedWhereWhereConditionsRelation>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `feed`. */
+export type QueryFeedWhereWhereConditionsRelation = {
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+  /** The comparison operator to test against the amount. */
+  operator?: Maybe<SqlOperator>;
+  /** The amount to test. */
+  amount?: Maybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: Maybe<QueryFeedWhereWhereConditions>;
 };
 
 /** Allowed column names for the `orderBy` argument on field `feedback` on type `Query`. */
@@ -1057,6 +1107,7 @@ export type Statement = {
   explanation: Scalars['String'];
   source_of_explanation: Scalars['String'];
   active: Scalars['Boolean'];
+  news: Scalars['Boolean'];
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
   topic: Topic;
@@ -1146,6 +1197,7 @@ export type UpsertStatementInput = {
   explanation: Scalars['String'];
   source_of_explanation: Scalars['String'];
   active: Scalars['Boolean'];
+  news: Scalars['Boolean'];
   arguments?: Maybe<CreateArgumentBelongsToMany>;
 };
 

@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <div class="btn ripple" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
+    <div class="btn ripple" :class="{ active: homeActive }" @click="$router.push('/')">
       <div class="icon">
-        <img :src="`/icons/navigation/home${$route.name === 'index' ? '_active' : ''}.svg`" alt="Home" />
+        <img :src="`/icons/navigation/home${homeActive ? '_active' : ''}.svg`" alt="Home" />
         <!--        <object data="/icons/navigation/home.svg" type="image/svg+xml">-->
         <!--          <img src="/icons/navigation/home.svg" alt="Home" />-->
         <!--        </object>-->
@@ -10,37 +10,30 @@
       <div class="label">Home</div>
     </div>
 
-    <div class="btn ripple" :class="{ active: $route.name.startsWith('statement-id') }">
+    <div class="btn ripple" :class="{ active: proposalsActive }" @click="$router.push('/feed/proposals')">
       <div class="icon">
-        <img
-          :src="`/icons/navigation/bills${$route.name.startsWith('statement-id') ? '_active' : ''}.svg`"
-          alt="Anträge"
-        />
+        <img :src="`/icons/navigation/bills${proposalsActive ? '_active' : ''}.svg`" alt="Anträge" />
       </div>
       <div class="label">Anträge</div>
     </div>
 
-    <div class="btn ripple">
+    <div class="btn ripple" :class="{ active: newsActive }" @click="$router.push('/feed/news')">
       <div class="icon">
-        <img src="/icons/navigation/news.svg" alt="News" />
+        <img :src="`/icons/navigation/news${newsActive ? '_active' : ''}.svg`" alt="News" />
       </div>
       <div class="label">News</div>
     </div>
 
-    <div class="btn ripple">
+    <div class="btn ripple" :class="{ active: petitionsActive }" @click="$router.push('/feed/petitions')">
       <div class="icon">
-        <img src="/icons/navigation/petitions.svg" alt="Petitionen" />
+        <img :src="`/icons/navigation/petitions${petitionsActive ? '_active' : ''}.svg`" alt="Petitionen" />
       </div>
       <div class="label">Petitionen</div>
     </div>
 
-    <div
-      class="btn ripple"
-      :class="{ active: $route.name.startsWith('profile') }"
-      @click="$router.push('/profile/political')"
-    >
+    <div class="btn ripple" :class="{ active: profileActive }" @click="$router.push('/profile/political')">
       <div class="icon">
-        <img :src="`/icons/navigation/profile${$route.name.startsWith('profile') ? '_active' : ''}.svg`" alt="Profil" />
+        <img :src="`/icons/navigation/profile${profileActive ? '_active' : ''}.svg`" alt="Profil" />
       </div>
       <div class="label">Profil</div>
     </div>
@@ -48,11 +41,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent, useRoute } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   setup() {
-    return {}
+    const route = useRoute()
+
+    return {
+      homeActive: computed(() => route.value.name === 'index'),
+      proposalsActive: computed(
+        () =>
+          route.value.name.startsWith('statement-id') ||
+          (route.value.name === 'feed-type' && route.value.params.type === 'proposals')
+      ),
+      newsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'news'),
+      petitionsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'petitions'),
+      profileActive: computed(() => route.value.name.startsWith('profile'))
+    }
   }
 })
 </script>
@@ -69,7 +74,7 @@ nav {
   .btn {
     height: 40px;
     margin: 5px 0;
-    @apply flex-grow text-center cursor-pointer outline-none select-none ripple;
+    @apply flex-grow text-center cursor-pointer outline-none select-none ripple rounded;
 
     .icon {
       svg,

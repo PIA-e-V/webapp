@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div>
+      <img class="logo my-4" src="/logo.svg" alt="Logo" />
+    </div>
+
     <!--    <h1 class="pl-6 pt-4">Fortschritt</h1>-->
 
     <!--    <div class="grid px-6 pt-2" style="grid-template-columns: 50px auto">-->
@@ -7,7 +11,13 @@
     <!--      <div><UserProgress :value="progress" /></div>-->
     <!--    </div>-->
 
-    <div class="px-2">
+    <div v-show="fetchState.pending">
+      <div class="text-center mt-5">
+        <span class="material-icons animate-spin" style="font-size: 3rem">autorenew</span>
+      </div>
+    </div>
+
+    <div v-show="!fetchState.pending" class="px-2">
       <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
         <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
       </div>
@@ -80,10 +90,9 @@ export default defineComponent({
     UserProgress,
     ProposalCard
   },
-  layout: 'header',
   setup() {
     const router = useRouter()
-    const { loadProposalOfTheDay, proposalOfTheDay } = useProposals()
+    const { proposalOfTheDay } = useProposals()
     const client = useGraphql()
 
     const feedItems = ref<FeedItem[]>([])
@@ -182,6 +191,13 @@ h1 {
 
 .statements::-webkit-scrollbar {
   display: none;
+}
+
+.logo {
+  max-height: 50px;
+  max-width: calc(100% - 20px);
+
+  @apply block mx-auto;
 }
 
 .see-all-btn {

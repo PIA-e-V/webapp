@@ -41,45 +41,39 @@ export default defineComponent({
 .btn {
   width: fit-content;
   border: none;
-  outline: none;
-  user-select: none;
+  @apply rounded-2xl px-1 font-bold cursor-pointer flex items-center outline-none select-none;
 
-  @apply rounded-2xl px-1 font-bold cursor-pointer flex items-center;
-}
+  .slot {
+    line-height: 40px;
+    display: inline-block;
+    border: none;
+    @apply inline-block whitespace-no-wrap outline-none select-none;
+  }
 
-.btn .slot {
-  line-height: 40px;
-  display: inline-block;
-  border: none;
-  outline: none;
-  user-select: none;
+  .icon {
+    border: none;
+    outline: none;
+    user-select: none;
 
-  @apply inline-block whitespace-no-wrap;
-}
+    @apply inline-block ml-2 mr-1;
+  }
 
-.btn .icon {
-  border: none;
-  outline: none;
-  user-select: none;
+  .material-icons {
+    line-height: 40px;
+  }
 
-  @apply inline-block ml-2 mr-1;
-}
+  &.small {
+    height: 30px;
 
-.btn .material-icons {
-  line-height: 40px;
-}
+    .slot {
+      line-height: 30px;
+      font-size: 13px;
+    }
 
-.btn.small {
-  height: 30px;
-}
-
-.btn.small .slot {
-  line-height: 30px;
-  font-size: 13px;
-}
-
-.btn.small .material-icons {
-  line-height: 30px;
-  font-size: 16px;
+    .material-icons {
+      line-height: 30px;
+      font-size: 16px;
+    }
+  }
 }
 </style>
