@@ -1,3 +1,4 @@
+@import "/assets/_animations.scss";
 @import "/assets/material-icons.scss";
 
 body {
@@ -13,47 +14,4 @@ h1 {
   font-family: 'Barlow';
   font-weight: normal;
   font-style: normal;
-}
-
-.page-enter-active,
-.page-leave-active {
-  transition: opacity 0.2s;
-}
-.page-enter,
-.page-leave-to {
-  opacity: 0;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-}
-
-.fade-reverse-enter-active, .fade-reverse-leave-active {
-  transition: opacity .3s;
-}
-.fade-reverse-enter, .fade-reverse-leave-to {
-  opacity: 0;
-}
-
-
-.slide-in-left-enter-active, .slide-in-left-leave-active {
-  transition: transform .3s;
-}
-.slide-in-left-enter, .slide-in-left-leave-to {
-  transform: translateX(-320px);
-}
-
-
-.slide-leave-active,
-.slide-enter-active {
-  transition: .3s;
-}
-.slide-enter {
-  transform: translate(100%, 0);
-}
-.slide-leave-to {
-  transform: translate(-100%, 0);
 }

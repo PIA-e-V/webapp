@@ -1,0 +1,56 @@
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-reverse-enter-active, .fade-reverse-leave-active {
+  transition: opacity .3s;
+}
+.fade-reverse-enter, .fade-reverse-leave-to {
+  opacity: 0;
+}
+
+
+.slide-in-left-enter-active, .slide-in-left-leave-active {
+  transition: transform .3s;
+}
+.slide-in-left-enter, .slide-in-left-leave-to {
+  transform: translateX(-320px);
+}
+
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: .3s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(-100%, 0);
+}
+
+/* Ripple effect */
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  //background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+}
+.ripple:active {
+  background-color: rgba(110, 185, 247, 0.59);
+  background-size: 100%;
+  transition: background 0s;
+}

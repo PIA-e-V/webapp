@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="btn" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
+    <div class="btn ripple" :class="{ active: $route.name === 'index' }" @click="$router.push('/')">
       <div class="icon">
         <img :src="`/icons/navigation/home${$route.name === 'index' ? '_active' : ''}.svg`" alt="Home" />
         <!--        <object data="/icons/navigation/home.svg" type="image/svg+xml">-->
@@ -10,7 +10,7 @@
       <div class="label">Home</div>
     </div>
 
-    <div class="btn" :class="{ active: $route.name.startsWith('statement-id') }">
+    <div class="btn ripple" :class="{ active: $route.name.startsWith('statement-id') }">
       <div class="icon">
         <img
           :src="`/icons/navigation/bills${$route.name.startsWith('statement-id') ? '_active' : ''}.svg`"
@@ -20,21 +20,25 @@
       <div class="label">Anträge</div>
     </div>
 
-    <div class="btn">
+    <div class="btn ripple">
       <div class="icon">
         <img src="/icons/navigation/news.svg" alt="News" />
       </div>
       <div class="label">News</div>
     </div>
 
-    <div class="btn">
+    <div class="btn ripple">
       <div class="icon">
         <img src="/icons/navigation/petitions.svg" alt="Petitionen" />
       </div>
       <div class="label">Petitionen</div>
     </div>
 
-    <div class="btn" :class="{ active: $route.name.startsWith('profile') }" @click="$router.push('/profile/political')">
+    <div
+      class="btn ripple"
+      :class="{ active: $route.name.startsWith('profile') }"
+      @click="$router.push('/profile/political')"
+    >
       <div class="icon">
         <img :src="`/icons/navigation/profile${$route.name.startsWith('profile') ? '_active' : ''}.svg`" alt="Profil" />
       </div>
@@ -55,6 +59,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '/assets/_variables.scss';
+@import '/assets/_animations.scss';
 
 nav {
   height: 50px;
@@ -64,7 +69,7 @@ nav {
   .btn {
     height: 40px;
     margin: 5px 0;
-    @apply flex-grow text-center cursor-pointer;
+    @apply flex-grow text-center cursor-pointer outline-none select-none ripple;
 
     .icon {
       svg,
