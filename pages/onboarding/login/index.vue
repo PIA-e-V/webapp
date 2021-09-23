@@ -3,11 +3,11 @@
     <img src="/onboarding/login/login.png" class="mx-auto block mt-5" style="height: 30vh" alt="Login" />
 
     <div class="btn-container">
-      <Button class="proceed-btn" background="white" color="#3A4090FF" @click="$router.push('/registration')">
+      <Button class="proceed-btn" background="white" color="#3A4090FF" @click="$router.push('/profile/account')">
         Register
       </Button>
 
-      <Button class="proceed-btn mt-5" background="white" color="#3A4090FF" @click="$router.push('/login')">
+      <Button class="proceed-btn mt-5" background="white" color="#3A4090FF" @click="$router.push('/profile/account')">
         Login
       </Button>
 

@@ -7,7 +7,7 @@
         Du musst nun deinen Account bestätigen, indem du auf den Link in der E-Mail klickst.
       </div>
 
-      <Button small class="mx-auto mt-4" @click="$router.push('/login')"> Zum Login </Button>
+      <Button small class="mx-auto mt-4" @click="$router.push('/profile/account')"> Zum Login </Button>
     </template>
     <template v-else>
       <h1>Registrierung</h1>
@@ -41,7 +41,7 @@
       <div class="mt-8">
         <div class="mb-2 px-1">
           Du hast bereits einen Account?
-          <nuxt-link to="/login" class="underline"> Login </nuxt-link>
+          <nuxt-link to="/profile/account" class="underline"> Login </nuxt-link>
         </div>
         <button class="primary" @click="submit">Registrieren</button>
       </div>

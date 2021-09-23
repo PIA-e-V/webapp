@@ -6,7 +6,7 @@
       <VotingResult :header="res.header" :results="res.results" />
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')">
+    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
       Zum Matching
     </AppButton>
   </div>

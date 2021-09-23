@@ -34,9 +34,9 @@
       <div class="label">Petitionen</div>
     </div>
 
-    <div class="btn" :class="{ active: $route.name === 'profile' }" @click="$router.push('/profile')">
+    <div class="btn" :class="{ active: $route.name.startsWith('profile') }" @click="$router.push('/profile/political')">
       <div class="icon">
-        <img :src="`/icons/navigation/profile${$route.name === 'profile' ? '_active' : ''}.svg`" alt="Profil" />
+        <img :src="`/icons/navigation/profile${$route.name.startsWith('profile') ? '_active' : ''}.svg`" alt="Profil" />
       </div>
       <div class="label">Profil</div>
     </div>
