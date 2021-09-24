@@ -2,6 +2,17 @@
   <div>
     <h1 class="text-center">{{ typeTranslations[$route.params.type] }}</h1>
 
+    <LogoSpinner v-if="fetchState.pending" class="mx-auto mt-10" size="64px" />
+
+    <div v-if="!fetchState.pending" id="tabs">
+      <div class="tab" :class="{ active: currentTab === 'open' }" @click="currentTab = 'open'">
+        Offen ({{ openCount }})
+      </div>
+      <div class="tab" :class="{ active: currentTab === 'done' }" @click="currentTab = 'done'">
+        Erledigt ({{ doneCount }})
+      </div>
+    </div>
+
     <div v-if="$route.params.type === 'petitions'" class="pt-12 px-4">
       <CommingSoon />
       <p class="text-center">Bald kannst du dich hier über Petitionen informieren</p>
@@ -17,16 +28,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
 import { FeedItem, FeedType } from '~/@types/graphql-types'
 import useGraphql from '~/composables/useGraphql'
+import useUser from '~/store/useUser'
 
 export default defineComponent({
   setup(_, { root }) {
     const route = useRoute()
     const client = useGraphql()
+    const { user } = useUser()
 
+    const currentTab = ref<'open' | 'done'>('open')
     const feedItems = ref<FeedItem[]>([])
+
+    const feedType: FeedType = route.value.params.type === 'proposals' ? FeedType.Proposals : FeedType.News
 
     const { fetchState } = useFetch(async () => {
       root.$nuxt.$loading.start()
@@ -36,13 +52,11 @@ export default defineComponent({
           id active_from
           feedable {
             __typename
-            ...on Proposal { id }
-            ... on Statement { id }
+            ...on Proposal { id short_statement title topic { icon title } }
+            ... on Statement { id short_statement topic { icon title } }
           }
         }
       }`
-
-      const feedType: FeedType = route.value.params.type === 'proposals' ? FeedType.Proposals : FeedType.News
 
       const { feedByType } = await client.query(q, { type: feedType })
 
@@ -52,13 +66,44 @@ export default defineComponent({
     })
     return {
       fetchState,
-      feedItems,
+      currentTab,
+      user,
+      openCount: computed(() => (feedType === FeedType.Proposals ? user.value.openProposals.length : 0)),
+      doneCount: computed(() => (feedType === FeedType.Proposals ? user.value.doneProposals.length : 0)),
       typeTranslations: {
         proposals: 'Anträge',
         news: 'News',
         petitions: 'Petitionen'
-      }
+      },
+      feedItems: computed(() => {
+        if (feedType === FeedType.Proposals) {
+          const proposals = currentTab.value === 'open' ? user.value.openProposals : user.value.doneProposals
+          const ids = proposals.map((p) => p.id)
+
+          return feedItems.value.filter((item) => ids.includes(item.feedable.id))
+        }
+        return feedItems.value
+      })
     }
   }
 })
 </script>
+
+<style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
+#tabs {
+  @apply flex flex-row;
+
+  .tab {
+    font-size: 20px;
+    color: #575a6d;
+    @apply flex-grow text-center pb-2 mb-2 cursor-pointer;
+
+    &.active {
+      color: $primary;
+      border-bottom: 2px solid $primary;
+    }
+  }
+}
+</style>

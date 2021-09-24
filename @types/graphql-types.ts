@@ -182,8 +182,6 @@ export type Mutation = {
   deleteArgument: Argument;
   createFeedback?: Maybe<Feedback>;
   upsertOpinion?: Maybe<Opinion>;
-  upsertProposalScheduleEntry?: Maybe<ProposalScheduleEntry>;
-  deleteProposalScheduleEntryByDate?: Maybe<ProposalScheduleEntry>;
   upsertProposal?: Maybe<Proposal>;
   deleteProposal: Proposal;
   upsertStatement?: Maybe<Statement>;
@@ -223,17 +221,6 @@ export type MutationCreateFeedbackArgs = {
 
 export type MutationUpsertOpinionArgs = {
   input: UpsertOpinionInput;
-};
-
-
-export type MutationUpsertProposalScheduleEntryArgs = {
-  id?: Maybe<Scalars['Int']>;
-  input: UpsertProposalScheduleEntryInput;
-};
-
-
-export type MutationDeleteProposalScheduleEntryByDateArgs = {
-  show_at: Scalars['Date'];
 };
 
 
@@ -439,16 +426,6 @@ export type ProposalPaginator = {
   data: Array<Proposal>;
 };
 
-export type ProposalScheduleEntry = {
-  __typename?: 'ProposalScheduleEntry';
-  id: Scalars['Int'];
-  proposal_id: Scalars['Int'];
-  show_at: Scalars['Date'];
-  created_at: Scalars['DateTime'];
-  updated_at: Scalars['DateTime'];
-  proposal: Proposal;
-};
-
 export enum ProposalType {
   ResolutionRecommendation = 'RESOLUTION_RECOMMENDATION',
   Bill = 'BILL',
@@ -470,9 +447,7 @@ export type Query = {
   parliament?: Maybe<Parliament>;
   parties: Array<Party>;
   party?: Maybe<Party>;
-  proposalScheduleEntries: Array<ProposalScheduleEntry>;
   proposal?: Maybe<Proposal>;
-  proposalOfTheDay: Proposal;
   statement?: Maybe<Statement>;
   usersPerWeek: Array<WeekUserCount>;
   totalUsers: Scalars['Int'];
@@ -541,11 +516,6 @@ export type QueryParliamentArgs = {
 
 export type QueryPartyArgs = {
   id: Scalars['Int'];
-};
-
-
-export type QueryProposalScheduleEntriesArgs = {
-  where?: Maybe<QueryProposalScheduleEntriesWhereWhereConditions>;
 };
 
 
@@ -786,39 +756,6 @@ export type QueryFeedbackWhereWhereConditionsRelation = {
   amount?: Maybe<Scalars['Int']>;
   /** Additional condition logic. */
   condition?: Maybe<QueryFeedbackWhereWhereConditions>;
-};
-
-/** Allowed column names for the `where` argument on field `proposalScheduleEntries` on type `Query`. */
-export enum QueryProposalScheduleEntriesWhereColumn {
-  ShowAt = 'SHOW_AT'
-}
-
-/** Dynamic WHERE conditions for the `where` argument on the query `proposalScheduleEntries`. */
-export type QueryProposalScheduleEntriesWhereWhereConditions = {
-  /** The column that is used for the condition. */
-  column?: Maybe<QueryProposalScheduleEntriesWhereColumn>;
-  /** The operator that is used for the condition. */
-  operator?: Maybe<SqlOperator>;
-  /** The value that is used for the condition. */
-  value?: Maybe<Scalars['Mixed']>;
-  /** A set of conditions that requires all conditions to match. */
-  AND?: Maybe<Array<QueryProposalScheduleEntriesWhereWhereConditions>>;
-  /** A set of conditions that requires at least one condition to match. */
-  OR?: Maybe<Array<QueryProposalScheduleEntriesWhereWhereConditions>>;
-  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
-  HAS?: Maybe<QueryProposalScheduleEntriesWhereWhereConditionsRelation>;
-};
-
-/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `proposalScheduleEntries`. */
-export type QueryProposalScheduleEntriesWhereWhereConditionsRelation = {
-  /** The relation that is checked. */
-  relation: Scalars['String'];
-  /** The comparison operator to test against the amount. */
-  operator?: Maybe<SqlOperator>;
-  /** The amount to test. */
-  amount?: Maybe<Scalars['Int']>;
-  /** Additional condition logic. */
-  condition?: Maybe<QueryProposalScheduleEntriesWhereWhereConditions>;
 };
 
 /** Allowed column names for the `orderBy` argument on field `proposals` on type `Query`. */
@@ -1182,11 +1119,6 @@ export type UpsertProposalInput = {
   source_of_explanation: Scalars['String'];
   source_of_proposal: Scalars['String'];
   arguments?: Maybe<CreateArgumentBelongsToMany>;
-};
-
-export type UpsertProposalScheduleEntryInput = {
-  proposal_id: Scalars['Int'];
-  show_at: Scalars['Date'];
 };
 
 export type UpsertStatementInput = {

@@ -4,33 +4,9 @@ import { readonly, ref } from '@nuxtjs/composition-api'
 import { Proposal } from '~/@types/graphql-types'
 import useGraphql from '~/composables/useGraphql'
 
-const proposalOfTheDay = ref<Proposal>()
 const currentProposal = ref<Proposal>()
 export default function useProposals() {
   const client = useGraphql()
-
-  async function loadProposalOfTheDay() {
-    const operation: IQueryBuilderOptions = {
-      operation: 'proposalOfTheDay',
-      fields: [
-        'id',
-        'title',
-        'statement',
-        'explanation',
-        'short_statement',
-        'source_of_proposal',
-        'source_of_explanation',
-        'color',
-        { arguments: ['id', 'statement', 'source'] }
-      ]
-    }
-
-    const q = query(operation)
-    const { proposalOfTheDay: response } = await client.query(q.query, q.variables)
-    if (response) {
-      proposalOfTheDay.value = response
-    }
-  }
 
   async function loadProposal(id: number, force = false) {
     if (!force && currentProposal.value?.id === id) {
@@ -69,9 +45,7 @@ export default function useProposals() {
   }
 
   return {
-    loadProposalOfTheDay,
     loadProposal,
-    currentProposal: readonly(currentProposal),
-    proposalOfTheDay
+    currentProposal: readonly(currentProposal)
   }
 }

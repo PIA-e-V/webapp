@@ -12,7 +12,7 @@ export default function () {
   const client = useGraphql()
   const { registerWaiter } = useAppState()
 
-  const userFieldsToLoad = ['id', 'email']
+  const userFieldsToLoad = ['id', 'email', { doneProposals: ['id'] }, { openProposals: ['id'] }]
 
   async function register(email: string, password: string) {
     const q = mutation({
@@ -69,8 +69,6 @@ export default function () {
     localStorage.setItem('auth-token', login.token)
 
     user.value = login.user!
-
-    console.log('auth')
 
     isAuthenticated.value = true
   }

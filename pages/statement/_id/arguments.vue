@@ -10,7 +10,12 @@
         @enter="transitions.slide = true"
         @leave="transitions.slide = false"
       >
-        <div v-for="a in [currentArgument]" :key="a.id" class="argument-card">
+        <div
+          v-for="a in [currentArgument]"
+          :key="a.id"
+          class="argument-card"
+          :class="{ 'sources-active': showSources }"
+        >
           <transition name="fade" @after-leave="transitions.fade = false">
             <div v-if="!transitions.fade && !showSources">
               <header>Argument {{ index.current }}/{{ index.total }}</header>
@@ -29,15 +34,20 @@
             </div>
           </transition>
           <transition name="fade" @after-leave="transitions.fade = false">
-            <div
-              v-if="!transitions.fade && showSources"
-              class="cursor-pointer"
-              @click="
-                transitions.fade = true
-                showSources = false
-              "
-            >
+            <div v-if="!transitions.fade && showSources">
+              <header>Argument {{ index.current }}/{{ index.total }}</header>
+
               <div v-html="currentArgument.source"></div>
+
+              <div
+                class="sources"
+                @click="
+                  transitions.fade = true
+                  showSources = false
+                "
+              >
+                <span>Argument</span> <span class="material-icons back-icon">keyboard_arrow_left</span>
+              </div>
             </div>
           </transition>
         </div>
@@ -240,7 +250,12 @@ export default defineComponent({
       width: calc(100% - 2rem);
       left: 1rem;
       top: 1rem;
+      overflow-wrap: break-word;
       @apply rounded-xl text-white p-3 mx-auto absolute;
+
+      &.sources-active {
+        @apply bg-white text-black;
+      }
 
       header {
         font-size: 18px;
@@ -253,6 +268,11 @@ export default defineComponent({
         .material-icons {
           vertical-align: bottom;
           font-size: 22px !important;
+
+          &.back-icon {
+            background: $primary;
+            @apply rounded-full text-white;
+          }
         }
       }
 

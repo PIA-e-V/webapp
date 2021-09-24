@@ -2,11 +2,24 @@
   <section class="card" @click="openItem">
     <img :src="`/feed/${item.feedable.__typename.toLowerCase()}.jpg`" alt="Teaser" />
 
-    <h2 class="heading" v-html="title" />
+    <div class="flex flex-col justify-between flex-grow">
+      <h2 class="heading" v-html="title" />
 
-    <span class="date" v-html="date" />
+      <div class="bottom">
+        <div class="info">
+          <p>
+            <span class="material-icons topic-icon" v-text="item.feedable.topic.icon"></span>
+            - {{ item.feedable.topic.title }}
+          </p>
+          <span class="date" v-html="date" />
+        </div>
 
-    <img :src="icon" class="icon" alt="Type" />
+        <div class="icon">
+          <img :src="icon" alt="Type" />
+          <span>{{ item.feedable.__typename === 'Proposal' ? 'Antrag' : 'News' }}</span>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -53,7 +66,7 @@ export default defineComponent({
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border: 1px solid #c4c4c4;
-  @apply mx-auto pb-2 relative overflow-hidden cursor-pointer outline-none select-none;
+  @apply mx-auto relative flex flex-col overflow-hidden cursor-pointer outline-none select-none;
 
   img {
     width: 100%;
@@ -65,17 +78,32 @@ export default defineComponent({
     @apply mt-2 mb-5 px-2;
   }
 
-  .date {
-    font-size: 14px;
-    font-weight: 400;
-    @apply pl-2;
-  }
+  .bottom {
+    @apply flex flex-row justify-between;
 
-  .icon {
-    right: 10px;
-    bottom: 10px;
-    width: 30px;
-    @apply absolute;
+    .info {
+      font-size: 14px;
+      height: 50px;
+      @apply inline-block pl-2;
+
+      .topic-icon {
+        vertical-align: bottom;
+        font-size: 16pt;
+      }
+
+      .date {
+        font-weight: 400;
+      }
+    }
+
+    .icon {
+      @apply inline-block pr-2;
+
+      img {
+        width: 24px;
+        @apply mx-auto;
+      }
+    }
   }
 }
 </style>
