@@ -9,7 +9,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import usePrivacy from '~/composables/usePrivacy'
 
 export default defineComponent({
-  setup () {
+  setup() {
     const { privacyText } = usePrivacy()
     return {
       privacyText
@@ -19,9 +19,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '/assets/_variables.scss';
+
 .privacy-dialog {
   #dialog-content {
-    h1, h2, h3, p {
+    h1,
+    h2,
+    h3,
+    p {
       @apply my-2;
     }
 
@@ -30,8 +35,12 @@ export default defineComponent({
     }
 
     h3 {
-     font-size: 14pt;
-   }
+      font-size: 14pt;
+    }
+  }
+
+  .trigger {
+    color: $primary;
   }
 }
 </style>

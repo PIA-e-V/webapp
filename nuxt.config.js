@@ -7,6 +7,17 @@ export default {
     apiBaseUrl: process.env.API_BASE_URL || ''
   },
 
+  loading: {
+    color: '#3a4090',
+    continuous: true
+  },
+
+  loadingIndicator: {
+    name: 'cube-grid',
+    color: '#3a4090',
+    background: 'white'
+  },
+
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {

@@ -51,12 +51,12 @@ export default defineComponent({
       homeActive: computed(() => route.value.name === 'index'),
       proposalsActive: computed(
         () =>
-          route.value.name.startsWith('statement-id') ||
+          route.value.name!.startsWith('statement-id') ||
           (route.value.name === 'feed-type' && route.value.params.type === 'proposals')
       ),
       newsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'news'),
       petitionsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'petitions'),
-      profileActive: computed(() => route.value.name.startsWith('profile'))
+      profileActive: computed(() => route.value.name!.startsWith('profile'))
     }
   }
 })
@@ -74,6 +74,7 @@ nav {
   .btn {
     height: 40px;
     margin: 5px 0;
+    flex-basis: 0;
     @apply flex-grow text-center cursor-pointer outline-none select-none ripple rounded;
 
     .icon {
@@ -90,6 +91,7 @@ nav {
     }
 
     .label {
+      font-size: 10px;
       height: 15px;
       line-height: 15px;
     }

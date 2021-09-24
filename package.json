@@ -14,7 +14,6 @@
     "@nuxtjs/composition-api": "^0.23.2",
     "@nuxtjs/pwa": "^3.3.4",
     "@types/nanographql": "^2.0.1",
-    "apexcharts": "^3.26.1",
     "core-js": "^3.8.2",
     "gql-query-builder": "^3.5.5",
     "html2canvas": "^1.1.4",

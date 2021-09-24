@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <header v-if="!fetchState.pending && partyScores.length > 0">
       <h1>Parteinähe</h1>
       <div class="description">
         Hier siehst du, welche Partei deiner Meinung am nächsten steht. Dein Profil wurde auf Basis von {{ matchCount }}
@@ -14,18 +14,22 @@
 
       Du hast noch keine Statements beantwortet. Beantworte Statements bevor du dein politisches Profil sehen kannst.<br /><br />
 
-      <nuxt-link to="/statements/open"> <span class="font-bold underline">Klicke hier</span> </nuxt-link>, um dir ein
-      Statement auszusuchen.
+      <nuxt-link to="/"> <span class="font-bold underline">Klicke hier</span> </nuxt-link>, um dir ein Statement
+      auszusuchen.
     </h2>
 
-    <section id="capture" class="px-2 pb-4 mt-5 grid grid-cols-3 sm:grid-cols-3 auto-rows-fr mx-auto">
-      <div v-for="(score, i) in partyScores" :key="score.party.id">
-        <div class="text-center font-bold">#{{ i + 1 }} - {{ score.party.name }}</div>
-        <div :id="`chart-${score.party.id}`" />
+    <section id="capture" class="px-4 mt-5 mx-auto">
+      <div v-for="(score, i) in scores" :key="i">
+        <div>
+          #{{ i + 1 }} - {{ score.party.name }} <span class="float-right">{{ score.totalScore }}%</span>
+        </div>
+        <div class="progress">
+          <div :style="{ width: `${score.totalScore}%`, background: score.party.color }"></div>
+        </div>
       </div>
     </section>
 
-    <h1 v-show="!fetchState.pending" class="pl-6 mb-2">Gewichtung</h1>
+    <h1 v-show="!fetchState.pending && partyScores.length > 0" class="pl-4 mt-5">Gewichtung</h1>
     <section v-show="fetchState.timestamp" id="weightings">
       <div v-for="topic in topics" :key="topic.id">
         <h2>{{ topic.title }}</h2>
@@ -45,10 +49,9 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref, useFetch } from '@nuxtjs/composition-api'
 import html2canvas from 'html2canvas'
-import ApexCharts, { ApexOptions } from 'apexcharts'
 import { query } from 'gql-query-builder'
 import useGraphql from '~/composables/useGraphql'
-import { ScoreResult, Topic } from '~/@types/graphql-types'
+import { Party, ScoreResult, Topic } from '~/@types/graphql-types'
 
 export default defineComponent({
   setup() {
@@ -57,8 +60,6 @@ export default defineComponent({
     const topics = ref<Topic[]>([])
     const partyScores = ref<ScoreResult[]>([])
     const matchCount = ref(0)
-
-    const charts = new Map<number, ApexCharts>()
 
     const { fetchState } = useFetch(async () => {
       const q = query([
@@ -87,25 +88,12 @@ export default defineComponent({
 
       await nextTick()
 
-      renderCharts()
+      updateCalculation()
     })
 
-    function renderCharts() {
-      const generalOptions: ApexOptions = {
-        chart: { type: 'radialBar', width: '100%' },
-        grid: { padding: { top: 0, right: 0, bottom: 0, left: 0 } },
-        plotOptions: {
-          radialBar: {
-            hollow: { size: '40%' },
-            dataLabels: {
-              show: true,
-              name: { show: false },
-              value: { show: true, color: '#111', offsetY: 5 }
-            }
-          }
-        }
-      }
-
+    const scores = ref<Array<{ totalScore: number; party: Party }>>([])
+    function updateCalculation() {
+      scores.value = []
       partyScores.value.forEach((score) => {
         // const totalScore = (sum(score.topics.map(s => s.score)) / score.topics.length).toPrecision(2)
         let totalScore = 0
@@ -115,28 +103,21 @@ export default defineComponent({
         })
         totalScore = Math.round((totalScore / score.topics.length) * 100)
 
-        if (!charts.has(score.party.id)) {
-          const chart = new ApexCharts(document.querySelector(`#chart-${score.party.id}`), {
-            ...generalOptions,
-            series: [totalScore],
-            labels: [score.party.name],
-            colors: [score.party.color]
-          })
-          chart.render()
-          charts.set(score.party.id, chart)
-        } else {
-          charts.get(score.party.id)!.updateSeries([totalScore])
-        }
+        scores.value.push({
+          totalScore,
+          party: score.party
+        })
       })
     }
 
     return {
       topics,
       partyScores,
+      scores,
       fetchState,
       matchCount,
       weightChanged() {
-        renderCharts()
+        updateCalculation()
       },
       async share() {
         const canvas = await html2canvas(document.querySelector('#capture')!)
@@ -194,18 +175,45 @@ header {
   }
 }
 
-#share-btn {
-  right: 20px;
-  bottom: 60px;
+.progress {
+  height: 10px;
+  border-radius: 10px;
+  @apply overflow-hidden mb-1;
 
-  @apply absolute;
+  & > div {
+    transition: width 0.5s;
+    width: 0;
+    height: 10px;
+  }
 }
 
 #weightings {
-  @apply px-8 pb-12;
-}
+  @apply px-5 pb-5;
 
-#weightings input[type='range'] {
-  @apply w-full;
+  input[type='range'] {
+    -webkit-appearance: none;
+    height: 10px;
+    border-radius: 10px;
+    background: #b7b8be;
+    @apply w-full outline-none;
+
+    $size: 20px;
+
+    &::-webkit-slider-thumb {
+      width: $size;
+      height: $size;
+      border-radius: 50%;
+      background: $primary;
+      @apply cursor-pointer appearance-none;
+    }
+
+    &::-moz-range-thumb {
+      width: $size;
+      height: $size;
+      border-radius: 50%;
+      background: $primary;
+      @apply cursor-pointer;
+    }
+  }
 }
 </style>

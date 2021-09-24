@@ -2,10 +2,7 @@
   <transition name="fade" @after-leave="$emit('after-leave')">
     <div v-if="!isReady">
       <div class="splash-container">
-        <img class="mx-auto block" src="/logo.png" alt="Splash Screen" />
-      </div>
-      <div class="spinner text-center mt-16">
-        <span class="material-icons animate-spin">autorenew</span>
+        <img class="" src="/logo.svg" alt="Splash Screen" />
       </div>
     </div>
   </transition>
@@ -32,16 +29,11 @@ export default defineComponent({
 @import '/assets/_variables.scss';
 
 .splash-container {
-  background: $primary;
-  @apply pt-12 pb-10;
-
   img {
-    width: 90%;
-  }
-}
+    max-height: 50px;
+    max-width: calc(100% - 20px);
 
-.spinner span {
-  font-size: 60pt;
-  color: #575a6d;
+    @apply block mx-auto my-4;
+  }
 }
 </style>

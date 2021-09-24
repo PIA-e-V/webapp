@@ -26,7 +26,7 @@
           <!--          </nuxt-link>-->
         </div>
         <div class="text-right">
-          <nuxt-link to="/registration" class="underline"> Registrieren </nuxt-link>
+          <span class="underline cursor-pointer" @click="$emit('registrationClicked')"> Registrieren </span>
         </div>
       </div>
       <button class="primary" @click="submit">Login</button>
@@ -56,7 +56,7 @@ import useUser from '~/store/useUser'
 import useNotifications from '~/composables/useNotifications'
 
 export default defineComponent({
-  layout: 'header',
+  emits: ['registrationClicked'],
   setup() {
     const { login, isAuthenticated } = useUser()
     const { success, error } = useNotifications()
@@ -86,7 +86,6 @@ export default defineComponent({
 
         if (isAuthenticated) {
           success('Du bist eingeloggt')
-          router.push('/')
         }
       }
     }
@@ -98,7 +97,7 @@ export default defineComponent({
 @import '/assets/_variables.scss';
 
 .login-card {
-  @apply;
+  @apply select-none outline-none;
 
   h1 {
     @apply pl-1 pb-2;
@@ -112,7 +111,7 @@ export default defineComponent({
     @apply w-full border-2 rounded p-2 outline-none;
 
     &:focus {
-      border-color: #8078d8;
+      border-color: $light-blue;
     }
   }
 

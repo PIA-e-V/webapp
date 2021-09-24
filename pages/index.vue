@@ -11,12 +11,6 @@
     <!--      <div><UserProgress :value="progress" /></div>-->
     <!--    </div>-->
 
-    <div v-show="fetchState.pending">
-      <div class="text-center mt-5">
-        <span class="material-icons animate-spin" style="font-size: 3rem">autorenew</span>
-      </div>
-    </div>
-
     <div v-show="!fetchState.pending" class="px-2">
       <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
         <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
@@ -90,7 +84,7 @@ export default defineComponent({
     UserProgress,
     ProposalCard
   },
-  setup() {
+  setup(_, { root }) {
     const router = useRouter()
     const { proposalOfTheDay } = useProposals()
     const client = useGraphql()
@@ -106,6 +100,8 @@ export default defineComponent({
     }
 
     const { fetchState } = useFetch(async () => {
+      root.$nuxt.$loading.start()
+
       const q = `query {
         feed {
           id active_from
@@ -147,6 +143,8 @@ export default defineComponent({
       //
       //   localStorage.setItem('user-progress', progress.value.toString())
       // }
+
+      root.$nuxt.$loading.finish()
     })
 
     onMounted(() => {

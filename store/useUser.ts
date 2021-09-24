@@ -12,9 +12,9 @@ export default function () {
   const client = useGraphql()
   const { registerWaiter } = useAppState()
 
-  const userFieldsToLoad = ['id']
+  const userFieldsToLoad = ['id', 'email']
 
-  async function register (email: string, password: string) {
+  async function register(email: string, password: string) {
     const q = mutation({
       operation: 'register',
       variables: {
@@ -36,7 +36,7 @@ export default function () {
     } as RegistrationResponse
   }
 
-  async function verify (token: string) {
+  async function verify(token: string) {
     const q = mutation({
       operation: 'verifyUser',
       variables: {
@@ -54,7 +54,7 @@ export default function () {
     return false
   }
 
-  async function login (email: string, password: string) {
+  async function login(email: string, password: string) {
     const q = mutation({
       operation: 'login',
       variables: {
@@ -75,7 +75,24 @@ export default function () {
     isAuthenticated.value = true
   }
 
-  async function logout () {
+  async function registerAnonymousUser() {
+    const q = mutation({
+      operation: 'registerAnonymousUser',
+      fields: ['token']
+    })
+
+    try {
+      const { registerAnonymousUser } = await client.mutation(q.query, q.variables)
+
+      localStorage.setItem('auth-token', registerAnonymousUser.token)
+    } catch {
+      return false
+    }
+
+    return true
+  }
+
+  async function logout() {
     const q = mutation({
       operation: 'logout',
       fields: ['id']
@@ -86,9 +103,11 @@ export default function () {
     isAuthenticated.value = false
 
     localStorage.removeItem('auth-token')
+
+    await registerAnonymousUser()
   }
 
-  function onAfterChecked (callback: (authenticated: boolean) => void) {
+  function onAfterChecked(callback: (authenticated: boolean) => void) {
     if (isAuthenticated.value !== undefined) {
       // eslint-disable-next-line node/no-callback-literal
       callback(isAuthenticated.value!)
@@ -97,7 +116,7 @@ export default function () {
     }
   }
 
-  async function checkUser () {
+  async function checkUser() {
     if (checked.value) {
       return
     }
@@ -117,12 +136,14 @@ export default function () {
     if (authToken) {
       const q = query({
         operation: 'me',
-        fields: ['id']
+        fields: userFieldsToLoad
       })
 
       try {
         const { me } = await client.query(q.query, q.variables)
         if (me && me.id) {
+          user.value = me
+          isAuthenticated.value = !me.email?.endsWith('@ftv.de')
           callCallbacks()
           waiter.setReady()
           return
@@ -130,21 +151,10 @@ export default function () {
       } catch {}
     }
 
-    const q = mutation({
-      operation: 'registerAnonymousUser',
-      fields: ['token']
-    })
-
-    try {
-      const { registerAnonymousUser } = await client.mutation(q.query, q.variables)
-
-      localStorage.setItem('auth-token', registerAnonymousUser.token)
-
+    if (await registerAnonymousUser()) {
       waiter.setReady()
 
       callCallbacks()
-    } catch {
-      // TODO error page or something
     }
   }
 

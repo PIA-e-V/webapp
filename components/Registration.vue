@@ -41,7 +41,7 @@
       <div class="mt-8">
         <div class="mb-2 px-1">
           Du hast bereits einen Account?
-          <nuxt-link to="/profile/account" class="underline"> Login </nuxt-link>
+          <span class="underline cursor-pointer" @click="$emit('loginClicked')"> Login </span>
         </div>
         <button class="primary" @click="submit">Registrieren</button>
       </div>
@@ -55,13 +55,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
+import useUser from '~/store/useUser'
 import useNotifications from '~/composables/useNotifications'
 import useValidation from '~/composables/useValidation'
-import useUser from '~/store/useUser'
 
 export default defineComponent({
-  layout: 'header',
+  emits: ['loginClicked'],
   setup() {
     const { error, success } = useNotifications()
     const { register } = useUser()
@@ -114,36 +114,35 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 #registration-card {
-  max-width: 400px;
-  width: calc(100% - 40px);
+  @apply select-none outline-none;
 
-  @apply rounded mx-auto mt-5 shadow-lg border p-4;
-}
+  h1 {
+    @apply pl-1 pb-2;
+  }
 
-#registration-card h1 {
-  @apply pl-1 font-bold pb-1 text-center;
-}
+  label {
+    @apply block mb-2 pl-1;
+  }
 
-#registration-card label {
-  @apply block mb-2 pl-1;
-}
+  input {
+    @apply w-full border-2 rounded p-2 outline-none;
 
-#registration-card input {
-  @apply w-full border-2 rounded-xl p-2 outline-none;
-}
+    &:focus {
+      border-color: $light-blue;
+    }
+  }
 
-#registration-card input:focus {
-  border-color: #8078d8;
-}
+  button {
+    @apply block text-center w-full py-1 text-black rounded-xl outline-none;
 
-#registration-card button {
-  @apply block text-center w-full py-1 text-black rounded-xl outline-none;
-}
+    &.primary {
+      background: $primary;
 
-#registration-card button.primary {
-  background: #343e94;
-
-  @apply text-white;
+      @apply text-white;
+    }
+  }
 }
 </style>
