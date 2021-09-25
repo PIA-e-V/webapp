@@ -2,9 +2,9 @@
   <div>
     <h1 class="text-center">{{ typeTranslations[$route.params.type] }}</h1>
 
-    <LogoSpinner v-if="fetchState.pending" class="mx-auto mt-10" size="64px" />
+    <LogoSpinner v-if="fetchState.pending && $route.params.type !== 'petitions'" class="mx-auto mt-10" size="64px" />
 
-    <div v-if="!fetchState.pending" id="tabs">
+    <div v-if="!fetchState.pending && $route.params.type !== 'petitions'" id="tabs">
       <div class="tab" :class="{ active: currentTab === 'open' }" @click="currentTab = 'open'">
         Offen ({{ openCount }})
       </div>
@@ -52,8 +52,8 @@ export default defineComponent({
           id active_from
           feedable {
             __typename
-            ...on Proposal { id short_statement title topic { icon title } }
-            ... on Statement { id short_statement topic { icon title } }
+            ...on Proposal { id short_statement image title topic { icon title } }
+            ... on Statement { id short_statement image title topic { icon title } }
           }
         }
       }`

@@ -1,6 +1,6 @@
 <template>
   <section class="card" @click="openItem">
-    <img :src="`/feed/${item.feedable.__typename.toLowerCase()}.jpg`" alt="Teaser" />
+    <img :src="item.feedable.image" alt="Teaser" />
 
     <div class="flex flex-col justify-between flex-grow">
       <h2 class="heading" v-html="title" />

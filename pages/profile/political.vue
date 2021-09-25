@@ -178,6 +178,7 @@ header {
 .progress {
   height: 10px;
   border-radius: 10px;
+  border: 1px solid gray;
   @apply overflow-hidden mb-1;
 
   & > div {

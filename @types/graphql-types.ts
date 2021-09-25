@@ -19,6 +19,8 @@ export type Scalars = {
    * dealing with really large numbers to be on the safe side.
    */
   Mixed: any;
+  /** Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec */
+  Upload: any;
 };
 
 export type Argument = {
@@ -184,6 +186,7 @@ export type Mutation = {
   upsertOpinion?: Maybe<Opinion>;
   upsertProposal?: Maybe<Proposal>;
   deleteProposal: Proposal;
+  uploadProposalImage?: Maybe<Scalars['String']>;
   upsertStatement?: Maybe<Statement>;
   deleteStatement: Statement;
   upsertTopic?: Maybe<Topic>;
@@ -232,6 +235,12 @@ export type MutationUpsertProposalArgs = {
 
 export type MutationDeleteProposalArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationUploadProposalImageArgs = {
+  id: Scalars['Int'];
+  file: Scalars['Upload'];
 };
 
 
@@ -407,6 +416,7 @@ export type Proposal = {
   color: Scalars['String'];
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
+  image: Scalars['String'];
   short_title: Scalars['String'];
   latest_voting?: Maybe<Voting>;
   has_voting: Scalars['Boolean'];
@@ -1087,6 +1097,7 @@ export enum Trashed {
   /** Only return non-trashed results. */
   Without = 'WITHOUT'
 }
+
 
 export type UpsertArgumentInput = {
   position: ArgumentPosition;

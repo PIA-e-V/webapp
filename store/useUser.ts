@@ -76,13 +76,15 @@ export default function () {
   async function registerAnonymousUser() {
     const q = mutation({
       operation: 'registerAnonymousUser',
-      fields: ['token']
+      fields: ['token', { user: userFieldsToLoad }]
     })
 
     try {
       const { registerAnonymousUser } = await client.mutation(q.query, q.variables)
 
       localStorage.setItem('auth-token', registerAnonymousUser.token)
+
+      user.value = registerAnonymousUser.user!
     } catch {
       return false
     }

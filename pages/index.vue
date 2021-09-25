@@ -48,10 +48,10 @@ export default defineComponent({
           feedable {
             __typename
             ...on Proposal {
-              id short_statement topic { icon title }
+              id short_statement image topic { icon title }
             }
             ... on Statement {
-              id short_statement topic { icon title }
+              id short_statement image topic { icon title }
             }
           }
         }
