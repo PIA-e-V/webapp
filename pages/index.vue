@@ -16,16 +16,10 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, useFetch } from '@nuxtjs/composition-api'
-import UserProgress from '~/components/UserProgress.vue'
-import ProposalCard from '~/components/ProposalCard.vue'
 import useGraphql from '~/composables/useGraphql'
 import { FeedItem, Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
-  components: {
-    UserProgress,
-    ProposalCard
-  },
   setup(_, { root }) {
     const client = useGraphql()
 

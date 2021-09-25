@@ -47,14 +47,20 @@ export default defineComponent({
   setup() {
     const route = useRoute()
 
+    console.log(route.value.name!.startsWith('statement-id'))
+
     return {
       homeActive: computed(() => route.value.name === 'index'),
       proposalsActive: computed(
         () =>
-          route.value.name!.startsWith('statement-id') ||
+          route.value.name!.startsWith('proposal-id') ||
           (route.value.name === 'feed-type' && route.value.params.type === 'proposals')
       ),
-      newsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'news'),
+      newsActive: computed(
+        () =>
+          route.value.name!.startsWith('statement-id') ||
+          (route.value.name === 'feed-type' && route.value.params.type === 'news')
+      ),
       petitionsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'petitions'),
       profileActive: computed(() => route.value.name!.startsWith('profile'))
     }

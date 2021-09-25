@@ -49,6 +49,8 @@ export default defineComponent({
       icon: computed(() => `/icons/navigation/${feedable.value.__typename === 'Proposal' ? 'bills.svg' : 'news.svg'}`),
       openItem() {
         if (props.item.feedable.__typename === 'Proposal') {
+          router.push(`/proposal/${props.item.feedable.id}`)
+        } else {
           router.push(`/statement/${props.item.feedable.id}`)
         }
       }

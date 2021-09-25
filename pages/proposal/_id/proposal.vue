@@ -3,7 +3,17 @@
     <div class="px-4 h-full overflow-scroll flex flex-col">
       <h2>Was ist deine Meinung zu dem Antrag?</h2>
 
-      <!--      <StatementCard :proposal="proposal" />-->
+      <StatementCard :proposal="proposal" />
+
+      <!--      <DecisionCard-->
+      <!--        :value="proposal.statement"-->
+      <!--        :decisions="[-->
+      <!--          { label: 'Dagegen', result: 'DISAGREE', icon: 'close' },-->
+      <!--          { label: 'Neutral', result: 'NEUTRAL', icon: 'thumbs_up_down' },-->
+      <!--          { label: 'Dafür', result: 'AGREE', icon: 'favorite' }-->
+      <!--        ]"-->
+      <!--        @decision="save"-->
+      <!--      />-->
     </div>
 
     <div class="action-buttons">
@@ -27,6 +37,26 @@
       </div>
     </div>
 
+    <!--    <div id="feedback-btn" @click="feedbackDialog = true">-->
+    <!--      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">-->
+    <!--        <div><span class="material-icons">feedback</span></div>-->
+    <!--        <span class="underline" style="line-height: 18px">Feedback</span>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!--    <div id="source">-->
+    <!--      <Dialog :value="proposal.source_of_proposal">-->
+    <!--        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">-->
+    <!--          <div><span class="material-icons">info</span></div>-->
+    <!--          <span>Quelle</span>-->
+    <!--        </div>-->
+    <!--      </Dialog>-->
+    <!--    </div>-->
+
+    <!--    <AppButton class="forward-btn" small icon="arrow_forward" @click="$router.push(`/statement/${proposal.id}/voting`)">-->
+    <!--      Überspringen-->
+    <!--    </AppButton>-->
+
     <BottomDialog :value.sync="feedbackDialog">
       <div v-for="(r, index) in reasons" :key="r.type">
         <span class="underline cursor-pointer" @click="confirm(r)">{{ r.description }}</span>
@@ -46,7 +76,7 @@ import useGraphql from '~/composables/useGraphql'
 import useNotifications from '~/composables/useNotifications'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import useFeedback, { Raeson } from '~/composables/useFeedback'
-import { Statement } from '~/@types/graphql-types'
+import { Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
@@ -54,8 +84,8 @@ export default defineComponent({
     AppButton
   },
   props: {
-    statement: {
-      type: Object as PropType<Statement>,
+    proposal: {
+      type: Object as PropType<Proposal>,
       required: true
     }
   },
@@ -78,8 +108,8 @@ export default defineComponent({
             type: 'UpsertOpinionInput',
             required: true,
             value: {
-              opinionable_id: props.statement.id,
-              opinionable_type: 'App\\Models\\Statement',
+              opinionable_id: props.proposal.id,
+              opinionable_type: 'App\\Models\\Proposal',
               position: result
             }
           }
@@ -91,7 +121,7 @@ export default defineComponent({
       const { upsertOpinion } = await client.mutation(q.query, q.variables)
 
       if (upsertOpinion) {
-        router.push(`/statement/${props.statement.id}/voting`)
+        router.push(`/proposal/${props.proposal.id}/voting`)
       } else {
         console.log('Alarm')
       }

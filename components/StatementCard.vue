@@ -23,7 +23,7 @@
     </transition>
     <transition name="fade" @after-leave="transitionActive = false">
       <div v-if="!transitionActive && showSources">
-        {{ proposal.source_of_explanation }}
+        <p v-html="proposal.source_of_explanation" />
 
         <div
           class="sources-btn flex flex-row-reverse flex-grow-0"
@@ -72,11 +72,15 @@ export default defineComponent({
 @import '/assets/_variables.scss';
 
 .card {
-  max-width: 600px;
+  max-width: min(100%, 600px);
   background: $primary;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  @apply mx-auto text-white px-4 pt-1 pb-4 relative overflow-hidden;
+  @apply mx-auto text-white px-4 pt-1 pb-4 relative;
+
+  &:not(.sources-active) {
+    @apply overflow-hidden;
+  }
 
   &.sources-active {
     @apply bg-white text-black break-words;

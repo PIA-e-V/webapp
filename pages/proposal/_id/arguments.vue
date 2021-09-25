@@ -1,7 +1,7 @@
 <template>
   <div class="argument-container">
     <div class="h-full overflow-scroll flex flex-col">
-      <p class="short-statement px-4">{{ statement.short_statement }}</p>
+      <p class="short-statement px-4">{{ proposal.short_statement }}</p>
 
       <transition-group
         tag="div"
@@ -37,7 +37,7 @@
             <div v-if="!transitions.fade && showSources">
               <header>Argument {{ index.current }}/{{ index.total }}</header>
 
-              <div v-html="currentArgument.source"></div>
+              <div v-html="currentArgument.source" />
 
               <div
                 class="sources"
@@ -110,7 +110,7 @@ import AppButton from '~/components/Button.vue'
 import BottomDialog from '~/components/BottomDialog.vue'
 import useGraphql from '~/composables/useGraphql'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
-import { Argument, Statement } from '~/@types/graphql-types'
+import { Argument, Proposal } from '~/@types/graphql-types'
 import useNotifications from '~/composables/useNotifications'
 import useFeedback, { Raeson } from '~/composables/useFeedback'
 
@@ -121,8 +121,8 @@ export default defineComponent({
     BottomDialog
   },
   props: {
-    statement: {
-      type: Object as PropType<Statement>,
+    proposal: {
+      type: Object as PropType<Proposal>,
       required: true
     }
   },
@@ -141,11 +141,11 @@ export default defineComponent({
     const feedbackDialog = ref(false)
     const currentArgument = computed(() => args.value[currentArgumentIndex.value])
     const index = computed<Index>(() => ({
-      total: props.statement.arguments.length,
+      total: props.proposal.arguments.length,
       current: currentArgumentIndex.value + 1
     }))
 
-    args.value = shuffle(props.statement.arguments as Argument[])
+    args.value = shuffle(props.proposal.arguments as Argument[])
 
     async function save(result: string) {
       const operation: IQueryBuilderOptions = {
@@ -176,8 +176,8 @@ export default defineComponent({
     }
 
     function nextArgument() {
-      if (currentArgumentIndex.value + 1 === props.statement.arguments.length) {
-        router.push(`/statement/${props.statement.id}/proposal`)
+      if (currentArgumentIndex.value + 1 === props.proposal.arguments.length) {
+        router.push(`/proposal/${props.proposal.id}/proposal`)
         return
       }
 

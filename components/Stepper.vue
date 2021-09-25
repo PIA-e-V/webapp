@@ -1,19 +1,28 @@
 <template>
   <section class="stepper">
-    <div v-for="i in [1, 2, 3, 4]" :key="i" class="step">
+    <div v-for="i in stepArray" :key="i" class="step">
       <div class="step-content" :class="{ active: step >= i }"></div>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { computed, defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
+    steps: {
+      type: Number,
+      default: 4
+    },
     step: {
       type: Number,
       default: 1
+    }
+  },
+  setup(props) {
+    return {
+      stepArray: computed(() => Array.from({ length: props.steps }, (_, i) => i + 1))
     }
   }
 })
@@ -23,11 +32,10 @@ export default defineComponent({
 @import '/assets/_variables.scss';
 
 .stepper {
-  display: grid;
-  grid-template: auto / 1fr 1fr 1fr 1fr;
+  @apply flex flex-row;
 
   .step {
-    @apply text-center;
+    @apply text-center flex-grow;
 
     .step-content {
       width: 60%;

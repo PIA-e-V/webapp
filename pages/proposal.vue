@@ -9,42 +9,39 @@
           <h1>{{ title }}</h1>
         </div>
 
-        <Stepper :steps="totalSteps" :step="step" class="mt-2" />
+        <Stepper :step="step" class="mt-2" />
       </header>
     </transition>
 
     <transition name="fade">
       <div class="content">
-        <NuxtChild v-if="fetchState.timestamp" :statement="statement" @stepChanged="stepChanged" />
+        <NuxtChild v-if="fetchState.timestamp" :proposal="proposal" @stepChanged="stepChanged" />
       </div>
     </transition>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
 import useProposals from '~/store/useProposals'
-import useStatement from '~/store/useStatement'
 
 type Step = 1 | 2 | 3 | 4
 
 export default defineComponent({
   setup() {
     const route = useRoute()
-    const { currentStatement: statement, loadStatement } = useStatement()
+    const { currentProposal: proposal, loadProposal } = useProposals()
 
     const { fetchState } = useFetch(async () => {
       const id = parseInt(route.value.params.id)
-      await loadStatement(id)
-
-      console.log(statement.value.arguments)
+      await loadProposal(id)
     })
 
     const stepTitles = new Map<Step, string>([
-      [1, 'News'],
-      [2, 'Argumente'],
+      [1, 'Antrag im Bundestag'],
+      [2, 'Argumente der Parteien'],
       [3, 'Abstimmung'],
-      [4, 'Community-Positionen']
+      [4, 'Parteipositionen']
     ])
 
     const title = ref('')
@@ -52,9 +49,8 @@ export default defineComponent({
     return {
       title,
       step,
-      statement,
+      proposal,
       fetchState,
-      totalSteps: computed(() => (statement.value.arguments.length > 0 ? 4 : 3)),
       stepChanged(newStep: Step) {
         step.value = newStep
         title.value = stepTitles.get(newStep)!

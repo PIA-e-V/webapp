@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="px-4 pt-5">
-      <!--      <StatementCard :proposal="proposal" />-->
+      <StatementCard :proposal="proposal" />
     </div>
 
     <div class="explanation">
       <h1>Worum geht's?</h1>
 
-      <div v-html="statement.explanation" />
+      <div v-html="proposal.explanation" />
 
       <!--      <h1 class="mt-2">Quellen</h1>-->
 
-      <!--      <div v-html="statement.source_of_explanation" />-->
+      <!--      <div v-html="proposal.source_of_explanation" />-->
     </div>
 
     <AppButton class="forward-btn" small @click="start">Voten</AppButton>
@@ -21,15 +21,15 @@
 <script lang="ts">
 import { defineComponent, PropType, useRouter } from '@nuxtjs/composition-api'
 import AppButton from '~/components/Button.vue'
-import { Statement } from '~/@types/graphql-types'
+import { Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
     AppButton
   },
   props: {
-    statement: {
-      type: Object as PropType<Statement>,
+    proposal: {
+      type: Object as PropType<Proposal>,
       required: true
     }
   },
@@ -40,9 +40,7 @@ export default defineComponent({
 
     return {
       start() {
-        router.push(
-          `/statement/${props.statement.id}/${props.statement.arguments.length > 0 ? 'arguments' : 'proposal'}`
-        )
+        router.push(`/proposal/${props.proposal.id}/arguments`)
       }
     }
   }
