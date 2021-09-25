@@ -1,15 +1,46 @@
 <template>
-  <section class="card">
-    <h2 class="heading" v-html="proposal.statement" />
+  <section class="card" :class="{ 'sources-active': showSources }">
+    <transition name="fade" @after-leave="transitionActive = false">
+      <div v-if="!transitionActive && !showSources">
+        <h2 class="heading" v-html="proposal.statement" />
 
-    <span class="date" v-html="formattedDate" />
+        <div class="flex flex-row justify-between">
+          <span class="date" v-html="formattedDate" />
 
-    <span class="material-icons bg-icon">{{ proposal.topic.icon }}</span>
+          <div
+            class="sources-btn"
+            @click="
+              transitionActive = true
+              showSources = true
+            "
+          >
+            <span>Quellen</span> <span class="material-icons">info</span>
+          </div>
+        </div>
+
+        <span class="material-icons bg-icon">{{ proposal.topic.icon }}</span>
+      </div>
+    </transition>
+    <transition name="fade" @after-leave="transitionActive = false">
+      <div v-if="!transitionActive && showSources">
+        {{ proposal.source_of_explanation }}
+
+        <div
+          class="sources-btn flex flex-row-reverse flex-grow-0"
+          @click="
+            transitionActive = true
+            showSources = false
+          "
+        >
+          <span class="material-icons back-icon"> keyboard_arrow_left </span>
+        </div>
+      </div>
+    </transition>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from '@nuxtjs/composition-api'
+import { defineComponent, computed, PropType, ref } from '@nuxtjs/composition-api'
 import { Proposal } from '~/@types/graphql-types'
 import moment from 'moment'
 
@@ -21,7 +52,12 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const showSources = ref(false)
+    const transitionActive = ref(false)
+
     return {
+      showSources,
+      transitionActive,
       formattedDate: computed(() =>
         props.proposal.latest_voting
           ? moment(props.proposal.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')
@@ -40,7 +76,11 @@ export default defineComponent({
   background: $primary;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  @apply mx-auto text-white px-4 pt-1 pb-5 relative overflow-hidden;
+  @apply mx-auto text-white px-4 pt-1 pb-4 relative overflow-hidden;
+
+  &.sources-active {
+    @apply bg-white text-black break-words;
+  }
 
   .heading {
     font-size: 20px;
@@ -49,7 +89,7 @@ export default defineComponent({
   }
 
   .date {
-    font-size: 14px;
+    //font-size: 14px;
     font-weight: 400;
   }
 
@@ -60,6 +100,20 @@ export default defineComponent({
     font-size: 20rem;
     line-height: 0.5;
     @apply absolute;
+  }
+
+  .sources-btn {
+    @apply cursor-pointer select-none outline-none z-10;
+
+    .material-icons {
+      vertical-align: bottom;
+      font-size: 22px !important;
+
+      &.back-icon {
+        background: $primary;
+        @apply rounded-full text-white;
+      }
+    }
   }
 }
 </style>

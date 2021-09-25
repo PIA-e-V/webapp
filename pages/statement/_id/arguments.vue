@@ -328,10 +328,4 @@ export default defineComponent({
   bottom: 80px;
   @apply absolute cursor-pointer;
 }
-
-#source {
-  left: 10px;
-  bottom: 55px;
-  @apply absolute;
-}
 </style>
