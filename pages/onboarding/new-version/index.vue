@@ -3,7 +3,8 @@
     <img src="/onboarding/new-version.png" class="mx-auto block mt-5" style="height: 30vh" alt="Update" />
 
     <div class="mt-5 px-4">
-      <p>
+      <h1>Was passiert nach der Wahl?</h1>
+      <p class="mt-2">
         Am 27. September werden wir ein neues Update veröffentlichen. Du wirst dann die wichtigsten politischen
         Nachrichten, Gesetze und Petitionen verfolgen und darüber abstimmen können.
       </p>
