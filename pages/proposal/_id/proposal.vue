@@ -3,7 +3,7 @@
     <div class="px-4 h-full overflow-scroll flex flex-col">
       <h2>Was ist deine Meinung zu dem Antrag?</h2>
 
-      <StatementCard :proposal="proposal" />
+      <StatementCard :item="proposal" />
 
       <!--      <DecisionCard-->
       <!--        :value="proposal.statement"-->

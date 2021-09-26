@@ -3,7 +3,7 @@
     <div class="px-4 h-full overflow-scroll flex flex-col">
       <h2>Was ist deine Meinung zu dem Antrag?</h2>
 
-      <!--      <StatementCard :proposal="proposal" />-->
+      <StatementCard :item="statement" />
     </div>
 
     <div class="action-buttons">
@@ -60,7 +60,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('stepChanged', 3)
+    ctx.emit('stepChanged', props.statement.arguments.length > 0 ? 3 : 2)
 
     const router = useRouter()
     const client = useGraphql()

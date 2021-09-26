@@ -19,6 +19,9 @@
     </div>
     <div v-else>
       <div v-show="!fetchState.pending" class="px-2">
+        <h2 v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)">
+          Keine Einträge vorhanden ...
+        </h2>
         <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
           <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
         </div>
@@ -68,8 +71,24 @@ export default defineComponent({
       fetchState,
       currentTab,
       user,
-      openCount: computed(() => (feedType === FeedType.Proposals ? user.value.openProposals.length : 0)),
-      doneCount: computed(() => (feedType === FeedType.Proposals ? user.value.doneProposals.length : 0)),
+      openCount: computed(() => {
+        if (feedType === FeedType.Proposals) {
+          return user.value.openProposals.length
+        } else if (feedType === FeedType.News) {
+          return user.value.openStatements.length
+        }
+
+        return 0
+      }),
+      doneCount: computed(() => {
+        if (feedType === FeedType.Proposals) {
+          return user.value.doneProposals.length
+        } else if (feedType === FeedType.News) {
+          return user.value.doneStatements.length
+        }
+
+        return 0
+      }),
       typeTranslations: {
         proposals: 'Anträge',
         news: 'News',
@@ -78,6 +97,12 @@ export default defineComponent({
       feedItems: computed(() => {
         if (feedType === FeedType.Proposals) {
           const proposals = currentTab.value === 'open' ? user.value.openProposals : user.value.doneProposals
+          const ids = proposals.map((p) => p.id)
+
+          return feedItems.value.filter((item) => ids.includes(item.feedable.id))
+        }
+        if (feedType === FeedType.News) {
+          const proposals = currentTab.value === 'open' ? user.value.openStatements : user.value.doneStatements
           const ids = proposals.map((p) => p.id)
 
           return feedItems.value.filter((item) => ids.includes(item.feedable.id))

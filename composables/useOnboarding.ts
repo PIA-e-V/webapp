@@ -8,8 +8,6 @@ export default function () {
   function checkIfOnboardingIsNeeded() {
     if (localStorage.getItem('onboarding.initial') !== '1') {
       router!.push('/onboarding/initial')
-    } else if (localStorage.getItem('onboarding.new-version') !== '1') {
-      router!.push('/onboarding/new-version')
     } else if (localStorage.getItem('onboarding.login') !== '1') {
       router!.push('/onboarding/login')
     }

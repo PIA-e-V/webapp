@@ -1057,6 +1057,7 @@ export type Statement = {
   news: Scalars['Boolean'];
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
+  image: Scalars['String'];
   topic: Topic;
   arguments: Array<Argument>;
   opinions: Array<Opinion>;
@@ -1174,6 +1175,8 @@ export type User = {
   statement_progress: Scalars['Int'];
   openProposals: Array<Proposal>;
   doneProposals: Array<Proposal>;
+  openStatements: Array<Statement>;
+  doneStatements: Array<Statement>;
   opinions: Array<Opinion>;
   roles: Array<Role>;
 };

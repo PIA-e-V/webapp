@@ -23,7 +23,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
-import useProposals from '~/store/useProposals'
 import useStatement from '~/store/useStatement'
 
 type Step = 1 | 2 | 3 | 4
@@ -33,19 +32,23 @@ export default defineComponent({
     const route = useRoute()
     const { currentStatement: statement, loadStatement } = useStatement()
 
-    const { fetchState } = useFetch(async () => {
-      const id = parseInt(route.value.params.id)
-      await loadStatement(id)
-
-      console.log(statement.value.arguments)
-    })
-
     const stepTitles = new Map<Step, string>([
       [1, 'News'],
       [2, 'Argumente'],
       [3, 'Abstimmung'],
       [4, 'Community-Positionen']
     ])
+
+    const { fetchState } = useFetch(async () => {
+      const id = parseInt(route.value.params.id)
+      await loadStatement(id)
+
+      if (statement.value.arguments.length === 0) {
+        stepTitles.set(2, 'Abstimmung')
+        stepTitles.set(3, 'Community-Positionen')
+        stepTitles.delete(4)
+      }
+    })
 
     const title = ref('')
     const step = ref<Step>(1)

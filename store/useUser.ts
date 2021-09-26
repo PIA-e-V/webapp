@@ -12,7 +12,14 @@ export default function () {
   const client = useGraphql()
   const { registerWaiter } = useAppState()
 
-  const userFieldsToLoad = ['id', 'email', { doneProposals: ['id'] }, { openProposals: ['id'] }]
+  const userFieldsToLoad = [
+    'id',
+    'email',
+    { doneProposals: ['id'] },
+    { openProposals: ['id'] },
+    { doneStatements: ['id'] },
+    { openStatements: ['id'] }
+  ]
 
   async function register(email: string, password: string) {
     const q = mutation({

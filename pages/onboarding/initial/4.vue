@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <img src="/icon_transparent.png" class="mx-auto block mt-5" style="width: min(50%, 200px)" alt="Step 1" />
+    <img src="/logo_plain_white.svg" class="mx-auto block mt-5" style="width: min(50%, 200px)" alt="Step 1" />
 
     <h1>Deine Dosis Demokratie</h1>
     <h2>#FollowTheVote</h2>

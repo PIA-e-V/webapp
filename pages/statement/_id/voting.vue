@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="short-statement px-4">{{ proposal.short_statement }}</p>
+    <p class="short-statement px-4">{{ statement.short_statement }}</p>
 
     <div class="px-4 my-2" v-for="(res, i) in results" :key="i">
       <VotingResult :header="res.header" :results="res.results" />
@@ -14,8 +14,6 @@
 
 <script lang="ts">
 import { PropType, defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
-import IQueryBuilderOptions from 'gql-query-builder/build/IQueryBuilderOptions'
-import { query } from 'gql-query-builder'
 import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
 import { Statement } from '~/@types/graphql-types'
@@ -38,7 +36,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    ctx.emit('stepChanged', 4)
+    ctx.emit('stepChanged', props.statement.arguments.length > 0 ? 4 : 3)
 
     const client = useGraphql()
 
@@ -66,7 +64,7 @@ h2 {
 
 .forward-btn {
   bottom: 10px;
-  left: calc(50% - 61px);
+  left: calc(50% - 50px);
 
   @apply absolute;
 }

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="h-full">
     <div class="px-4 pt-5">
-      <!--      <StatementCard :proposal="proposal" />-->
+      <StatementCard :item="statement" />
     </div>
 
     <div class="explanation">

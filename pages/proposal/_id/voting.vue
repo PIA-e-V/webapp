@@ -134,7 +134,7 @@ h2 {
 
 .forward-btn {
   bottom: 10px;
-  left: calc(50% - 61px);
+  left: calc(50% - 50px);
 
   @apply absolute;
 }

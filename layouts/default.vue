@@ -63,12 +63,6 @@ export default defineComponent({
       window.addEventListener('orientationchange', calculateScreenHeight)
     })
 
-    onMounted(() => {
-      if (localStorage.getItem('onboarding.initial') !== '1') {
-        window.location.href = '/onboarding/'
-      }
-    })
-
     return {
       isReady,
       menu,

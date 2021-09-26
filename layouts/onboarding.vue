@@ -1,6 +1,6 @@
 <template>
   <div id="onboarding">
-    <img src="/logo.png" alt="Logo" />
+    <img src="/logo_white.svg" alt="Logo" />
 
     <Nuxt />
 

@@ -2,7 +2,7 @@
   <section class="card" :class="{ 'sources-active': showSources }">
     <transition name="fade" @after-leave="transitionActive = false">
       <div v-if="!transitionActive && !showSources">
-        <h2 class="heading" v-html="proposal.statement" />
+        <h2 class="heading" v-html="item.statement" />
 
         <div class="flex flex-row justify-between">
           <span class="date" v-html="formattedDate" />
@@ -18,12 +18,12 @@
           </div>
         </div>
 
-        <span class="material-icons bg-icon">{{ proposal.topic.icon }}</span>
+        <span class="material-icons bg-icon">{{ item.topic.icon }}</span>
       </div>
     </transition>
     <transition name="fade" @after-leave="transitionActive = false">
       <div v-if="!transitionActive && showSources">
-        <p v-html="proposal.source_of_explanation" />
+        <p v-html="item.source_of_explanation" />
 
         <div
           class="sources-btn flex flex-row-reverse flex-grow-0"
@@ -41,13 +41,13 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType, ref } from '@nuxtjs/composition-api'
-import { Proposal } from '~/@types/graphql-types'
+import { Feedable, Proposal, Statement } from '~/@types/graphql-types'
 import moment from 'moment'
 
 export default defineComponent({
   props: {
-    proposal: {
-      type: Object as PropType<Proposal>,
+    item: {
+      type: Object as PropType<Feedable>,
       required: true
     }
   },
@@ -58,11 +58,16 @@ export default defineComponent({
     return {
       showSources,
       transitionActive,
-      formattedDate: computed(() =>
-        props.proposal.latest_voting
-          ? moment(props.proposal.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')
-          : 'Noch nicht abgestimmt'
-      )
+      formattedDate: computed(() => {
+        console.log(typeof props.item)
+        if (props.item.__typename === 'Proposal') {
+          return props.item.latest_voting
+            ? moment(props.item.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')
+            : 'Noch nicht abgestimmt'
+        }
+
+        return ''
+      })
     }
   }
 })
