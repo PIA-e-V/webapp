@@ -59,7 +59,6 @@ export default defineComponent({
       showSources,
       transitionActive,
       formattedDate: computed(() => {
-        console.log(typeof props.item)
         if (props.item.__typename === 'Proposal') {
           return props.item.latest_voting
             ? moment(props.item.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')

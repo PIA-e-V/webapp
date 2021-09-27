@@ -459,6 +459,7 @@ export type Query = {
   party?: Maybe<Party>;
   proposal?: Maybe<Proposal>;
   statement?: Maybe<Statement>;
+  communityScore?: Maybe<StatementScore>;
   usersPerWeek: Array<WeekUserCount>;
   totalUsers: Scalars['Int'];
   topics: Array<Topic>;
@@ -535,6 +536,11 @@ export type QueryProposalArgs = {
 
 
 export type QueryStatementArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryCommunityScoreArgs = {
   id: Scalars['Int'];
 };
 
@@ -1070,6 +1076,13 @@ export type StatementPaginator = {
   paginatorInfo: PaginatorInfo;
   /** A list of Statement items. */
   data: Array<Statement>;
+};
+
+export type StatementScore = {
+  __typename?: 'StatementScore';
+  agreeCount: Scalars['Int'];
+  disagreeCount: Scalars['Int'];
+  neutralCount: Scalars['Int'];
 };
 
 export type Topic = {

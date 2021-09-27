@@ -2,8 +2,17 @@
   <div>
     <p class="short-statement px-4">{{ statement.short_statement }}</p>
 
-    <div class="px-4 my-2" v-for="(res, i) in results" :key="i">
-      <VotingResult :header="res.header" :results="res.results" />
+    <p class="px-4 mt-8">So hat die Community abgestimmt.</p>
+
+    <div v-if="scores" class="px-4 my-2">
+      <VotingResult
+        header="Community Voting"
+        :results="[
+          { label: 'Ja', color: '#00EA8E', value: scores.agreeCount },
+          { label: 'Nein', color: '#FF3440', value: scores.disagreeCount },
+          { label: 'Enhalten', color: '#FFCA33', value: scores.neutralCount }
+        ]"
+      />
     </div>
 
     <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
@@ -16,14 +25,7 @@
 import { PropType, defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
 import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
-import { Statement } from '~/@types/graphql-types'
-import { VotingResult } from '~/components/VotingResult.vue'
-
-interface Result {
-  header: string
-  subtitle: string
-  results: VotingResult[]
-}
+import { Statement, StatementScore } from '~/@types/graphql-types'
 
 export default defineComponent({
   components: {
@@ -40,12 +42,17 @@ export default defineComponent({
 
     const client = useGraphql()
 
-    const results = ref<Result[]>([])
+    const scores = ref<StatementScore>(null)
+    const { fetchState } = useFetch(async () => {
+      const q = `query ($id: Int!) { communityScore(id: $id) { agreeCount, disagreeCount, neutralCount } }`
+      const { communityScore } = await client.query(q, { id: props.statement.id })
 
-    useFetch(async () => {})
+      scores.value = communityScore
+    })
 
     return {
-      results
+      scores,
+      fetchState
     }
   }
 })

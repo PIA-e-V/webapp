@@ -19,7 +19,10 @@
     </div>
     <div v-else>
       <div v-show="!fetchState.pending" class="px-2">
-        <h2 v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)">
+        <h2
+          v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)"
+          class="text-center"
+        >
           Keine Einträge vorhanden ...
         </h2>
         <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">

@@ -47,8 +47,6 @@ export default defineComponent({
   setup() {
     const route = useRoute()
 
-    console.log(route.value.name!.startsWith('statement-id'))
-
     return {
       homeActive: computed(() => route.value.name === 'index'),
       proposalsActive: computed(
