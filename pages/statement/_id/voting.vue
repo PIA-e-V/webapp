@@ -42,12 +42,14 @@ export default defineComponent({
 
     const client = useGraphql()
 
-    const scores = ref<StatementScore>(null)
+    const scores = ref<StatementScore | null>(null)
     const { fetchState } = useFetch(async () => {
       const q = `query ($id: Int!) { communityScore(id: $id) { agreeCount, disagreeCount, neutralCount } }`
       const { communityScore } = await client.query(q, { id: props.statement.id })
 
-      scores.value = communityScore
+      if (communityScore) {
+        scores.value = communityScore
+      }
     })
 
     return {

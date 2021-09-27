@@ -1,17 +1,16 @@
 <template>
   <div class="h-full">
-    <img src="/onboarding/initial/2.png" class="mx-auto block mt-5" style="width: min(80%, 300px)" alt="Step 1" />
+    <img src="/onboarding/tutorial/3.png" class="mx-auto block mt-5" style="width: min(80%, 300px)" alt="Step 3" />
 
-    <h1>Lerne etwas über echte Gesetze!</h1>
-    <h2>#FollowTheLaws</h2>
+    <h1 class="px-4">1. Anträge</h1>
 
-    <div class="px-4">
-      In den letzten vier Jahren wurden viele Gesetze im Bundestag verändert, besprochen oder verabschiedet. Lerne mit
-      uns die wichtigsten davon kennen!
+    <div class="px-4 mt-4">
+      Hier kannst du dich über die wichtigsten & neuesten Debatten im Parlament informieren.<br /><br />
+      Bilde dir eine Meinung und stimme selbst darüber ab!
     </div>
 
     <div class="btn-container">
-      <Button class="forward-btn" background="white" color="#3A4090FF" @click="$router.push('/onboarding/initial/3')">
+      <Button class="forward-btn" background="white" color="#3A4090FF" @click="$router.push('/onboarding/tutorial/4')">
         Weiter geht's!
       </Button>
     </div>
@@ -36,7 +35,7 @@ export default defineComponent({
 h1 {
   font-size: 15pt;
 
-  @apply font-bold;
+  @apply font-bold px-2;
 }
 
 h2 {

@@ -140,7 +140,7 @@ export default defineComponent({
     const showSources = ref(false)
     const feedbackDialog = ref(false)
     const currentArgument = computed(() => args.value[currentArgumentIndex.value])
-    const index = computed<Index>(() => ({
+    const index = computed<{ total: number; current: number }>(() => ({
       total: props.proposal.arguments.length,
       current: currentArgumentIndex.value + 1
     }))

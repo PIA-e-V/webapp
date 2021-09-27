@@ -1,12 +1,12 @@
 <template>
   <div class="h-full">
-    <img src="/logo_plain_white.svg" class="mx-auto block mt-5" style="width: min(50%, 200px)" alt="Step 1" />
+    <img src="/onboarding/tutorial/6.png" class="mx-auto block mt-5" style="width: min(80%, 300px)" alt="Step 5" />
 
-    <h1>Deine Dosis Demokratie</h1>
-    <h2>#FollowTheVote</h2>
+    <h1 class="px-4">3. Petitionen</h1>
 
-    <div class="px-4">
-      Jeden Tag ein neues Thema - in nur 5 Minuten. Denn Wahlen sind alle vier Jahre, aber Demokratie ist jeden Tag!
+    <div class="px-4 mt-5">
+      Schon bald stellen wir dir differenziert die wichtigsten, aktuell laufenden Petitionen vor.<br /><br />
+      Bilde dir eine Meinung und positioniere dich dafür oder dagegen!
     </div>
 
     <div class="btn-container">
@@ -25,7 +25,7 @@ export default defineComponent({
 
     return {
       start() {
-        localStorage.setItem('onboarding.initial', '1')
+        localStorage.setItem('onboarding.tutorial', '1')
 
         router!.push('/')
       }
@@ -42,13 +42,6 @@ export default defineComponent({
 }
 
 h1 {
-  font-size: 15pt;
-
-  @apply font-bold;
-}
-
-h2 {
-  color: #ffdf57;
   font-size: 15pt;
 
   @apply font-bold;

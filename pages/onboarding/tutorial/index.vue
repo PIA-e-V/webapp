@@ -1,17 +1,14 @@
 <template>
   <div class="h-full">
-    <img src="/onboarding/initial/1.png" class="mx-auto block mt-5" style="width: min(80%, 300px)" alt="Step 1" />
+    <img src="/onboarding/tutorial/1.png" class="mx-auto block mt-5" style="width: min(80%, 450px)" alt="Step 1" />
 
-    <h1>Bundestagswahl 2021</h1>
-    <h2>Dein Weg zur Wahl</h2>
-
-    <div class="px-4">
-      Wir begleiten dich auf deinem Weg zur BTW21! Um dich dafür vorzubereiten, haben wir 48 Fragen erstellt. Damit
-      kannst du herausfinden, welche Partei am besten zu dir passt!
+    <div class="px-4 mb-4">
+      <h1>Nach der Wahl ist vor der Wahl!</h1>
+      <h2>Deutschland macht ein Update - die FollowTheVote App auch.</h2>
     </div>
 
     <div class="btn-container">
-      <Button class="forward-btn" background="white" color="#3A4090FF" @click="$router.push('/onboarding/initial/2')">
+      <Button class="forward-btn" background="white" color="#3A4090FF" @click="$router.push('/onboarding/tutorial/2')">
         Weiter geht's!
       </Button>
     </div>
@@ -41,9 +38,7 @@ h1 {
 
 h2 {
   color: #ffdf57;
-  font-size: 15pt;
-
-  @apply font-bold;
+  font-size: 12pt;
 }
 
 .btn-container {

@@ -43,7 +43,7 @@ export default defineComponent({
       const id = parseInt(route.value.params.id)
       await loadStatement(id)
 
-      if (statement.value.arguments.length === 0) {
+      if (statement.value && statement.value.arguments.length === 0) {
         stepTitles.set(2, 'Abstimmung')
         stepTitles.set(3, 'Community-Positionen')
         stepTitles.delete(4)
@@ -57,7 +57,7 @@ export default defineComponent({
       step,
       statement,
       fetchState,
-      totalSteps: computed(() => (statement.value.arguments.length > 0 ? 4 : 3)),
+      totalSteps: computed(() => (statement.value!.arguments.length > 0 ? 4 : 3)),
       stepChanged(newStep: Step) {
         step.value = newStep
         title.value = stepTitles.get(newStep)!
