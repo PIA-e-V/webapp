@@ -1,7 +1,7 @@
 <template>
   <div>
-    <img src="/comming-soon.svg" class="mx-auto" alt="Comming Soon" />
-    <h2 class="label">Comming Soon</h2>
+    <img src="/coming-soon.svg" class="mx-auto" alt="Coming Soon" />
+    <h2 class="label">Coming Soon</h2>
   </div>
 </template>
 

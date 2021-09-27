@@ -14,7 +14,7 @@
     </div>
 
     <div v-if="$route.params.type === 'petitions'" class="pt-12 px-4">
-      <CommingSoon />
+      <ComingSoon />
       <p class="text-center">Bald kannst du dich hier über Petitionen informieren</p>
     </div>
     <div v-else>

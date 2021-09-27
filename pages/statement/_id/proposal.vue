@@ -11,7 +11,7 @@
         <div class="btn">
           <span class="material-icons red">close</span>
         </div>
-        Lehne ab
+        Ablehnen
       </div>
       <div @click="save('NEUTRAL')">
         <div class="btn">
@@ -23,7 +23,7 @@
         <div class="btn">
           <span class="material-icons green">done</span>
         </div>
-        Stimme zu
+        Zustimmen
       </div>
     </div>
 
