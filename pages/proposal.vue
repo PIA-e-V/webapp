@@ -72,7 +72,7 @@ header {
     .back-btn {
       line-height: 38px;
       width: 50px;
-      @apply text-center h-full cursor-pointer z-10 relative;
+      @apply text-center h-full cursor-pointer z-10 relative select-none outline-none;
 
       span {
         @apply inline-block align-middle;

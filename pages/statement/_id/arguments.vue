@@ -282,7 +282,7 @@ export default defineComponent({
 
   .action-buttons {
     padding: 10px 0;
-    @apply grid grid-cols-3 text-center sticky bg-white w-full bottom-0;
+    @apply grid grid-cols-3 text-center sticky bg-white w-full bottom-0 select-none outline-none;
 
     .btn {
       border: 2px solid #dcdcdc;
