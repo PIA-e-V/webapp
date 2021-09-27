@@ -25,7 +25,7 @@ export default defineComponent({
         error('Deine E-Mail Adresse konnte nicht verifiziert werden')
       }
 
-      router!.push('/')
+      router!.push('/profile/account')
     })
 
     return {}

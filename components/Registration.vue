@@ -1,13 +1,13 @@
 <template>
   <div id="registration-card">
     <template v-if="isRegistered">
-      <h1>Account bestätigen</h1>
+      <h1 class="text-center">Account bestätigen</h1>
 
       <div class="text-center">
         Du musst nun deinen Account bestätigen, indem du auf den Link in der E-Mail klickst.
       </div>
 
-      <Button small class="mx-auto mt-4" @click="$router.push('/profile/account')"> Zum Login </Button>
+      <!--      <Button small class="mx-auto mt-4" @click="$router.push('/profile/account')"> Zum Login </Button>-->
     </template>
     <template v-else>
       <h1>Registrierung</h1>
