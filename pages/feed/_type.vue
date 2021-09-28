@@ -25,9 +25,13 @@
         >
           Keine Einträge vorhanden ...
         </h2>
-        <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
+        <transition-group
+          tag="div"
+          name="fade"
+          class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3"
+        >
           <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
-        </div>
+        </transition-group>
       </div>
     </div>
   </div>
