@@ -22,8 +22,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref, useFetch, useRoute, watch } from '@nuxtjs/composition-api'
 import useStatement from '~/store/useStatement'
+import useUser from '~/store/useUser'
 
 type Step = 1 | 2 | 3 | 4
 
@@ -31,6 +32,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const { currentStatement: statement, loadStatement } = useStatement()
+    const { reloadUser } = useUser()
 
     const stepTitles = new Map<Step, string>([
       [1, 'News'],
@@ -61,6 +63,10 @@ export default defineComponent({
       stepChanged(newStep: Step) {
         step.value = newStep
         title.value = stepTitles.get(newStep)!
+
+        if (step.value === 4 || (statement.value!.arguments.length === 0 && newStep === 3)) {
+          reloadUser()
+        }
       }
     }
   }
@@ -91,7 +97,7 @@ header {
       font-weight: 500;
       font-family: 'Barlow';
       line-height: 40px;
-      @apply text-center absolute top-0 w-full;
+      @apply text-center absolute top-0 w-full select-none outline-none;
     }
   }
 }

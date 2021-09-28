@@ -24,6 +24,7 @@
 <script lang="ts">
 import { defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
 import useProposals from '~/store/useProposals'
+import useUser from '~/store/useUser'
 
 type Step = 1 | 2 | 3 | 4
 
@@ -31,6 +32,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const { currentProposal: proposal, loadProposal } = useProposals()
+    const { reloadUser } = useUser()
 
     const { fetchState } = useFetch(async () => {
       const id = parseInt(route.value.params.id)
@@ -54,6 +56,10 @@ export default defineComponent({
       stepChanged(newStep: Step) {
         step.value = newStep
         title.value = stepTitles.get(newStep)!
+
+        if (newStep === 4) {
+          reloadUser()
+        }
       }
     }
   }
@@ -84,7 +90,7 @@ header {
       font-weight: 500;
       font-family: 'Barlow';
       line-height: 40px;
-      @apply text-center absolute top-0 w-full;
+      @apply text-center absolute top-0 w-full select-none outline-none;
     }
   }
 }

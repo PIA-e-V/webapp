@@ -123,6 +123,23 @@ export default function () {
     }
   }
 
+  async function reloadUser() {
+    const authToken = localStorage.getItem('auth-token')
+    if (!authToken) {
+      return
+    }
+
+    const q = query({
+      operation: 'me',
+      fields: userFieldsToLoad
+    })
+
+    const { me } = await client.query(q.query, q.variables)
+    if (me && me.id) {
+      user.value = me
+    }
+  }
+
   async function checkUser() {
     if (checked.value) {
       return
@@ -172,6 +189,7 @@ export default function () {
     verify,
     checkUser,
     onAfterChecked,
+    reloadUser,
     user: readonly(user),
     isAuthenticated: readonly(isAuthenticated)
   }
