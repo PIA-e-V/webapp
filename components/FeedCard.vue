@@ -1,6 +1,6 @@
 <template>
   <section class="card" @click="openItem">
-    <img :src="item.feedable.image" alt="Teaser" />
+    <img class="header-img" :src="item.feedable.image" alt="Teaser" />
 
     <div class="flex flex-col justify-between flex-grow">
       <h2 class="heading" v-html="title" />
@@ -72,7 +72,10 @@ export default defineComponent({
 
   img {
     width: 100%;
-    aspect-ratio: 500 / 200;
+
+    &.header-img {
+      aspect-ratio: 500 / 200;
+    }
   }
 
   .heading {
