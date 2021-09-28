@@ -249,7 +249,7 @@ export default defineComponent({
       left: 1rem;
       top: 1rem;
       overflow-wrap: break-word;
-      @apply rounded-xl text-white p-3 mx-auto absolute;
+      @apply rounded-xl text-white p-3 mx-auto absolute select-none outline-none;
 
       &.sources-active {
         @apply bg-white text-black;
