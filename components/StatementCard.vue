@@ -5,7 +5,7 @@
         <h2 class="heading" v-html="item.statement" />
 
         <div class="flex flex-row justify-between">
-          <span class="date" v-html="formattedDate" />
+          <span class="date" v-text="date" />
 
           <div
             class="sources-btn"
@@ -58,7 +58,7 @@ export default defineComponent({
     return {
       showSources,
       transitionActive,
-      formattedDate: computed(() => {
+      date: computed(() => {
         if (props.item.__typename === 'Proposal') {
           return props.item.latest_voting
             ? moment(props.item.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')

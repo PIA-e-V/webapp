@@ -22,6 +22,7 @@ export default function useProposals() {
         }
       },
       fields: [
+        '__typename',
         'id',
         'title',
         'statement',
