@@ -236,7 +236,7 @@ export default defineComponent({
   .short-statement {
     font-size: 20px;
     font-weight: 500;
-    @apply pt-2;
+    @apply pt-2 outline-none select-none;
   }
 
   .argument-slider {
