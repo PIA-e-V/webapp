@@ -72,6 +72,7 @@ export default defineComponent({
 
   img {
     width: 100%;
+    aspect-ratio: 500 / 200;
   }
 
   .heading {
