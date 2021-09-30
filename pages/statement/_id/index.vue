@@ -14,7 +14,7 @@
       <!--      <div v-html="statement.source_of_explanation" />-->
     </div>
 
-    <AppButton class="forward-btn" small @click="start">Voten</AppButton>
+    <AppButton class="forward-btn" small @click="start">Abstimmen</AppButton>
   </div>
 </template>
 
