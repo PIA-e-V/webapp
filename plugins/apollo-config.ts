@@ -1,14 +1,15 @@
 import { ApolloClientConfig } from '@nuxtjs/apollo/types/nuxt'
 import possibleTypes from '~/@types/possible-graphql-types'
 import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
+import { Context } from '@nuxt/types'
 
-export default (context: any) => {
+export default (context: Context) => {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData: possibleTypes
   })
 
   return {
-    httpEndpoint: 'http://ftv.localhost',
+    httpEndpoint: context.env.apiBaseUrl,
     // override HTTP endpoint in browser only
     browserHttpEndpoint: '/graphql',
     inMemoryCacheOptions: {
