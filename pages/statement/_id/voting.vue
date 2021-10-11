@@ -23,11 +23,11 @@
     </div>
 
     <div v-if="statement.yes_petition" class="px-4 mt-4">
-      <button class="primary" @click="openLink(statement.yes_petition)">Zur Pro-Petition</button>
+      <button class="primary" @click="openLink(statement.yes_petition)">Zur Petition</button>
     </div>
 
     <div v-if="statement.no_petition" class="px-4 mt-4">
-      <button class="primary" @click="openLink(statement.no_petition)">Zur Contra-Petition</button>
+      <button class="primary" @click="openLink(statement.no_petition)">Zur Petition</button>
     </div>
 
     <Button small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
