@@ -109,11 +109,7 @@ export default {
 
   apollo: {
     clientConfigs: {
-      default: {
-        httpEndpoint: 'http://ftv.localhost',
-        // override HTTP endpoint in browser only
-        browserHttpEndpoint: '/graphql'
-      }
+      default: '~/plugins/apollo-config.ts'
     },
     // Sets the authentication type for any authorized request.
     authenticationType: 'Bearer',
