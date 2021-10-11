@@ -1,4 +1,4 @@
-import { readonly, ref } from '@nuxtjs/composition-api'
+import { readonly, ref, useContext } from '@nuxtjs/composition-api'
 import { mutation, query } from 'gql-query-builder'
 import { RegistrationResponse, User } from '~/@types/graphql-types'
 import useGraphql from '~/composables/useGraphql'
@@ -9,6 +9,7 @@ const user = ref<User>({} as User)
 const isAuthenticated = ref<boolean>()
 const checkCallbacks = ref<Array<(authenticated: boolean) => void>>([])
 export default function () {
+  const { app } = useContext()
   const client = useGraphql()
   const { registerWaiter } = useAppState()
 
@@ -74,6 +75,7 @@ export default function () {
     const { login } = await client.mutation(q.query, q.variables)
 
     localStorage.setItem('auth-token', login.token)
+    app.$apolloHelpers.onLogin(login.token)
 
     user.value = login.user!
 
@@ -90,6 +92,7 @@ export default function () {
       const { registerAnonymousUser } = await client.mutation(q.query, q.variables)
 
       localStorage.setItem('auth-token', registerAnonymousUser.token)
+      app.$apolloHelpers.onLogin(registerAnonymousUser.token)
 
       user.value = registerAnonymousUser.user!
     } catch {
@@ -110,6 +113,7 @@ export default function () {
     isAuthenticated.value = false
 
     localStorage.removeItem('auth-token')
+    app.$apolloHelpers.onLogout()
 
     await registerAnonymousUser()
   }
@@ -170,6 +174,7 @@ export default function () {
           isAuthenticated.value = !me.email?.endsWith('@ftv.de')
           callCallbacks()
           waiter.setReady()
+          app.$apolloHelpers.onLogin(authToken)
           return
         }
       } catch {}

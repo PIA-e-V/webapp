@@ -2,9 +2,9 @@
   <div>
     <h1 class="text-center">{{ typeTranslations[$route.params.type] }}</h1>
 
-    <LogoSpinner v-if="fetchState.pending && $route.params.type !== 'petitions'" class="mx-auto mt-10" size="64px" />
+    <LogoSpinner v-if="loading && $route.params.type !== 'petitions'" class="mx-auto mt-10" size="64px" />
 
-    <div v-if="!fetchState.pending && $route.params.type !== 'petitions'" id="tabs">
+    <div v-if="!loading && $route.params.type !== 'petitions'" id="tabs">
       <div class="tab" :class="{ active: currentTab === 'open' }" @click="currentTab = 'open'">
         Offen ({{ openCount }})
       </div>
@@ -18,7 +18,7 @@
       <p class="text-center">Bald kannst du dich hier über Petitionen informieren</p>
     </div>
     <div v-else>
-      <div v-show="!fetchState.pending" class="px-2">
+      <div v-show="!loading" class="px-2">
         <h2
           v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)"
           class="text-center"
@@ -38,63 +38,83 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useFetch, useRoute } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref, useRoute } from '@nuxtjs/composition-api'
 import { FeedItem, FeedType } from '~/@types/graphql-types'
-import useGraphql from '~/composables/useGraphql'
 import useUser from '~/store/useUser'
+import gql from 'graphql-tag'
+import { useQuery, useResult } from '@vue/apollo-composable'
 
 export default defineComponent({
-  setup(_, { root }) {
+  setup() {
     const route = useRoute()
-    const client = useGraphql()
     const { user } = useUser()
 
     const currentTab = ref<'open' | 'done'>('open')
-    const feedItems = ref<FeedItem[]>([])
 
     const feedType: FeedType = route.value.params.type === 'proposals' ? FeedType.Proposals : FeedType.News
 
-    const { fetchState } = useFetch(async () => {
-      root.$nuxt.$loading.start()
-
-      const q = `query ($type: FeedType!) {
-        feedByType (type: $type) {
-          id active_from
-          feedable {
-            __typename
-            ...on Proposal { id short_statement image title topic { icon title } }
-            ... on Statement { id short_statement image title topic { icon title } }
+    const { result, loading } = useQuery(
+      gql`
+        query ($feedType: FeedType!) {
+          feedByType(type: $feedType) {
+            id
+            active_from
+            feedable {
+              __typename
+              ... on Proposal {
+                id
+                short_statement
+                image
+                title
+                topic {
+                  icon
+                  title
+                }
+              }
+              ... on Statement {
+                id
+                short_statement
+                image
+                title
+                topic {
+                  icon
+                  title
+                }
+              }
+            }
           }
         }
-      }`
+      `,
+      {
+        feedType
+      }
+    )
 
-      const { feedByType } = await client.query(q, { type: feedType })
+    const feedItems = useResult(result, [] as FeedItem[], (data) => data.feedByType)
 
-      feedItems.value = feedByType
-
-      root.$nuxt.$loading.finish()
-    })
     return {
-      fetchState,
+      loading,
       currentTab,
       user,
       openCount: computed(() => {
-        if (feedType === FeedType.Proposals) {
-          return user.value.openProposals.length
-        } else if (feedType === FeedType.News) {
-          return user.value.openStatements.length
+        switch (feedType) {
+          case FeedType.Proposals:
+            return user.value.openProposals.length
+          case FeedType.News:
+            return user.value.openStatements.length
+          default:
+            return 0
         }
-
-        return 0
       }),
       doneCount: computed(() => {
-        if (feedType === FeedType.Proposals) {
-          return user.value.doneProposals.length
-        } else if (feedType === FeedType.News) {
-          return user.value.doneStatements.length
+        switch (feedType) {
+          case FeedType.Proposals:
+            return user.value.doneProposals.length
+          case FeedType.News:
+            return user.value.doneStatements.length
+          default:
+            return 0
         }
-
-        return 0
       }),
       typeTranslations: {
         proposals: 'Anträge',
@@ -106,13 +126,13 @@ export default defineComponent({
           const proposals = currentTab.value === 'open' ? user.value.openProposals : user.value.doneProposals
           const ids = proposals.map((p) => p.id)
 
-          return feedItems.value.filter((item) => ids.includes(item.feedable.id))
+          return feedItems.value.filter((item: FeedItem) => ids.includes(item.feedable.id))
         }
         if (feedType === FeedType.News) {
           const proposals = currentTab.value === 'open' ? user.value.openStatements : user.value.doneStatements
           const ids = proposals.map((p) => p.id)
 
-          return feedItems.value.filter((item) => ids.includes(item.feedable.id))
+          return feedItems.value.filter((item: FeedItem) => ids.includes(item.feedable.id))
         }
         return feedItems.value
       })

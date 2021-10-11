@@ -60,7 +60,8 @@ export default {
   plugins: [
     { src: '~/plugins/registration.ts', mode: 'client' },
     { src: '~/plugins/pwa-update.ts', mode: 'client' },
-    { src: '~/plugins/screen-orientation-lock.ts', mode: 'client' }
+    { src: '~/plugins/screen-orientation-lock.ts', mode: 'client' },
+    { src: '~/plugins/provide-apollo-client.ts', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -100,13 +101,26 @@ export default {
     config: {}
   },
 
-  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/apollo'
   ],
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'http://ftv.localhost',
+        // override HTTP endpoint in browser only
+        browserHttpEndpoint: '/graphql'
+      }
+    },
+    // Sets the authentication type for any authorized request.
+    authenticationType: 'Bearer',
+    // Token name for the cookie which will be set in case of authentication
+    tokenName: 'auth-token'
+  },
+
   build: {
     babel: {
       presets: ['@nuxt/babel-preset-app', 'vca-jsx']
