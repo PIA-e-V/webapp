@@ -16,7 +16,8 @@
 
         <div class="icon">
           <img :src="icon" alt="Type" />
-          <span>{{ item.feedable.__typename === 'Proposal' ? 'Antrag' : 'News' }}</span>
+          <span v-if="item.feedable.__typename === 'Proposal'">Antrag</span>
+          <span v-else>{{ item.feedable.news ? 'News' : 'Petition' }}</span>
         </div>
       </div>
     </div>
@@ -25,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, PropType, ref, useRouter } from '@nuxtjs/composition-api'
-import { FeedItem, Proposal } from '~/@types/graphql-types'
+import { FeedItem, Proposal, Statement } from '~/@types/graphql-types'
 import moment from 'moment'
 
 export default defineComponent({
@@ -46,7 +47,20 @@ export default defineComponent({
       feedable,
       date,
       title: computed(() => feedable.value.short_statement),
-      icon: computed(() => `/icons/navigation/${feedable.value.__typename === 'Proposal' ? 'bills.svg' : 'news.svg'}`),
+      icon: computed(() => {
+        const basePath = '/icons/navigation'
+
+        if (feedable.value.__typename === 'Proposal') {
+          return `${basePath}/bills.svg`
+        } else {
+          const statement = feedable.value as Statement
+          if (statement.news) {
+            return `${basePath}/news.svg`
+          } else {
+            return `${basePath}/petitions.svg`
+          }
+        }
+      }),
       openItem() {
         if (props.item.feedable.__typename === 'Proposal') {
           router.push(`/proposal/${props.item.feedable.id}`)

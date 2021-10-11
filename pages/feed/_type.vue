@@ -2,9 +2,9 @@
   <div>
     <h1 class="text-center">{{ typeTranslations[$route.params.type] }}</h1>
 
-    <LogoSpinner v-if="loading && $route.params.type !== 'petitions'" class="mx-auto mt-10" size="64px" />
+    <LogoSpinner v-if="loading" class="mx-auto mt-10" size="64px" />
 
-    <div v-if="!loading && $route.params.type !== 'petitions'" id="tabs">
+    <div v-if="!loading" id="tabs">
       <div class="tab" :class="{ active: currentTab === 'open' }" @click="currentTab = 'open'">
         Offen ({{ openCount }})
       </div>
@@ -13,11 +13,7 @@
       </div>
     </div>
 
-    <div v-if="$route.params.type === 'petitions'" class="pt-12 px-4">
-      <ComingSoon />
-      <p class="text-center">Bald kannst du dich hier über Petitionen informieren</p>
-    </div>
-    <div v-else>
+    <div>
       <div v-show="!loading" class="px-2">
         <h2
           v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)"
@@ -51,7 +47,15 @@ export default defineComponent({
 
     const currentTab = ref<'open' | 'done'>('open')
 
-    const feedType: FeedType = route.value.params.type === 'proposals' ? FeedType.Proposals : FeedType.News
+    let feedType: FeedType = FeedType.Proposals
+    switch (route.value.params.type) {
+      case 'news':
+        feedType = FeedType.News
+        break
+      case 'petitions':
+        feedType = FeedType.Petitions
+        break
+    }
 
     const { result, loading } = useQuery(
       gql`
@@ -76,6 +80,7 @@ export default defineComponent({
                 short_statement
                 image
                 title
+                news
                 topic {
                   icon
                   title
@@ -101,7 +106,9 @@ export default defineComponent({
           case FeedType.Proposals:
             return user.value.openProposals.length
           case FeedType.News:
-            return user.value.openStatements.length
+            return user.value.openStatements.filter((s) => s.news).length
+          case FeedType.Petitions:
+            return user.value.openStatements.filter((s) => s.has_petition).length
           default:
             return 0
         }
@@ -111,7 +118,9 @@ export default defineComponent({
           case FeedType.Proposals:
             return user.value.doneProposals.length
           case FeedType.News:
-            return user.value.doneStatements.length
+            return user.value.doneStatements.filter((s) => s.news).length
+          case FeedType.Petitions:
+            return user.value.doneStatements.filter((s) => s.has_petition).length
           default:
             return 0
         }
@@ -129,12 +138,18 @@ export default defineComponent({
           return feedItems.value.filter((item: FeedItem) => ids.includes(item.feedable.id))
         }
         if (feedType === FeedType.News) {
-          const proposals = currentTab.value === 'open' ? user.value.openStatements : user.value.doneStatements
-          const ids = proposals.map((p) => p.id)
+          const statements = currentTab.value === 'open' ? user.value.openStatements : user.value.doneStatements
+          const ids = statements.map((p) => p.id)
 
           return feedItems.value.filter((item: FeedItem) => ids.includes(item.feedable.id))
         }
-        return feedItems.value
+        if (feedType === FeedType.Petitions) {
+          const statements = currentTab.value === 'open' ? user.value.openStatements : user.value.doneStatements
+          const ids = statements.map((p) => p.id)
+
+          return feedItems.value.filter((item: FeedItem) => ids.includes(item.feedable.id))
+        }
+        return []
       })
     }
   }

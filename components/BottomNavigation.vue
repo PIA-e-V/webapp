@@ -56,8 +56,8 @@ export default defineComponent({
       ),
       newsActive: computed(
         () =>
-          route.value.name!.startsWith('statement-id') ||
-          (route.value.name === 'feed-type' && route.value.params.type === 'news')
+          // route.value.name!.startsWith('statement-id') ||
+          route.value.name === 'feed-type' && route.value.params.type === 'news'
       ),
       petitionsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'petitions'),
       profileActive: computed(() => route.value.name!.startsWith('profile'))

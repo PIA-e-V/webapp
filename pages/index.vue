@@ -40,6 +40,7 @@ export default defineComponent({
               id
               short_statement
               image
+              news
               topic {
                 icon
                 title

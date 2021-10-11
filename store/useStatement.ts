@@ -28,6 +28,8 @@ export default function useStatement() {
         'short_statement',
         'explanation',
         'source_of_explanation',
+        'yes_petition',
+        'no_petition',
         { arguments: ['id', 'statement', 'source'] },
         { topic: ['title', 'icon'] }
       ]

@@ -18,8 +18,8 @@ export default function () {
     'email',
     { doneProposals: ['id'] },
     { openProposals: ['id'] },
-    { doneStatements: ['id'] },
-    { openStatements: ['id'] }
+    { doneStatements: ['id', 'news', 'has_petition'] },
+    { openStatements: ['id', 'news', 'has_petition'] }
   ]
 
   async function register(email: string, password: string) {

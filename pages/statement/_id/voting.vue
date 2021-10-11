@@ -6,31 +6,42 @@
 
     <div v-if="scores" class="px-4 my-2">
       <VotingResult
-        header="Community Voting"
+        header="Community Voting in %"
         :results="[
-          { label: 'Ja', color: '#00EA8E', value: scores.agreeCount },
-          { label: 'Nein', color: '#FF3440', value: scores.disagreeCount },
-          { label: 'Enhalten', color: '#FFCA33', value: scores.neutralCount }
+          { label: 'Ja', color: '#00EA8E', value: scores.agreePercent },
+          { label: 'Nein', color: '#FF3440', value: scores.disagreePercent },
+          { label: 'Enhalten', color: '#FFCA33', value: scores.neutralPercent }
         ]"
       />
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
+    <div v-if="statement.yes_petition || statement.no_petition" class="px-4">
+      <hr class="my-4" />
+
+      Dieses Statement bezieht sich auf eine aktuelle Petition. Wenn du mehr über die Petition erfahren, oder sie
+      unterzeichnen möchtest, klicke hier:
+    </div>
+
+    <div v-if="statement.yes_petition" class="px-4 mt-4">
+      <button class="primary" @click="openLink(statement.yes_petition)">Zur Pro-Petition</button>
+    </div>
+
+    <div v-if="statement.no_petition" class="px-4 mt-4">
+      <button class="primary" @click="openLink(statement.no_petition)">Zur Contra-Petition</button>
+    </div>
+
+    <Button small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
       Zum Profil
-    </AppButton>
+    </Button>
   </div>
 </template>
 
 <script lang="ts">
 import { PropType, defineComponent, ref, useFetch } from '@nuxtjs/composition-api'
-import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
 import { Statement, StatementScore } from '~/@types/graphql-types'
 
 export default defineComponent({
-  components: {
-    AppButton
-  },
   props: {
     statement: {
       type: Object as PropType<Statement>,
@@ -44,7 +55,7 @@ export default defineComponent({
 
     const scores = ref<StatementScore | null>(null)
     const { fetchState } = useFetch(async () => {
-      const q = `query ($id: Int!) { communityScore(id: $id) { agreeCount, disagreeCount, neutralCount } }`
+      const q = `query ($id: Int!) { communityScore(id: $id) { agreePercent, disagreePercent, neutralPercent } }`
       const { communityScore } = await client.query(q, { id: props.statement.id })
 
       if (communityScore) {
@@ -54,13 +65,19 @@ export default defineComponent({
 
     return {
       scores,
-      fetchState
+      fetchState,
+      openLink(url: string) {
+        const w = window.open(url, '_blank')
+        w?.focus()
+      }
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .short-statement {
   font-size: 20px;
   font-weight: 500;
@@ -76,5 +93,15 @@ h2 {
   left: calc(50% - 50px);
 
   @apply absolute;
+}
+
+button {
+  @apply block text-center w-full py-1 text-black rounded-full outline-none px-2;
+
+  &.primary {
+    background: $primary;
+
+    @apply text-white;
+  }
 }
 </style>

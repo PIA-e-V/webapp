@@ -182,6 +182,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   upsertArgument?: Maybe<Argument>;
   deleteArgument: Argument;
+  upsertFeedItem?: Maybe<FeedItem>;
+  deleteFeedItem: FeedItem;
   createFeedback?: Maybe<Feedback>;
   upsertOpinion?: Maybe<Opinion>;
   upsertProposal?: Maybe<Proposal>;
@@ -189,6 +191,7 @@ export type Mutation = {
   uploadProposalImage?: Maybe<Scalars['String']>;
   upsertStatement?: Maybe<Statement>;
   deleteStatement: Statement;
+  uploadStatementImage?: Maybe<Scalars['String']>;
   upsertTopic?: Maybe<Topic>;
   /** Log in to a new session and get the user. */
   login: LoginResponse;
@@ -212,6 +215,17 @@ export type MutationUpsertArgumentArgs = {
 
 
 export type MutationDeleteArgumentArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationUpsertFeedItemArgs = {
+  id?: Maybe<Scalars['Int']>;
+  input: UpsertFeedItemInput;
+};
+
+
+export type MutationDeleteFeedItemArgs = {
   id: Scalars['Int'];
 };
 
@@ -252,6 +266,12 @@ export type MutationUpsertStatementArgs = {
 
 export type MutationDeleteStatementArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationUploadStatementImageArgs = {
+  id: Scalars['Int'];
+  file: Scalars['Upload'];
 };
 
 
@@ -449,6 +469,7 @@ export type Query = {
   chambers: Array<Chamber>;
   chamber?: Maybe<Chamber>;
   country?: Maybe<Country>;
+  feedSchedule: Array<FeedItem>;
   feed: Array<FeedItem>;
   feedByType: Array<FeedItem>;
   legislature?: Maybe<Legislature>;
@@ -461,6 +482,7 @@ export type Query = {
   statement?: Maybe<Statement>;
   communityScore?: Maybe<StatementScore>;
   usersPerWeek: Array<WeekUserCount>;
+  userActivityPerWeek: Array<WeekUserCount>;
   totalUsers: Scalars['Int'];
   topics: Array<Topic>;
   topic?: Maybe<Topic>;
@@ -497,6 +519,11 @@ export type QueryChamberArgs = {
 
 export type QueryCountryArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryFeedScheduleArgs = {
+  where?: Maybe<QueryFeedScheduleWhereWhereConditions>;
 };
 
 
@@ -546,6 +573,12 @@ export type QueryCommunityScoreArgs = {
 
 
 export type QueryUsersPerWeekArgs = {
+  start: Scalars['Date'];
+  end: Scalars['Date'];
+};
+
+
+export type QueryUserActivityPerWeekArgs = {
   start: Scalars['Date'];
   end: Scalars['Date'];
 };
@@ -692,6 +725,39 @@ export type QueryArgumentsWhereWhereConditionsRelation = {
   amount?: Maybe<Scalars['Int']>;
   /** Additional condition logic. */
   condition?: Maybe<QueryArgumentsWhereWhereConditions>;
+};
+
+/** Allowed column names for the `where` argument on field `feedSchedule` on type `Query`. */
+export enum QueryFeedScheduleWhereColumn {
+  ActiveFrom = 'ACTIVE_FROM'
+}
+
+/** Dynamic WHERE conditions for the `where` argument on the query `feedSchedule`. */
+export type QueryFeedScheduleWhereWhereConditions = {
+  /** The column that is used for the condition. */
+  column?: Maybe<QueryFeedScheduleWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: Maybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: Maybe<Scalars['Mixed']>;
+  /** A set of conditions that requires all conditions to match. */
+  AND?: Maybe<Array<QueryFeedScheduleWhereWhereConditions>>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: Maybe<Array<QueryFeedScheduleWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: Maybe<QueryFeedScheduleWhereWhereConditionsRelation>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `feedSchedule`. */
+export type QueryFeedScheduleWhereWhereConditionsRelation = {
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+  /** The comparison operator to test against the amount. */
+  operator?: Maybe<SqlOperator>;
+  /** The amount to test. */
+  amount?: Maybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: Maybe<QueryFeedScheduleWhereWhereConditions>;
 };
 
 /** Allowed column names for the `where` argument on field `feed` on type `Query`. */
@@ -1061,9 +1127,12 @@ export type Statement = {
   source_of_explanation: Scalars['String'];
   active: Scalars['Boolean'];
   news: Scalars['Boolean'];
+  yes_petition?: Maybe<Scalars['String']>;
+  no_petition?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
   image: Scalars['String'];
+  has_petition: Scalars['Boolean'];
   topic: Topic;
   arguments: Array<Argument>;
   opinions: Array<Opinion>;
@@ -1083,6 +1152,9 @@ export type StatementScore = {
   agreeCount: Scalars['Int'];
   disagreeCount: Scalars['Int'];
   neutralCount: Scalars['Int'];
+  agreePercent: Scalars['Int'];
+  disagreePercent: Scalars['Int'];
+  neutralPercent: Scalars['Int'];
 };
 
 export type Topic = {
@@ -1126,6 +1198,12 @@ export type UpsertChildVotingsHasMany = {
   upsert: Array<UpsertVotingInput>;
 };
 
+export type UpsertFeedItemInput = {
+  feedable_id: Scalars['Int'];
+  feedable_type: Scalars['String'];
+  active_from: Scalars['DateTime'];
+};
+
 export type UpsertOpinionInput = {
   opinionable_id: Scalars['Int'];
   opinionable_type: Scalars['String'];
@@ -1155,6 +1233,8 @@ export type UpsertStatementInput = {
   source_of_explanation: Scalars['String'];
   active: Scalars['Boolean'];
   news: Scalars['Boolean'];
+  yes_petition?: Maybe<Scalars['String']>;
+  no_petition?: Maybe<Scalars['String']>;
   arguments?: Maybe<CreateArgumentBelongsToMany>;
 };
 
@@ -1185,7 +1265,6 @@ export type User = {
   email?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   updated_at: Scalars['DateTime'];
-  statement_progress: Scalars['Int'];
   openProposals: Array<Proposal>;
   doneProposals: Array<Proposal>;
   openStatements: Array<Statement>;
