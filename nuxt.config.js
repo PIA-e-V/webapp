@@ -110,11 +110,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: '~/plugins/apollo-config.ts'
-    },
-    // Sets the authentication type for any authorized request.
-    authenticationType: 'Bearer',
-    // Token name for the cookie which will be set in case of authentication
-    tokenName: 'auth-token'
+    }
   },
 
   build: {

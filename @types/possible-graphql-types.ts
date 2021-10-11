@@ -1,5 +1,20 @@
 import { IntrospectionResultData } from 'apollo-cache-inmemory'
 
+/*
+generated from query:
+query {
+  __schema {
+    types {
+      name
+      kind
+      possibleTypes {
+        name
+        description
+      }
+    }
+  }
+}
+ */
 export default {
   __schema: {
     types: [
