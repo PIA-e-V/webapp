@@ -1,35 +1,25 @@
 <template>
   <div>
-    <h1 class="text-center">{{ typeTranslations[$route.params.type] }}</h1>
+    <h1 class="pt-1 mb-2 text-center">{{ typeTranslations[$route.params.type] }}</h1>
 
     <LogoSpinner v-if="loading" class="mx-auto mt-10" size="64px" />
 
-    <div v-if="!loading" id="tabs">
-      <div class="tab" :class="{ active: currentTab === 'open' }" @click="currentTab = 'open'">
-        Offen ({{ openCount }})
-      </div>
-      <div class="tab" :class="{ active: currentTab === 'done' }" @click="currentTab = 'done'">
-        Erledigt ({{ doneCount }})
-      </div>
-    </div>
-
-    <div>
-      <div v-show="!loading" class="px-2">
-        <h2
-          v-if="(currentTab === 'open' && openCount === 0) || (currentTab === 'done' && doneCount === 0)"
-          class="text-center"
-        >
-          Keine Einträge vorhanden ...
-        </h2>
-        <transition-group
-          tag="div"
-          name="fade"
-          class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3"
-        >
+    <Tabs v-if="!loading">
+      <Tab
+        v-for="t in [
+          { title: `Offen (${openCount})`, tabState: 'open' },
+          { title: `Erledigt (${doneCount})`, tabState: 'done' }
+        ]"
+        :key="t.title"
+        :title="t.title"
+        @click="currentTab = t.tabState"
+      >
+        <h2 v-if="feedItems.length === 0" class="text-center">Keine weiteren Einträge vorhanden ...</h2>
+        <div class="grid grid-cols-1 auto-rows-auto md:grid-cols-2 md:gap-2 lg:grid-cols-3">
           <FeedCard v-for="item in feedItems" :key="item.id" :item="item" class="mb-4"></FeedCard>
-        </transition-group>
-      </div>
-    </div>
+        </div>
+      </Tab>
+    </Tabs>
   </div>
 </template>
 
@@ -155,22 +145,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-@import '/assets/_variables.scss';
-
-#tabs {
-  @apply flex flex-row;
-
-  .tab {
-    font-size: 20px;
-    color: #575a6d;
-    @apply flex-grow text-center pb-2 mb-2 cursor-pointer;
-
-    &.active {
-      color: $primary;
-      border-bottom: 2px solid $primary;
-    }
-  }
-}
-</style>

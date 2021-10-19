@@ -43,9 +43,6 @@ import { mutation } from 'gql-query-builder'
 import Stepper from '~/components/Stepper.vue'
 import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
-import useNotifications from '~/composables/useNotifications'
-import useConfirmationDialog from '~/composables/useConfirmationDialog'
-import useFeedback, { Raeson } from '~/composables/useFeedback'
 import { Statement } from '~/@types/graphql-types'
 
 export default defineComponent({
@@ -64,11 +61,6 @@ export default defineComponent({
 
     const router = useRouter()
     const client = useGraphql()
-    const { confirm } = useConfirmationDialog()
-    const { success } = useNotifications()
-    const { reasons, createFeedback } = useFeedback()
-
-    const feedbackDialog = ref(false)
 
     async function save(result: string) {
       const operation: IQueryBuilderOptions = {
@@ -98,27 +90,7 @@ export default defineComponent({
     }
 
     return {
-      reasons,
-      feedbackDialog,
-      save,
-      async confirm(reason: Raeson) {
-        const sendFeedback = await confirm(
-          'Feedback absenden?',
-          `Möchtest du das Feedback "${reason.description}" wirklich absenden?`
-        )
-        if (!sendFeedback) {
-          feedbackDialog.value = false
-          return
-        }
-
-        const created = await createFeedback(reason, props.statement.id, 'App\\Models\\Proposal', 4)
-
-        if (created) {
-          success('Dein Feedback wurde abgeschickt')
-        }
-
-        feedbackDialog.value = false
-      }
+      save
     }
   }
 })

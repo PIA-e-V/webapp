@@ -6,9 +6,7 @@
       <VotingResult :header="res.header" :results="res.results" />
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
-      Zum Profil
-    </AppButton>
+    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')"> Zum Profil </AppButton>
   </div>
 </template>
 

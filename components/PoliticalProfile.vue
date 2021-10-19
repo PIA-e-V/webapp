@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex-grow">
     <header v-if="!fetchState.pending && partyScores.length > 0">
       <h1>Parteinähe</h1>
       <div class="description">
@@ -8,17 +8,18 @@
       </div>
     </header>
 
-    <h2 v-if="fetchState.pending" class="text-center pt-5">Lade Profildaten ...</h2>
-    <h2 v-else-if="partyScores.length === 0" class="text-center pt-5 px-4">
-      <span class="font-bold">Ups...</span><br /><br />
+    <p v-if="fetchState.pending" class="text-center pt-10">Lade Profildaten ...</p>
+    <div v-else-if="partyScores.length === 0" class="text-center pt-10 px-4">
+      <p class="font-bold pb-4">Noch nichts da...</p>
 
-      Du hast noch keine Statements beantwortet. Beantworte Statements bevor du dein politisches Profil sehen kannst.<br /><br />
+      <p class="pb-4">
+        Du hast noch keine Anträge beantwortet. Stimme über Anträge ab um dein politisches Profil zu sehen.
+      </p>
 
-      <nuxt-link to="/"> <span class="font-bold underline">Klicke hier</span> </nuxt-link>, um dir ein Statement
-      auszusuchen.
-    </h2>
+      <nuxt-link to="/"> <span class="underline">Klicke hier</span> </nuxt-link>, um dir einen Antrag auszusuchen.
+    </div>
 
-    <section id="capture" class="px-4 mt-5 mx-auto">
+    <section id="capture" class="mt-5 mx-auto">
       <div v-for="(score, i) in scores" :key="i">
         <div>
           #{{ i + 1 }} - {{ score.party.name }} <span class="float-right">{{ score.totalScore }}%</span>

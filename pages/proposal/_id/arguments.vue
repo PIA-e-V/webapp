@@ -90,13 +90,6 @@
     <!--        </div>-->
     <!--      </Dialog>-->
     <!--    </div>-->
-
-    <BottomDialog :value.sync="feedbackDialog">
-      <div v-for="(r, index) in reasons" :key="r.type">
-        <span class="underline cursor-pointer" @click="confirm(r)">{{ r.description }}</span>
-        <hr v-if="index !== reasons.length - 1" class="my-2" />
-      </div>
-    </BottomDialog>
   </div>
 </template>
 
@@ -107,18 +100,15 @@ import { mutation } from 'gql-query-builder'
 import { shuffle } from 'lodash'
 import Stepper from '~/components/Stepper.vue'
 import AppButton from '~/components/Button.vue'
-import BottomDialog from '~/components/BottomDialog.vue'
 import useGraphql from '~/composables/useGraphql'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import { Argument, Proposal } from '~/@types/graphql-types'
 import useNotifications from '~/composables/useNotifications'
-import useFeedback, { Raeson } from '~/composables/useFeedback'
 
 export default defineComponent({
   components: {
     Stepper,
-    AppButton,
-    BottomDialog
+    AppButton
   },
   props: {
     proposal: {
@@ -133,7 +123,6 @@ export default defineComponent({
     const client = useGraphql()
     const { confirm } = useConfirmationDialog()
     const { success, error } = useNotifications()
-    const { reasons, createFeedback } = useFeedback()
 
     const args = ref<Argument[]>([])
     const currentArgumentIndex = ref(0)
@@ -195,7 +184,6 @@ export default defineComponent({
       currentArgumentIndex,
       feedbackDialog,
       showSources,
-      reasons,
       save,
       goBack() {
         if (currentArgumentIndex.value === 0) {
@@ -203,24 +191,6 @@ export default defineComponent({
         } else {
           currentArgumentIndex.value -= 1
         }
-      },
-      async confirm(reason: Raeson) {
-        const sendFeedback = await confirm(
-          'Feedback absenden?',
-          `Möchtest du das Feedback "${reason.description}" wirklich absenden?`
-        )
-        if (!sendFeedback || !currentArgument.value) {
-          feedbackDialog.value = false
-          return
-        }
-
-        const created = await createFeedback(reason, currentArgument.value.id, 'App\\Models\\Argument', 3)
-
-        if (created) {
-          success('Dein Feedback wurde abgeschickt')
-        }
-
-        feedbackDialog.value = false
       }
     }
   }

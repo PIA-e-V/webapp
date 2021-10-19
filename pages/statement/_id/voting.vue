@@ -30,9 +30,7 @@
       <button class="primary" @click="openLink(statement.no_petition)">Zur Petition</button>
     </div>
 
-    <Button small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile/political')">
-      Zum Profil
-    </Button>
+    <Button small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')"> Zum Profil </Button>
   </div>
 </template>
 

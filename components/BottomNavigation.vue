@@ -31,7 +31,7 @@
       <div class="label">Petitionen</div>
     </div>
 
-    <div class="btn ripple" :class="{ active: profileActive }" @click="$router.push('/profile/political')">
+    <div class="btn ripple" :class="{ active: profileActive }" @click="$router.push('/profile')">
       <div class="icon">
         <img :src="`/icons/navigation/profile${profileActive ? '_active' : ''}.svg`" alt="Profil" />
       </div>
@@ -51,7 +51,7 @@ export default defineComponent({
       homeActive: computed(() => route.value.name === 'index'),
       proposalsActive: computed(
         () =>
-          route.value.name!.startsWith('proposal-id') ||
+          (route.value.name && route.value.name.startsWith('proposal-id')) ||
           (route.value.name === 'feed-type' && route.value.params.type === 'proposals')
       ),
       newsActive: computed(
@@ -60,7 +60,7 @@ export default defineComponent({
           route.value.name === 'feed-type' && route.value.params.type === 'news'
       ),
       petitionsActive: computed(() => route.value.name === 'feed-type' && route.value.params.type === 'petitions'),
-      profileActive: computed(() => route.value.name!.startsWith('profile'))
+      profileActive: computed(() => route.value.name === 'profile')
     }
   }
 })
