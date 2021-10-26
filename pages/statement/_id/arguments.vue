@@ -74,22 +74,6 @@
         Zustimmen
       </div>
     </div>
-
-    <!--    <div id="feedback-btn" @click="feedbackDialog = true">-->
-    <!--      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">-->
-    <!--        <div><span class="material-icons">feedback</span></div>-->
-    <!--        <span class="underline" style="line-height: 18px">Feedback</span>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!--    <div id="source">-->
-    <!--      <Dialog :value="currentArgument.source">-->
-    <!--        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">-->
-    <!--          <div><span class="material-icons">info</span></div>-->
-    <!--          <span>Quelle</span>-->
-    <!--        </div>-->
-    <!--      </Dialog>-->
-    <!--    </div>-->
   </div>
 </template>
 
@@ -274,12 +258,5 @@ export default defineComponent({
       }
     }
   }
-}
-
-.forward-btn {
-  bottom: 60px;
-  right: 10px;
-  background: rgba(65, 60, 177, 0.66);
-  @apply absolute;
 }
 </style>
