@@ -64,6 +64,7 @@ export default defineComponent({
 
   &.small {
     height: 30px;
+    font-weight: 600;
 
     .slot {
       line-height: 30px;

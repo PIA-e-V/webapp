@@ -10,47 +10,13 @@
         @enter="transitions.slide = true"
         @leave="transitions.slide = false"
       >
-        <div
+        <ArgumentCard
           v-for="a in [currentArgument]"
           :key="a.id"
-          class="argument-card"
-          :class="{ 'sources-active': showSources }"
-        >
-          <transition name="fade" @after-leave="transitions.fade = false">
-            <div v-if="!transitions.fade && !showSources">
-              <header>Argument {{ index.current }}/{{ index.total }}</header>
-
-              <section class="content">{{ currentArgument.statement }}</section>
-
-              <div
-                class="sources"
-                @click="
-                  transitions.fade = true
-                  showSources = true
-                "
-              >
-                <span>Quellen</span> <span class="material-icons">info</span>
-              </div>
-            </div>
-          </transition>
-          <transition name="fade" @after-leave="transitions.fade = false">
-            <div v-if="!transitions.fade && showSources">
-              <header>Argument {{ index.current }}/{{ index.total }}</header>
-
-              <div v-html="currentArgument.source"></div>
-
-              <div
-                class="sources"
-                @click="
-                  transitions.fade = true
-                  showSources = false
-                "
-              >
-                <span>Argument</span> <span class="material-icons back-icon">keyboard_arrow_left</span>
-              </div>
-            </div>
-          </transition>
-        </div>
+          :argument="currentArgument"
+          :current="index.current"
+          :total="index.total"
+        />
       </transition-group>
     </div>
 
@@ -245,15 +211,15 @@ export default defineComponent({
         font-size: 40px;
 
         &.red {
-          color: #f93a3a;
+          color: $orange-red;
         }
 
         &.gray {
-          color: #4d4d4d;
+          color: $medium-grey;
         }
 
         &.green {
-          color: #00ec89;
+          color: $green;
         }
       }
     }

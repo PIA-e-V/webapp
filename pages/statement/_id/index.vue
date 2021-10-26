@@ -8,25 +8,17 @@
       <h1>Worum geht's?</h1>
 
       <div v-html="statement.explanation" />
-
-      <!--      <h1 class="mt-2">Quellen</h1>-->
-
-      <!--      <div v-html="statement.source_of_explanation" />-->
     </div>
 
-    <AppButton class="forward-btn" small @click="start">Abstimmen</AppButton>
+    <Button class="forward-btn" small @click="start">Abstimmen</Button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, useRouter } from '@nuxtjs/composition-api'
-import AppButton from '~/components/Button.vue'
 import { Statement } from '~/@types/graphql-types'
 
 export default defineComponent({
-  components: {
-    AppButton
-  },
   props: {
     statement: {
       type: Object as PropType<Statement>,

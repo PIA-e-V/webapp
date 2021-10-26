@@ -10,86 +10,36 @@
         @enter="transitions.slide = true"
         @leave="transitions.slide = false"
       >
-        <div
+        <ArgumentCard
           v-for="a in [currentArgument]"
           :key="a.id"
-          class="argument-card"
-          :class="{ 'sources-active': showSources }"
-        >
-          <transition name="fade" @after-leave="transitions.fade = false">
-            <div v-if="!transitions.fade && !showSources">
-              <header>Argument {{ index.current }}/{{ index.total }}</header>
-
-              <section class="content">{{ currentArgument.statement }}</section>
-
-              <div
-                class="sources"
-                @click="
-                  transitions.fade = true
-                  showSources = true
-                "
-              >
-                <span>Quellen</span> <span class="material-icons">info</span>
-              </div>
-            </div>
-          </transition>
-          <transition name="fade" @after-leave="transitions.fade = false">
-            <div v-if="!transitions.fade && showSources">
-              <header>Argument {{ index.current }}/{{ index.total }}</header>
-
-              <div v-html="currentArgument.source" />
-
-              <div
-                class="sources"
-                @click="
-                  transitions.fade = true
-                  showSources = false
-                "
-              >
-                <span>Argument</span> <span class="material-icons back-icon">keyboard_arrow_left</span>
-              </div>
-            </div>
-          </transition>
-        </div>
+          :argument="currentArgument"
+          :current="index.current"
+          :total="index.total"
+        />
       </transition-group>
     </div>
 
     <div class="action-buttons">
       <div @click="save('DISAGREE')">
         <div class="btn">
-          <span class="material-icons red">close</span>
+          <img src="/icons/arguments/oppose.svg" alt="Ablehnen" />
         </div>
         Ablehnen
       </div>
       <div @click="save('NEUTRAL')">
         <div class="btn">
-          <span class="material-icons gray">help_outline</span>
+          <img src="/icons/arguments/not_sure.svg" alt="Nicht sicher" />
         </div>
-        Neutral
+        Nicht sicher
       </div>
       <div @click="save('AGREE')">
         <div class="btn">
-          <span class="material-icons green">done</span>
+          <img src="/icons/arguments/agree.svg" alt="Nicht sicher" />
         </div>
         Zustimmen
       </div>
     </div>
-
-    <!--    <div id="feedback-btn" @click="feedbackDialog = true">-->
-    <!--      <div class="grid auto-rows-auto gap-1 outline-none" style="grid-template-columns: 24px 80px">-->
-    <!--        <div><span class="material-icons">feedback</span></div>-->
-    <!--        <span class="underline" style="line-height: 18px">Feedback</span>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!--    <div id="source">-->
-    <!--      <Dialog :value="currentArgument.source">-->
-    <!--        <div class="grid auto-rows-auto gap-1" style="grid-template-columns: 24px 50px">-->
-    <!--          <div><span class="material-icons">info</span></div>-->
-    <!--          <span>Quelle</span>-->
-    <!--        </div>-->
-    <!--      </Dialog>-->
-    <!--    </div>-->
   </div>
 </template>
 
@@ -209,43 +159,6 @@ export default defineComponent({
 
   .argument-slider {
     @apply relative overflow-x-hidden overflow-y-scroll flex-grow;
-
-    .argument-card {
-      background: $primary;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      width: calc(100% - 2rem);
-      left: 1rem;
-      top: 1rem;
-      overflow-wrap: break-word;
-      @apply rounded-xl text-white p-3 mx-auto absolute select-none outline-none;
-
-      &.sources-active {
-        @apply bg-white text-black;
-      }
-
-      header {
-        font-size: 18px;
-        @apply mb-4 font-bold;
-      }
-
-      .sources {
-        @apply mt-4 text-right cursor-pointer float-right;
-
-        .material-icons {
-          vertical-align: bottom;
-          font-size: 22px !important;
-
-          &.back-icon {
-            background: $primary;
-            @apply rounded-full text-white;
-          }
-        }
-      }
-
-      &.slide-enter-to {
-        @apply ml-2;
-      }
-    }
   }
 
   .action-buttons {
@@ -258,36 +171,11 @@ export default defineComponent({
       height: 60px;
       @apply rounded-full mx-auto cursor-pointer select-none outline-none;
 
-      .material-icons {
-        line-height: 56px;
-        font-size: 40px;
-
-        &.red {
-          color: #f93a3a;
-        }
-
-        &.gray {
-          color: #4d4d4d;
-        }
-
-        &.green {
-          color: #00ec89;
-        }
+      img {
+        transform: scale(0.55);
+        @apply w-full h-full;
       }
     }
   }
-}
-
-.forward-btn {
-  bottom: 60px;
-  right: 10px;
-  background: rgba(65, 60, 177, 0.66);
-  @apply absolute;
-}
-
-#feedback-btn {
-  left: 10px;
-  bottom: 80px;
-  @apply absolute cursor-pointer;
 }
 </style>
