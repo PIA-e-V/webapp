@@ -102,6 +102,7 @@ import Stepper from '~/components/Stepper.vue'
 import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
 import { Argument, Statement } from '~/@types/graphql-types'
+import useNotifications from '~/composables/useNotifications'
 
 export default defineComponent({
   components: {
@@ -119,6 +120,7 @@ export default defineComponent({
 
     const router = useRouter()
     const client = useGraphql()
+    const { error } = useNotifications()
 
     const args = ref<Argument[]>([])
     const currentArgumentIndex = ref(0)

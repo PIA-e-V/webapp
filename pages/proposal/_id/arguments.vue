@@ -101,7 +101,6 @@ import { shuffle } from 'lodash'
 import Stepper from '~/components/Stepper.vue'
 import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
-import useConfirmationDialog from '~/composables/useConfirmationDialog'
 import { Argument, Proposal } from '~/@types/graphql-types'
 import useNotifications from '~/composables/useNotifications'
 
@@ -121,8 +120,7 @@ export default defineComponent({
 
     const router = useRouter()
     const client = useGraphql()
-    const { confirm } = useConfirmationDialog()
-    const { success, error } = useNotifications()
+    const { error } = useNotifications()
 
     const args = ref<Argument[]>([])
     const currentArgumentIndex = ref(0)
