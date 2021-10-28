@@ -10,7 +10,9 @@
       <div v-html="statement.explanation" />
     </div>
 
-    <Button class="forward-btn" small @click="start">Abstimmen</Button>
+    <div class="forward-btn">
+      <Button class="mx-auto" small @click="start">Abstimmen</Button>
+    </div>
   </div>
 </template>
 
@@ -43,7 +45,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .explanation {
-  @apply px-4 mt-2 mb-12 w-full overflow-x-hidden break-words;
+  @apply px-4 mt-2 pb-12 w-full overflow-x-hidden break-words;
 
   h1 {
     font-size: 20px;
@@ -52,7 +54,7 @@ export default defineComponent({
 }
 
 .forward-btn {
-  bottom: 10px;
-  @apply sticky m-auto;
+  bottom: 60px;
+  @apply fixed w-full;
 }
 </style>

@@ -8,16 +8,16 @@
       <div class="bottom">
         <div class="info">
           <p>
-            <span class="material-icons topic-icon" v-text="item.feedable.topic.icon"></span>
-            - {{ item.feedable.topic.title }}
+            <span class="material-icons topic-icon mr-1" v-text="item.feedable.topic.icon"></span>
+            {{ item.feedable.topic.title }}
           </p>
           <span class="date" v-html="date" />
         </div>
 
         <div class="icon">
           <img :src="icon" alt="Type" />
-          <span v-if="item.feedable.__typename === 'Proposal'">Antrag</span>
-          <span v-else>{{ item.feedable.news ? 'News' : 'Petition' }}</span>
+          <!--          <span v-if="item.feedable.__typename === 'Proposal'">Antrag</span>-->
+          <!--          <span v-else>{{ item.feedable.news ? 'News' : 'Petition' }}</span>-->
         </div>
       </div>
     </div>
@@ -92,9 +92,8 @@ export default defineComponent({
     }
   }
 
-  .heading {
-    font-size: 20px;
-    font-weight: 600;
+  h2.heading {
+    font-weight: 500;
     @apply mt-2 mb-5 px-2;
   }
 
@@ -117,10 +116,10 @@ export default defineComponent({
     }
 
     .icon {
-      @apply inline-block pr-2;
+      @apply inline-block pr-2 pt-5;
 
       img {
-        width: 24px;
+        width: 20px;
         @apply mx-auto;
       }
     }

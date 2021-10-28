@@ -35,7 +35,7 @@
       </div>
       <div @click="save('AGREE')">
         <div class="btn">
-          <img src="/icons/arguments/agree.svg" alt="Nicht sicher" />
+          <img src="/icons/arguments/agree.svg" alt="Zustimmen" />
         </div>
         Zustimmen
       </div>

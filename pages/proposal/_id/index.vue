@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full">
     <div class="px-4 pt-5">
       <StatementCard :item="proposal" />
     </div>
@@ -8,25 +8,19 @@
       <h1>Worum geht's?</h1>
 
       <div v-html="proposal.explanation" />
-
-      <!--      <h1 class="mt-2">Quellen</h1>-->
-
-      <!--      <div v-html="proposal.source_of_explanation" />-->
     </div>
 
-    <AppButton class="forward-btn" small @click="start">Abstimmen</AppButton>
+    <div class="forward-btn">
+      <Button class="mx-auto" small @click="start">Abstimmen</Button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, useRouter } from '@nuxtjs/composition-api'
-import AppButton from '~/components/Button.vue'
 import { Proposal } from '~/@types/graphql-types'
 
 export default defineComponent({
-  components: {
-    AppButton
-  },
   props: {
     proposal: {
       type: Object as PropType<Proposal>,
@@ -49,7 +43,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .explanation {
-  @apply px-4 mt-2 mb-12 w-full overflow-x-hidden break-words;
+  @apply px-4 mt-2 pb-12 w-full overflow-x-hidden break-words;
 
   h1 {
     font-size: 20px;
@@ -58,7 +52,7 @@ export default defineComponent({
 }
 
 .forward-btn {
-  bottom: 10px;
-  @apply sticky m-auto;
+  bottom: 60px;
+  @apply fixed w-full;
 }
 </style>
