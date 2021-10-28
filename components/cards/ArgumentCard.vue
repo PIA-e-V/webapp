@@ -91,7 +91,7 @@ export default defineComponent({
   }
 
   .sources {
-    @apply mt-4 text-right cursor-pointer relative right-0 bottom-0;
+    @apply mt-4 pb-2 text-right cursor-pointer relative right-0 bottom-0;
 
     .material-icons {
       vertical-align: bottom;
