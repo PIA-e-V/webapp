@@ -18,10 +18,10 @@
       </div>
     </transition>
     <transition name="fade" @after-leave="transition = false">
-      <div v-if="!transition && showSources">
+      <div v-if="!transition && showSources" class="h-full">
         <h2>Argument {{ current }}/{{ total }}</h2>
 
-        <div v-html="argument.source" />
+        <div class="content" v-html="argument.source" />
 
         <div
           class="sources"
