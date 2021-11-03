@@ -11,7 +11,7 @@ export default (context: Context) => {
   return {
     httpEndpoint: context.env.apiBaseUrl,
     // override HTTP endpoint in browser only
-    browserHttpEndpoint: '/graphql',
+    browserHttpEndpoint: context.env.apiBaseUrl + '/graphql',
     inMemoryCacheOptions: {
       fragmentMatcher
     }

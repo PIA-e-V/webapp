@@ -1,6 +1,6 @@
 <template>
   <section class="card" @click="openItem">
-    <img class="header-img" :src="item.feedable.image" alt="Teaser" />
+    <img class="header-img" :src="baseUrl + item.feedable.image" alt="Teaser" />
 
     <div class="flex flex-col justify-between flex-grow">
       <h2 class="heading" v-html="title" />
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType, ref, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, computed, PropType, ref, useRouter, useContext } from '@nuxtjs/composition-api'
 import { FeedItem, Proposal, Statement } from '~/@types/graphql-types'
 import moment from 'moment'
 
@@ -40,12 +40,14 @@ export default defineComponent({
     const feedable = computed(() => props.item.feedable)
     const date = ref('Noch nicht abgestimmt')
     const router = useRouter()
+    const { env } = useContext()
 
     date.value = moment(props.item.active_from).locale('de').format('dd, Do MMMM YYYY')
 
     return {
       feedable,
       date,
+      baseUrl: env.apiBaseUrl,
       title: computed(() => feedable.value.short_statement),
       icon: computed(() => {
         const basePath = '/icons/navigation'
