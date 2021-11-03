@@ -26,13 +26,6 @@
         Zustimmen
       </div>
     </div>
-
-    <BottomDialog :value.sync="feedbackDialog">
-      <div v-for="(r, index) in reasons" :key="r.type">
-        <span class="underline cursor-pointer" @click="confirm(r)">{{ r.description }}</span>
-        <hr v-if="index !== reasons.length - 1" class="my-2" />
-      </div>
-    </BottomDialog>
   </div>
 </template>
 
@@ -134,24 +127,5 @@ export default defineComponent({
       }
     }
   }
-}
-
-.forward-btn {
-  bottom: 60px;
-  right: 10px;
-  background: rgba(65, 60, 177, 0.66);
-  @apply absolute;
-}
-
-#feedback-btn {
-  left: 10px;
-  bottom: 80px;
-  @apply absolute cursor-pointer;
-}
-
-#source {
-  left: 10px;
-  bottom: 55px;
-  @apply absolute;
 }
 </style>
