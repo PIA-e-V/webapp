@@ -35,6 +35,7 @@ export type Argument = {
   short_statement: Scalars['String'];
   opinions: Array<Opinion>;
   proposals: Array<Proposal>;
+  statements: Array<Statement>;
   parties: Array<Party>;
 };
 
@@ -105,7 +106,18 @@ export type CreateProposalBelongsToMany = {
   sync?: Maybe<Array<Scalars['Int']>>;
 };
 
+export type CreateStatementBelongsToMany = {
+  sync?: Maybe<Array<Scalars['Int']>>;
+};
 
+
+
+export type Disclaimer = {
+  __typename?: 'Disclaimer';
+  id: Scalars['Int'];
+  short_text: Scalars['String'];
+  long_text?: Maybe<Scalars['String']>;
+};
 
 export type FeedItem = {
   __typename?: 'FeedItem';
@@ -182,6 +194,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   upsertArgument?: Maybe<Argument>;
   deleteArgument: Argument;
+  upsertDisclaimer?: Maybe<Disclaimer>;
   upsertFeedItem?: Maybe<FeedItem>;
   deleteFeedItem: FeedItem;
   createFeedback?: Maybe<Feedback>;
@@ -216,6 +229,12 @@ export type MutationUpsertArgumentArgs = {
 
 export type MutationDeleteArgumentArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationUpsertDisclaimerArgs = {
+  id?: Maybe<Scalars['Int']>;
+  input: UpsertDisclaimerInput;
 };
 
 
@@ -469,6 +488,8 @@ export type Query = {
   chambers: Array<Chamber>;
   chamber?: Maybe<Chamber>;
   country?: Maybe<Country>;
+  disclaimers: Array<Disclaimer>;
+  disclaimer?: Maybe<Disclaimer>;
   feedSchedule: Array<FeedItem>;
   feed: Array<FeedItem>;
   feedByType: Array<FeedItem>;
@@ -518,6 +539,17 @@ export type QueryChamberArgs = {
 
 
 export type QueryCountryArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryDisclaimersArgs = {
+  where?: Maybe<QueryDisclaimersWhereWhereConditions>;
+  orderBy?: Maybe<Array<QueryDisclaimersOrderByOrderByClause>>;
+};
+
+
+export type QueryDisclaimerArgs = {
   id: Scalars['Int'];
 };
 
@@ -725,6 +757,54 @@ export type QueryArgumentsWhereWhereConditionsRelation = {
   amount?: Maybe<Scalars['Int']>;
   /** Additional condition logic. */
   condition?: Maybe<QueryArgumentsWhereWhereConditions>;
+};
+
+/** Allowed column names for the `orderBy` argument on field `disclaimers` on type `Query`. */
+export enum QueryDisclaimersOrderByColumn {
+  Id = 'ID',
+  ShortText = 'SHORT_TEXT',
+  LongText = 'LONG_TEXT'
+}
+
+/** Order by clause for the `orderBy` argument on the query `disclaimers`. */
+export type QueryDisclaimersOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryDisclaimersOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for the `where` argument on field `disclaimers` on type `Query`. */
+export enum QueryDisclaimersWhereColumn {
+  ShortText = 'SHORT_TEXT'
+}
+
+/** Dynamic WHERE conditions for the `where` argument on the query `disclaimers`. */
+export type QueryDisclaimersWhereWhereConditions = {
+  /** The column that is used for the condition. */
+  column?: Maybe<QueryDisclaimersWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: Maybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: Maybe<Scalars['Mixed']>;
+  /** A set of conditions that requires all conditions to match. */
+  AND?: Maybe<Array<QueryDisclaimersWhereWhereConditions>>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: Maybe<Array<QueryDisclaimersWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: Maybe<QueryDisclaimersWhereWhereConditionsRelation>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `disclaimers`. */
+export type QueryDisclaimersWhereWhereConditionsRelation = {
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+  /** The comparison operator to test against the amount. */
+  operator?: Maybe<SqlOperator>;
+  /** The amount to test. */
+  amount?: Maybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: Maybe<QueryDisclaimersWhereWhereConditions>;
 };
 
 /** Allowed column names for the `where` argument on field `feedSchedule` on type `Query`. */
@@ -1192,10 +1272,16 @@ export type UpsertArgumentInput = {
   stated_at?: Maybe<Scalars['Date']>;
   parties?: Maybe<CreatePartyBelongsToMany>;
   proposals?: Maybe<CreateProposalBelongsToMany>;
+  statements?: Maybe<CreateStatementBelongsToMany>;
 };
 
 export type UpsertChildVotingsHasMany = {
   upsert: Array<UpsertVotingInput>;
+};
+
+export type UpsertDisclaimerInput = {
+  short_text: Scalars['String'];
+  long_text?: Maybe<Scalars['String']>;
 };
 
 export type UpsertFeedItemInput = {
@@ -1251,6 +1337,7 @@ export type UpsertVotingInput = {
   proposal_id: Scalars['Int'];
   chamber_id: Scalars['Int'];
   party_id?: Maybe<Scalars['Int']>;
+  disclaimer_id?: Maybe<Scalars['Int']>;
   count?: Maybe<Scalars['Int']>;
   outcome: VotingOutcome;
   carried_out_at: Scalars['Date'];
@@ -1295,6 +1382,7 @@ export type Voting = {
   proposal_id: Scalars['Int'];
   chamber_id: Scalars['Int'];
   party_id?: Maybe<Scalars['Int']>;
+  disclaimer_id?: Maybe<Scalars['Int']>;
   count?: Maybe<Scalars['Int']>;
   outcome: VotingOutcome;
   carried_out_at: Scalars['Date'];
@@ -1305,6 +1393,7 @@ export type Voting = {
   proposal: Proposal;
   chamber: Chamber;
   party?: Maybe<Party>;
+  disclaimer?: Maybe<Disclaimer>;
 };
 
 export enum VotingOutcome {

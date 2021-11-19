@@ -55,6 +55,6 @@ export default defineComponent({
 
 .forward-btn {
   bottom: 60px;
-  @apply fixed w-full;
+  @apply fixed w-full left-0;
 }
 </style>

@@ -2,6 +2,15 @@
   <div>
     <p class="short-statement px-4">{{ proposal.short_statement }}</p>
 
+    <div v-if="voting.disclaimer" class="disclaimer">
+      <p v-if="longDisclaimer" v-html="voting.disclaimer.long_text" />
+      <p v-else v-html="voting.disclaimer.short_text" />
+
+      <p v-if="voting.disclaimer.long_text">
+        <span @click="longDisclaimer = !longDisclaimer">{{ longDisclaimer ? 'weniger' : 'mehr' }}</span>
+      </p>
+    </div>
+
     <div class="px-4 my-2" v-for="(res, i) in results" :key="i">
       <VotingResult :header="res.header" :results="res.results" />
     </div>
@@ -58,7 +67,11 @@ export default defineComponent({
             value: 1
           }
         },
-        fields: [{ childVotings: ['id', 'outcome', { party: ['id', 'name'] }, 'count'] }, 'outcome']
+        fields: [
+          'outcome',
+          { childVotings: ['id', 'outcome', { party: ['id', 'name'] }, 'count'] },
+          { disclaimer: ['short_text', 'long_text'] }
+        ]
       }
 
       const q = query(operations)
@@ -113,13 +126,17 @@ export default defineComponent({
     })
 
     return {
-      results
+      voting,
+      results,
+      longDisclaimer: ref(false)
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .short-statement {
   font-size: 20px;
   font-weight: 500;
@@ -135,5 +152,18 @@ h2 {
   left: calc(50% - 50px);
 
   @apply absolute;
+}
+
+.disclaimer {
+  border: 2px solid $light-blue;
+  @apply mx-4 px-2 pt-1 my-2 rounded-md select-none outline-none;
+
+  p:last-child {
+    @apply text-right underline select-none outline-none mb-1;
+
+    span {
+      @apply cursor-pointer select-none outline-none;
+    }
+  }
 }
 </style>

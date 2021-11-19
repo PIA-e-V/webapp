@@ -76,7 +76,12 @@ export default defineComponent({
   top: 1rem;
   overflow-wrap: break-word;
   height: calc(100% - 24px);
+  max-height: calc(100% - 24px);
   @apply rounded-xl text-white p-3 mx-auto absolute select-none outline-none overflow-y-scroll;
+
+  @screen sm {
+    height: unset;
+  }
 
   &.sources-active {
     @apply bg-white text-black;
