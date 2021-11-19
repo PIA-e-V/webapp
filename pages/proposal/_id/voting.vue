@@ -15,7 +15,11 @@
       <VotingResult :header="res.header" :results="res.results" />
     </div>
 
-    <AppButton small class="forward-btn" icon="arrow_forward" @click="$router.push('/profile')"> Zum Profil </AppButton>
+    <div class="pb-12"></div>
+
+    <div class="forward-btn">
+      <Button class="mx-auto" icon="arrow_forward" small @click="$router.push('/profile')"> Zum Profil </Button>
+    </div>
   </div>
 </template>
 
@@ -24,7 +28,6 @@ import { PropType, defineComponent, ref, useFetch } from '@nuxtjs/composition-ap
 import IQueryBuilderOptions from 'gql-query-builder/build/IQueryBuilderOptions'
 import { query } from 'gql-query-builder'
 import { uniqBy } from 'lodash'
-import AppButton from '~/components/Button.vue'
 import useGraphql from '~/composables/useGraphql'
 import { Party, Proposal, Voting, VotingOutcome } from '~/@types/graphql-types'
 import { VotingResult } from '~/components/VotingResult.vue'
@@ -36,9 +39,6 @@ interface Result {
 }
 
 export default defineComponent({
-  components: {
-    AppButton
-  },
   props: {
     proposal: {
       type: Object as PropType<Proposal>,
@@ -148,10 +148,8 @@ h2 {
 }
 
 .forward-btn {
-  bottom: 10px;
-  left: calc(50% - 50px);
-
-  @apply absolute;
+  bottom: 60px;
+  @apply fixed w-full left-0;
 }
 
 .disclaimer {
