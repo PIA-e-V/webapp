@@ -4,10 +4,14 @@
       <StatementCard :item="proposal" />
     </div>
 
-    <div class="explanation">
+    <div class="explanation" :class="{ 'pb-12': !proposal.disclaimer }">
       <h1>Worum geht's?</h1>
 
       <div v-html="proposal.explanation" />
+    </div>
+
+    <div v-if="proposal.disclaimer" class="mx-4 mt-2 pb-12">
+      <Disclaimer :disclaimer="proposal.disclaimer" />
     </div>
 
     <div class="forward-btn">
@@ -43,7 +47,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .explanation {
-  @apply px-4 mt-2 pb-12 w-full overflow-x-hidden break-words;
+  @apply px-4 mt-2 w-full overflow-x-hidden break-words;
 
   h1 {
     font-size: 20px;

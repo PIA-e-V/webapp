@@ -2,14 +2,7 @@
   <div>
     <p class="short-statement px-4">{{ proposal.short_statement }}</p>
 
-    <div v-if="voting.disclaimer" class="disclaimer">
-      <p v-if="longDisclaimer" v-html="voting.disclaimer.long_text" />
-      <p v-else v-html="voting.disclaimer.short_text" />
-
-      <p v-if="voting.disclaimer.long_text">
-        <span @click="longDisclaimer = !longDisclaimer">{{ longDisclaimer ? 'weniger' : 'mehr' }}</span>
-      </p>
-    </div>
+    <Disclaimer class="mx-4" v-if="voting.disclaimer" :disclaimer="voting.disclaimer" />
 
     <div class="px-4 my-2" v-for="(res, i) in results" :key="i">
       <VotingResult :header="res.header" :results="res.results" />
@@ -127,16 +120,13 @@ export default defineComponent({
 
     return {
       voting,
-      results,
-      longDisclaimer: ref(false)
+      results
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import '/assets/_variables.scss';
-
 .short-statement {
   font-size: 20px;
   font-weight: 500;
@@ -150,18 +140,5 @@ h2 {
 .forward-btn {
   bottom: 60px;
   @apply fixed w-full left-0;
-}
-
-.disclaimer {
-  border: 2px solid $light-blue;
-  @apply mx-4 px-2 pt-1 my-2 rounded-md select-none outline-none;
-
-  p:last-child {
-    @apply text-right underline select-none outline-none mb-1;
-
-    span {
-      @apply cursor-pointer select-none outline-none;
-    }
-  }
 }
 </style>

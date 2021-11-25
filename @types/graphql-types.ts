@@ -117,6 +117,8 @@ export type Disclaimer = {
   id: Scalars['Int'];
   short_text: Scalars['String'];
   long_text?: Maybe<Scalars['String']>;
+  votings: Array<Voting>;
+  proposals: Array<Proposal>;
 };
 
 export type FeedItem = {
@@ -443,6 +445,7 @@ export type Proposal = {
   __typename?: 'Proposal';
   id: Scalars['Int'];
   topic_id: Scalars['Int'];
+  disclaimer_id?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
   type: ProposalType;
   statement: Scalars['String'];
@@ -464,6 +467,7 @@ export type Proposal = {
   arguments: Array<Argument>;
   topic: Topic;
   opinions: Array<Opinion>;
+  disclaimer?: Maybe<Disclaimer>;
 };
 
 /** A paginated list of Proposal items. */
@@ -1298,6 +1302,7 @@ export type UpsertOpinionInput = {
 
 export type UpsertProposalInput = {
   topic_id: Scalars['Int'];
+  disclaimer_id?: Maybe<Scalars['Int']>;
   title: Scalars['String'];
   type: ProposalType;
   statement: Scalars['String'];

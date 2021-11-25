@@ -34,7 +34,8 @@ export default function useProposals() {
         'inverted',
         { arguments: ['id', 'statement', 'source'] },
         { latest_voting: ['carried_out_at'] },
-        { topic: ['icon'] }
+        { topic: ['icon'] },
+        { disclaimer: ['short_text', 'long_text'] }
       ]
     }
 
