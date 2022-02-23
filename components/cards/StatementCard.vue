@@ -14,7 +14,7 @@
               showSources = true
             "
           >
-            <span>Quellen</span> <span class="material-icons">info</span>
+            <span>Bronnen</span> <span class="material-icons">info</span>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export default defineComponent({
       date: computed(() => {
         if (props.item.__typename === 'Proposal') {
           return props.item.latest_voting
-            ? moment(props.item.latest_voting.carried_out_at).locale('de').format('dd, Do MMMM YYYY')
+            ? moment(props.item.latest_voting.carried_out_at).locale('nl').format('dd, Do MMMM YYYY')
             : 'Noch nicht abgestimmt'
         }
 

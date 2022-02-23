@@ -2,21 +2,12 @@
   <div class="flex-grow">
     <header v-if="!fetchState.pending && partyScores.length > 0">
       <h1>Parteinähe</h1>
-      <div class="description">
-        Hier siehst du, welche Partei deiner Meinung am nächsten steht. Dein Profil wurde auf Basis von {{ matchCount }}
-        Abstimmungen erstellt. Je öfter du abstimmst, desto genauer wird es.
-      </div>
+      <div class="description">Hier siehst du, welche Partei deiner Meinung am nächsten steht.</div>
     </header>
 
-    <p v-if="fetchState.pending" class="text-center pt-10">Lade Profildaten ...</p>
+    <p v-if="fetchState.pending" class="text-center pt-10">Lade Ergebnisse ...</p>
     <div v-else-if="partyScores.length === 0" class="text-center pt-10 px-4">
       <p class="font-bold pb-4">Noch nichts da...</p>
-
-      <p class="pb-4">
-        Du hast noch keine Anträge beantwortet. Stimme über Anträge ab um dein politisches Profil zu sehen.
-      </p>
-
-      <nuxt-link to="/"> <span class="underline">Klicke hier</span> </nuxt-link>, um dir einen Antrag auszusuchen.
     </div>
 
     <section id="capture" class="mt-5 mx-auto">
@@ -71,20 +62,13 @@ export default defineComponent({
             { party: ['id', 'name', 'color'] },
             { topics: [{ topic: ['id', 'title', 'icon'] }, 'score'] }
           ]
-        },
-        {
-          operation: 'me',
-          fields: [{ doneProposals: ['id'] }]
         }
       ])
-      const { partyScores: scoreResponse, me: meResponse } = await client.query(q.query, q.variables)
+      const { partyScores: scoreResponse } = await client.query(q.query, q.variables)
 
       if (scoreResponse) {
         partyScores.value = scoreResponse
         topics.value = scoreResponse.map((s) => s.topics.map((t) => t.topic))[0]
-      }
-      if (meResponse) {
-        matchCount.value = meResponse.doneProposals.length
       }
 
       await nextTick()
@@ -119,38 +103,6 @@ export default defineComponent({
       matchCount,
       weightChanged() {
         updateCalculation()
-      },
-      async share() {
-        const canvas = await html2canvas(document.querySelector('#capture')!)
-
-        console.log(canvas.toDataURL('image/jpeg', 0.95))
-
-        if (navigator.share) {
-          const base64url = canvas.toDataURL('image/jpeg', 0.95)
-          const blob = await (await fetch(base64url)).blob()
-          const file = new File([blob], 'profile.jpg', { type: blob.type })
-
-          const shareData = {
-            // title: 'Mein politisches Profil',
-            // text: 'Guck Dir mein politisches Profil auf FollowTheVote an!',
-            files: [file]
-          }
-          // @ts-ignore
-          // if (navigator.canShare && navigator.canShare(shareData)) {
-          try {
-            // @ts-ignore
-            await navigator.share(shareData)
-          } catch {
-            console.error('could not share share profile')
-          }
-          // } else {
-          //   // @ts-ignore
-          //   shareData.url = base64url
-          //   // @ts-ignore
-          //   delete shareData.files
-          //   await navigator.share(shareData)
-          // }
-        }
       }
     }
   }

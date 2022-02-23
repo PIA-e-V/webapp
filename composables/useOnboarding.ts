@@ -1,6 +1,6 @@
 import { onMounted, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 
-const exceptions = ['profile/account', 'verify-email', 'onboarding']
+const exceptions = ['profile/account', 'verify-email', 'onboarding', 'widget']
 export default function () {
   const route = useRoute()
   const router = useRouter()
