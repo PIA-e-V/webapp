@@ -1,11 +1,15 @@
 import { onMounted, useRoute, useRouter, watch } from '@nuxtjs/composition-api'
 
-const exceptions = ['profile/account', 'verify-email', 'onboarding', 'widget', 'widget/scores']
+const exceptions = ['profile/account', 'verify-email', 'onboarding', 'widget']
 export default function () {
   const route = useRoute()
   const router = useRouter()
 
   function checkIfOnboardingIsNeeded() {
+    if (exceptions.some((e) => route.value.path.includes(e))) {
+      return
+    }
+
     if (localStorage.getItem('onboarding.tutorial') !== '1') {
       router!.push('/onboarding/tutorial')
     } else if (localStorage.getItem('onboarding.login') !== '1') {
@@ -21,10 +25,6 @@ export default function () {
   )
 
   onMounted(() => {
-    if (exceptions.some((e) => route.value.path.includes(e))) {
-      return
-    }
-
     checkIfOnboardingIsNeeded()
   })
 
