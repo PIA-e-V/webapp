@@ -2,14 +2,16 @@
   <div v-if="proposal" class="proposal-container">
     <div class="px-4 h-full overflow-scroll flex flex-col">
       <div class="flex pt-2 mb-3">
-        <Button class="mr-2" icon="arrow_back" small @click="back" />
+        <Button v-show="currentIndex > 0" class="mr-2" icon="arrow_back" small @click="back" />
         <h2 class="flex flex-col flex-grow">Wat is jouw mening?</h2>
       </div>
 
-      <div style="max-width: min(100%, 600px)">
-        <span class="bold">{{ current }} / {{ total }}</span>
-        <div class="progress">
-          <div class="progress-inner" :style="{ width: `${progress}%` }"></div>
+      <div class="w-full flex">
+        <div class="flex-grow mx-auto" style="max-width: min(100%, 600px)">
+          <span class="bold">{{ current }} / {{ total }}</span>
+          <div class="progress">
+            <div class="progress-inner" :style="{ width: `${progress}%` }"></div>
+          </div>
         </div>
       </div>
 
@@ -124,6 +126,7 @@ export default defineComponent({
     return {
       save,
       proposal,
+      currentIndex,
       progress: computed(() => (100 / proposals.value.length) * currentIndex.value),
       current: computed(() => currentIndex.value + 1),
       total: computed(() => proposals.value.length),
