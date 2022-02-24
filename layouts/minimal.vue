@@ -17,8 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, onMounted, ref } from '@nuxtjs/composition-api'
-import BottomNavigation from '~/components/BottomNavigation.vue'
+import { defineComponent, onBeforeMount, ref } from '@nuxtjs/composition-api'
 import useAppState from '~/composables/useAppState'
 import useOnboarding from '~/composables/useOnboarding'
 
