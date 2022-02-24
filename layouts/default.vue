@@ -42,6 +42,11 @@ export default defineComponent({
   components: {
     BottomNavigation
   },
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
+  },
   setup() {
     const { isReady } = useAppState()
     useOnboarding()

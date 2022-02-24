@@ -23,6 +23,11 @@ import useAppState from '~/composables/useAppState'
 import useOnboarding from '~/composables/useOnboarding'
 
 export default defineComponent({
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
+  },
   setup() {
     const { isReady } = useAppState()
     useOnboarding()

@@ -10,6 +10,18 @@
   </div>
 </template>
 
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
+  }
+})
+</script>
+
 <style lang="scss" scoped>
 #onboarding {
   height: 100vh;

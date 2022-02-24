@@ -64,6 +64,11 @@ import useUser from '~/store/useUser'
 import useConfirmationDialog from '~/composables/useConfirmationDialog'
 
 export default defineComponent({
+  head() {
+    return {
+      meta: [{ hid: 'robots', name: 'robots', content: 'noindex' }]
+    }
+  },
   setup() {
     const { isReady } = useAppState()
     const { isAuthenticated, logout: logoutUser } = useUser()
