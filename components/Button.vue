@@ -3,7 +3,7 @@
     <span class="slot" :style="{ color }" :class="{ 'mr-2': !icon, 'ml-2': Object.keys($slots).length > 0 }">
       <slot />
     </span>
-    <div v-if="icon" class="icon">
+    <div v-if="icon" class="icon" :class="{ 'ml-2': hasContent, 'ml-1': !hasContent }">
       <span class="material-icons">{{ icon }}</span>
     </div>
   </div>
@@ -31,8 +31,10 @@ export default defineComponent({
       default: () => 'white'
     }
   },
-  setup() {
-    return {}
+  setup(_props, ctx) {
+    return {
+      hasContent: !!ctx.slots.default
+    }
   }
 })
 </script>
@@ -55,7 +57,7 @@ export default defineComponent({
     outline: none;
     user-select: none;
 
-    @apply inline-block ml-2 mr-1;
+    @apply inline-block mr-1;
   }
 
   .material-icons {

@@ -2,7 +2,7 @@
   <div v-if="proposal" class="proposal-container">
     <div class="px-4 h-full overflow-scroll flex flex-col">
       <div class="flex pt-2 mb-3">
-        <div class="pr-2"><span class="underline text-black cursor-pointer" @click="back">&lt;</span></div>
+        <Button class="mr-2" icon="arrow_back" small @click="back" />
         <h2 class="flex flex-col flex-grow">Wat is jouw mening?</h2>
       </div>
 
