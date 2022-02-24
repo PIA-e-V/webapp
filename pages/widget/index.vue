@@ -68,32 +68,17 @@ export default defineComponent({
         localStorage.setItem('widget-index', currentIndex.value.toString())
       })
 
-      const operation: IQueryBuilderOptions = {
-        operation: 'proposals',
-        variables: { first: 200 },
-        fields: [
-          {
-            data: [
-              '__typename',
-              'id',
-              'title',
-              'statement',
-              'short_statement',
-              'explanation',
-              'source_of_proposal',
-              'source_of_explanation',
-              'color',
-              'inverted',
-              { latest_voting: ['carried_out_at'] },
-              { topic: ['icon'] },
-              { disclaimer: ['short_text', 'long_text'] }
-            ]
+      const { proposals: response } = await client.query(`query {
+        proposals(first: 200, where: { column: ACTIVE, operator: EQ, value: true }) {
+          data {
+            __typename
+            id title statement short_statement
+            source_of_proposal source_of_explanation inverted
+            latest_voting { carried_out_at }
+            topic { icon }
           }
-        ]
-      }
-
-      const q = query(operation)
-      const { proposals: response } = await client.query(q.query, q.variables)
+        }
+      }`)
       if (response) {
         proposals.value = response.data
       }
