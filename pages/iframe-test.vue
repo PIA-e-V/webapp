@@ -2,7 +2,7 @@
   <div class="h-full">
     <h1>Iframe example</h1>
 
-    <iframe src="http://ftv.localhost/widget"></iframe>
+    <iframe src="https://sliedrecht.followthevote.com/widget"></iframe>
   </div>
 </template>
 
@@ -19,8 +19,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 iframe {
-  height: 700px;
-  width: 400px;
+  height: 450px;
+  width: 100%;
   border: 1px solid black;
 }
 </style>
