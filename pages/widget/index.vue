@@ -59,15 +59,6 @@ export default defineComponent({
     )
 
     onBeforeMount(async () => {
-      const cacheIndex = localStorage.getItem('widget-index')
-      if (cacheIndex) {
-        currentIndex.value = parseInt(cacheIndex)
-      }
-
-      watchEffect(() => {
-        localStorage.setItem('widget-index', currentIndex.value.toString())
-      })
-
       const { proposals: response } = await client.query(`query {
         proposals(first: 200, where: { column: ACTIVE, operator: EQ, value: true }) {
           data {
@@ -82,6 +73,20 @@ export default defineComponent({
       if (response) {
         proposals.value = response.data
       }
+
+      const cacheIndex = localStorage.getItem('widget-index')
+      if (cacheIndex) {
+        let index = parseInt(cacheIndex)
+        if (index > proposals.value.length) {
+          index = 0
+        }
+
+        currentIndex.value = index
+      }
+
+      watchEffect(() => {
+        localStorage.setItem('widget-index', currentIndex.value.toString())
+      })
     })
 
     async function save(result: string) {
