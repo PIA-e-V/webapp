@@ -10,7 +10,7 @@
       <p class="font-bold pb-4">Noch nichts da...</p>
     </div>
 
-    <section id="capture" class="mt-5 mx-auto">
+    <section id="capture" class="mt-5 mx-auto px-4">
       <div v-for="(score, i) in scores" :key="i">
         <div>
           #{{ i + 1 }} - {{ score.party.name }} <span class="float-right">{{ score.totalScore }}%</span>
