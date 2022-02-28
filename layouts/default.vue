@@ -11,7 +11,7 @@
     </transition>
 
     <transition name="fade-reverse">
-      <div v-if="isReady && !transitionActive" id="main-container">
+      <div v-if="isReady && !transitionActive" id="main-container" class="hide-scrollbars">
         <button id="burger-menu-btn" @click="toggleMenu">
           <span class="material-icons">{{ menu ? 'close' : 'menu' }}</span>
         </button>

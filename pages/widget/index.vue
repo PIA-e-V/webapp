@@ -1,6 +1,6 @@
 <template>
   <div v-if="proposal" class="proposal-container">
-    <div class="px-4 h-full overflow-scroll flex flex-col">
+    <div class="hide-scrollbars px-4 h-full overflow-scroll flex flex-col">
       <div class="flex pt-2 mb-3">
         <div class="flex flex-col flex-grow">
           <img src="/logo-sliedrecht.svg" style="height: 50px" class="my-2" alt="Het Kompas Logo" />

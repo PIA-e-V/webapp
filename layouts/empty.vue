@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto relative">
-    <div id="main-container" class="h-full">
+    <div id="main-container" class="h-full hide-scrollbars">
       <Nuxt />
     </div>
   </div>

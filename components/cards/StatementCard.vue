@@ -88,7 +88,8 @@ export default defineComponent({
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border: 1px solid lightgray;
-  @apply mx-auto text-black px-4 pt-1 pb-4 relative outline-none select-none w-full h-full;
+  height: min(100%, 500px);
+  @apply mx-auto text-black px-4 pt-1 pb-4 relative outline-none select-none w-full;
 
   &:not(.sources-active) {
     @apply overflow-hidden;

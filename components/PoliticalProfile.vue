@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-grow">
+  <div class="flex-grow mx-auto" style="max-width: min(100%, 600px)">
     <header class="text-center">
       <div class="description">Jouw resultaat voor de</div>
       <h2 class="font-normal">Gemeenteraadsverkiezingen <span style="color: #f76b30">Sliedrecht</span></h2>

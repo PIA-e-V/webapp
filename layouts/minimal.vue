@@ -3,7 +3,7 @@
     <SplashScreen @after-leave="transitionActive = false" />
 
     <transition name="fade-reverse">
-      <div v-if="isReady && !transitionActive" id="main-container">
+      <div v-if="isReady && !transitionActive" class="hide-scrollbars" id="main-container">
         <div class="h-full">
           <Nuxt />
         </div>
