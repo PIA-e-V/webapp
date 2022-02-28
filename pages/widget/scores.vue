@@ -1,8 +1,12 @@
 <template>
   <div class="h-full flex flex-col">
-    <header>
-      <h1 class="pt-1 mb-2 text-center">Parteimatching</h1>
+    <div class="flex pt-2 mb-3">
+      <div class="flex flex-col flex-grow">
+        <img src="/logo-sliedrecht.svg" style="height: 50px" class="my-2" alt="Het Kompas Logo" />
+      </div>
+    </div>
 
+    <header>
       <PoliticalProfile />
     </header>
   </div>

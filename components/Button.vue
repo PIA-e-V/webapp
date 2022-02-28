@@ -1,5 +1,10 @@
 <template>
-  <div class="btn" :class="{ small: small }" :style="{ background, color }" @click="$emit('click', $event)">
+  <div
+    class="btn"
+    :class="{ small: small, disabled: disabled }"
+    :style="{ background, color }"
+    @click="$emit('click', $event)"
+  >
     <span class="slot" :style="{ color }" :class="{ 'mr-2': !icon, 'ml-2': Object.keys($slots).length > 0 }">
       <slot />
     </span>
@@ -22,9 +27,13 @@ export default defineComponent({
       type: Boolean,
       default: () => false
     },
+    disabled: {
+      type: Boolean,
+      default: () => false
+    },
     background: {
       type: String,
-      default: () => '#3A4090'
+      default: () => '#F76B30'
     },
     color: {
       type: String,
@@ -40,10 +49,21 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '/assets/_variables.scss';
+
 .btn {
   width: fit-content;
-  border: none;
-  @apply rounded-2xl px-1 font-bold cursor-pointer flex items-center outline-none select-none;
+  border: 1px solid $primary;
+  @apply rounded-full px-1 font-bold cursor-pointer flex items-center outline-none select-none;
+
+  &.disabled {
+    background: white !important;
+    cursor: default !important;
+
+    .material-icons {
+      color: $primary;
+    }
+  }
 
   .slot {
     line-height: 40px;
@@ -65,7 +85,7 @@ export default defineComponent({
   }
 
   &.small {
-    height: 30px;
+    height: 34px;
     font-weight: 600;
 
     .slot {

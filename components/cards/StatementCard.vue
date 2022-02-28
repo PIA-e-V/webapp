@@ -2,23 +2,31 @@
   <section class="card" :class="{ 'sources-active': showSources }">
     <transition name="fade" @after-leave="transitionActive = false">
       <div v-if="!transitionActive && !showSources">
-        <h2 class="heading" v-html="item.statement" />
+        <div class="flex justify-center pt-2">
+          <div class="box mr-1">
+            <span class="material-icons mt-2" style="color: #f76b30">{{ item.topic.icon }}</span>
+          </div>
 
-        <div class="flex flex-row justify-between">
-          <span class="date" v-text="date" />
-
-          <div
-            class="sources-btn"
-            @click="
-              transitionActive = true
-              showSources = true
-            "
-          >
-            <span>Bronnen</span> <span class="material-icons">info</span>
+          <div class="box">
+            <span class="text-black" style="line-height: 2.4">{{ item.topic.title }}</span>
           </div>
         </div>
 
-        <span class="material-icons bg-icon">{{ item.topic.icon }}</span>
+        <h2 class="heading" v-html="item.statement" />
+
+        <!--        <div class="flex flex-row justify-between">-->
+        <!--          <span class="date" v-text="date" />-->
+
+        <!--          <div-->
+        <!--            class="sources-btn"-->
+        <!--            @click="-->
+        <!--              transitionActive = true-->
+        <!--              showSources = true-->
+        <!--            "-->
+        <!--          >-->
+        <!--            <span>Bronnen</span> <span class="material-icons">info</span>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
     </transition>
     <transition name="fade" @after-leave="transitionActive = false">
@@ -77,10 +85,10 @@ export default defineComponent({
 
 .card {
   max-width: min(100%, 600px);
-  background: $primary;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  @apply mx-auto text-white px-4 pt-1 pb-4 relative outline-none select-none w-full;
+  border: 1px solid lightgray;
+  @apply mx-auto text-black px-4 pt-1 pb-4 relative outline-none select-none w-full h-full;
 
   &:not(.sources-active) {
     @apply overflow-hidden;
@@ -93,7 +101,7 @@ export default defineComponent({
   .heading {
     font-size: 20px;
     font-weight: 600;
-    @apply mt-2 mb-5;
+    @apply mt-4 text-center;
   }
 
   .date {
@@ -119,9 +127,14 @@ export default defineComponent({
 
       &.back-icon {
         background: $primary;
-        @apply rounded-full text-white;
+        @apply rounded-full text-black;
       }
     }
   }
+}
+
+.box {
+  border: 1px solid lightgray;
+  @apply rounded-xl px-2;
 }
 </style>

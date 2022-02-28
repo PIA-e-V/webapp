@@ -1,46 +1,67 @@
 <template>
   <div class="flex-grow">
-    <header v-if="!fetchState.pending && partyScores.length > 0">
-      <h1>Parteinähe</h1>
-      <div class="description">Hier siehst du, welche Partei deiner Meinung am nächsten steht.</div>
+    <header class="text-center">
+      <div class="description">Jouw resultaat voor de</div>
+      <h2 class="font-normal">Gemeenteraadsverkiezingen <span style="color: #f76b30">Sliedrecht</span></h2>
     </header>
 
-    <p v-if="fetchState.pending" class="text-center pt-10">Lade Ergebnisse ...</p>
+    <p v-if="fetchState.pending" class="text-center pt-10">Resultaten laden ...</p>
     <div v-else-if="partyScores.length === 0" class="text-center pt-10 px-4">
       <p class="font-bold pb-4">Noch nichts da...</p>
     </div>
 
-    <section id="capture" class="mt-5 mx-auto px-4">
-      <div v-for="(score, i) in scores" :key="i">
-        <div>
-          #{{ i + 1 }} - {{ score.party.name }} <span class="float-right">{{ score.totalScore }}%</span>
-        </div>
-        <div class="progress">
-          <div :style="{ width: `${score.totalScore}%`, background: score.party.color }"></div>
-        </div>
-      </div>
-    </section>
+    <div v-if="!fetchState.pending" class="mx-4">
+      <section id="capture" class="mt-5 pt-2 mx-auto box">
+        <div v-for="(score, i) in scores" class="mb-4" :key="i">
+          <div class="flex mb-2">
+            <div class="box">{{ score.party.name }}</div>
 
-    <h1 v-show="!fetchState.pending && partyScores.length > 0" class="pl-4 mt-5">Gewichtung</h1>
-    <section v-show="fetchState.timestamp" id="weightings">
-      <div v-for="topic in topics" :key="topic.id">
-        <h2>{{ topic.title }}</h2>
-        <input
-          :id="`topic-weight-${topic.id}`"
-          type="range"
-          min="0"
-          max="100"
-          value="100"
-          @change="weightChanged(topic)"
-        />
+            <div class="flex-grow" />
+
+            <div class="box">{{ score.totalScore }}%</div>
+          </div>
+          <div class="progress">
+            <div :style="{ width: `${score.totalScore}%` }"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div v-if="!fetchState.pending" class="mx-4 mt-2">
+      <div class="flex">
+        <div class="flex">
+          <Button class="mr-2" icon="arrow_back" small @click="back" />
+          <span style="line-height: 2">Terug naar vragen</span>
+        </div>
+
+        <div class="flex-grow"></div>
+
+        <div class="flex">
+          <span style="line-height: 2">Klaar!</span>
+          <Button class="ml-2" icon="arrow_forward" small @click="forward" />
+        </div>
       </div>
-    </section>
+    </div>
+
+    <!--    <h1 v-show="!fetchState.pending && partyScores.length > 0" class="pl-4 mt-5">Gewichtung</h1>-->
+    <!--    <section v-show="fetchState.timestamp" id="weightings">-->
+    <!--      <div v-for="topic in topics" :key="topic.id">-->
+    <!--        <h2>{{ topic.title }}</h2>-->
+    <!--        <input-->
+    <!--          :id="`topic-weight-${topic.id}`"-->
+    <!--          type="range"-->
+    <!--          min="0"-->
+    <!--          max="100"-->
+    <!--          value="100"-->
+    <!--          @change="weightChanged(topic)"-->
+    <!--        />-->
+    <!--      </div>-->
+    <!--    </section>-->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref, useFetch } from '@nuxtjs/composition-api'
-import html2canvas from 'html2canvas'
+import { defineComponent, nextTick, ref, useFetch, useRouter } from '@nuxtjs/composition-api'
 import { query } from 'gql-query-builder'
 import useGraphql from '~/composables/useGraphql'
 import { Party, ScoreResult, Topic } from '~/@types/graphql-types'
@@ -48,6 +69,7 @@ import { Party, ScoreResult, Topic } from '~/@types/graphql-types'
 export default defineComponent({
   setup() {
     const client = useGraphql()
+    const router = useRouter()
 
     const topics = ref<Topic[]>([])
     const partyScores = ref<ScoreResult[]>([])
@@ -83,8 +105,7 @@ export default defineComponent({
         // const totalScore = (sum(score.topics.map(s => s.score)) / score.topics.length).toPrecision(2)
         let totalScore = 0
         score.topics.forEach((t) => {
-          const element = document.querySelector(`#topic-weight-${t.topic.id}`) as HTMLInputElement
-          totalScore += (t.score * parseInt(element.value)) / 100
+          totalScore += t.score
         })
         totalScore = Math.round((totalScore / score.topics.length) * 100)
 
@@ -103,7 +124,12 @@ export default defineComponent({
       matchCount,
       weightChanged() {
         updateCalculation()
-      }
+      },
+      back() {
+        localStorage.setItem('widget-index', '0')
+        router.push('/widget')
+      },
+      forward() {}
     }
   }
 })
@@ -135,9 +161,11 @@ header {
   @apply overflow-hidden mb-1;
 
   & > div {
+    background: $primary;
     transition: width 0.5s;
+    border-radius: 10px;
     width: 0;
-    height: 10px;
+    height: 8px;
   }
 }
 
@@ -169,5 +197,10 @@ header {
       @apply cursor-pointer;
     }
   }
+}
+
+.box {
+  border: 1px solid lightgray;
+  @apply rounded-xl px-2;
 }
 </style>

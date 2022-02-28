@@ -2,7 +2,7 @@
   <transition name="fade" @after-leave="$emit('after-leave')">
     <div v-if="!isReady">
       <div class="splash-container">
-        <img class="" src="/logo.svg" alt="Splash Screen" />
+        <img class="" src="/logo-sliedrecht.svg" alt="Splash Screen" />
       </div>
     </div>
   </transition>

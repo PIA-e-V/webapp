@@ -163,6 +163,15 @@ export type FeedbackPaginator = {
 
 export type Feedbackable = Argument | Proposal;
 
+export type Language = {
+  __typename?: 'Language';
+  id: Scalars['Int'];
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  translation?: Maybe<Translation>;
+};
+
 export type Legislature = {
   __typename?: 'Legislature';
   id: Scalars['Int'];
@@ -208,6 +217,8 @@ export type Mutation = {
   deleteStatement: Statement;
   uploadStatementImage?: Maybe<Scalars['String']>;
   upsertTopic?: Maybe<Topic>;
+  upsertTranslation?: Maybe<Translation>;
+  deleteTranslation: Translation;
   /** Log in to a new session and get the user. */
   login: LoginResponse;
   /** Log out from the current session, showing the user one last time. */
@@ -299,6 +310,17 @@ export type MutationUploadStatementImageArgs = {
 export type MutationUpsertTopicArgs = {
   id?: Maybe<Scalars['Int']>;
   input: UpsertTopicInput;
+};
+
+
+export type MutationUpsertTranslationArgs = {
+  id?: Maybe<Scalars['Int']>;
+  input: UpsertTranslationInput;
+};
+
+
+export type MutationDeleteTranslationArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -497,9 +519,12 @@ export type Query = {
   feedSchedule: Array<FeedItem>;
   feed: Array<FeedItem>;
   feedByType: Array<FeedItem>;
+  languages: Array<Language>;
+  language?: Maybe<Language>;
   legislature?: Maybe<Legislature>;
   activeLegislature?: Maybe<Legislature>;
   opinion?: Maybe<Opinion>;
+  myOpinion?: Maybe<Opinion>;
   parliament?: Maybe<Parliament>;
   parties: Array<Party>;
   party?: Maybe<Party>;
@@ -511,6 +536,8 @@ export type Query = {
   totalUsers: Scalars['Int'];
   topics: Array<Topic>;
   topic?: Maybe<Topic>;
+  translation?: Maybe<Translation>;
+  keyTranslation?: Maybe<Translation>;
   /** Get a user by id. */
   user?: Maybe<User>;
   /** Get current authenticated user. */
@@ -526,6 +553,7 @@ export type Query = {
   parliaments?: Maybe<ParliamentPaginator>;
   proposals?: Maybe<ProposalPaginator>;
   statements?: Maybe<StatementPaginator>;
+  translations?: Maybe<TranslationPaginator>;
   /** Get all users. */
   users?: Maybe<UserPaginator>;
   votings?: Maybe<VotingPaginator>;
@@ -573,6 +601,11 @@ export type QueryFeedByTypeArgs = {
 };
 
 
+export type QueryLanguageArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type QueryLegislatureArgs = {
   id: Scalars['Int'];
 };
@@ -580,6 +613,12 @@ export type QueryLegislatureArgs = {
 
 export type QueryOpinionArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryMyOpinionArgs = {
+  opinionable_id: Scalars['Int'];
+  opinionable_type: Scalars['String'];
 };
 
 
@@ -628,6 +667,17 @@ export type QueryTopicsArgs = {
 
 export type QueryTopicArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryTranslationArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryKeyTranslationArgs = {
+  language_id: Scalars['Int'];
+  key: Scalars['String'];
 };
 
 
@@ -698,6 +748,14 @@ export type QueryProposalsArgs = {
 export type QueryStatementsArgs = {
   where?: Maybe<QueryStatementsWhereWhereConditions>;
   orderBy?: Maybe<Array<QueryStatementsOrderByOrderByClause>>;
+  first?: Maybe<Scalars['Int']>;
+  page?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryTranslationsArgs = {
+  where?: Maybe<QueryTranslationsWhereWhereConditions>;
+  orderBy?: Maybe<Array<QueryTranslationsOrderByOrderByClause>>;
   first?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
 };
@@ -1075,6 +1133,55 @@ export type QueryTopicsWhereWhereConditionsRelation = {
   condition?: Maybe<QueryTopicsWhereWhereConditions>;
 };
 
+/** Allowed column names for the `orderBy` argument on field `translations` on type `Query`. */
+export enum QueryTranslationsOrderByColumn {
+  Id = 'ID',
+  Key = 'KEY',
+  Translation = 'TRANSLATION'
+}
+
+/** Order by clause for the `orderBy` argument on the query `translations`. */
+export type QueryTranslationsOrderByOrderByClause = {
+  /** The column that is used for ordering. */
+  column: QueryTranslationsOrderByColumn;
+  /** The direction that is used for ordering. */
+  order: SortOrder;
+};
+
+/** Allowed column names for the `where` argument on field `translations` on type `Query`. */
+export enum QueryTranslationsWhereColumn {
+  Key = 'KEY',
+  Translation = 'TRANSLATION'
+}
+
+/** Dynamic WHERE conditions for the `where` argument on the query `translations`. */
+export type QueryTranslationsWhereWhereConditions = {
+  /** The column that is used for the condition. */
+  column?: Maybe<QueryTranslationsWhereColumn>;
+  /** The operator that is used for the condition. */
+  operator?: Maybe<SqlOperator>;
+  /** The value that is used for the condition. */
+  value?: Maybe<Scalars['Mixed']>;
+  /** A set of conditions that requires all conditions to match. */
+  AND?: Maybe<Array<QueryTranslationsWhereWhereConditions>>;
+  /** A set of conditions that requires at least one condition to match. */
+  OR?: Maybe<Array<QueryTranslationsWhereWhereConditions>>;
+  /** Check whether a relation exists. Extra conditions or a minimum amount can be applied. */
+  HAS?: Maybe<QueryTranslationsWhereWhereConditionsRelation>;
+};
+
+/** Dynamic HAS conditions for WHERE conditions for the `where` argument on the query `translations`. */
+export type QueryTranslationsWhereWhereConditionsRelation = {
+  /** The relation that is checked. */
+  relation: Scalars['String'];
+  /** The comparison operator to test against the amount. */
+  operator?: Maybe<SqlOperator>;
+  /** The amount to test. */
+  amount?: Maybe<Scalars['Int']>;
+  /** Additional condition logic. */
+  condition?: Maybe<QueryTranslationsWhereWhereConditions>;
+};
+
 /** Allowed column names for the `orderBy` argument on field `votings` on type `Query`. */
 export enum QueryVotingsOrderByColumn {
   Id = 'ID',
@@ -1258,6 +1365,26 @@ export type TopicResult = {
   score: Scalars['Float'];
 };
 
+export type Translation = {
+  __typename?: 'Translation';
+  id: Scalars['Int'];
+  language_id: Scalars['Int'];
+  key: Scalars['String'];
+  translation: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  language: Language;
+};
+
+/** A paginated list of Translation items. */
+export type TranslationPaginator = {
+  __typename?: 'TranslationPaginator';
+  /** Pagination information about the list of items. */
+  paginatorInfo: PaginatorInfo;
+  /** A list of Translation items. */
+  data: Array<Translation>;
+};
+
 /** Specify if you want to include or exclude trashed results from a query. */
 export enum Trashed {
   /** Only return trashed results. */
@@ -1335,6 +1462,12 @@ export type UpsertTopicInput = {
   description: Scalars['String'];
 };
 
+export type UpsertTranslationInput = {
+  language_id: Scalars['Int'];
+  key: Scalars['String'];
+  translation: Scalars['String'];
+};
+
 export type UpsertVotingInput = {
   id?: Maybe<Scalars['Int']>;
   voting_id?: Maybe<Scalars['Int']>;
@@ -1352,6 +1485,7 @@ export type UpsertVotingInput = {
 export type User = {
   __typename?: 'User';
   id: Scalars['Int'];
+  language_id: Scalars['Int'];
   first_name?: Maybe<Scalars['String']>;
   last_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
@@ -1363,6 +1497,7 @@ export type User = {
   doneStatements: Array<Statement>;
   opinions: Array<Opinion>;
   roles: Array<Role>;
+  language?: Maybe<Language>;
 };
 
 /** A paginated list of User items. */

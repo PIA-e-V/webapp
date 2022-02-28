@@ -8,13 +8,13 @@ export default {
   },
 
   loading: {
-    color: '#3a4090',
+    color: '#F76B30',
     continuous: true
   },
 
   loadingIndicator: {
     name: 'cube-grid',
-    color: '#3a4090',
+    color: '#F76B30',
     background: 'white'
   },
 
