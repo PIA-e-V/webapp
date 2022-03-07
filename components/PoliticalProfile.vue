@@ -127,9 +127,11 @@ export default defineComponent({
       },
       back() {
         localStorage.setItem('widget-index', '0')
-        router.push('/widget')
+        router.push('/widget/statements')
       },
-      forward() {}
+      forward() {
+        router.push('/widget/thanks')
+      }
     }
   }
 })
