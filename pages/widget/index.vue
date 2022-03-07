@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <h1>Vergelik partien</h1>
+    <h1>Vergelijk partijen</h1>
 
     <div class="flex-grow"></div>
 
