@@ -126,7 +126,7 @@ export default defineComponent({
         updateCalculation()
       },
       back() {
-        localStorage.setItem('widget-index', '0')
+        // localStorage.setItem('widget-index', '0')
         router.push('/widget/statements')
       },
       forward() {
