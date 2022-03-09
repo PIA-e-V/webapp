@@ -49,7 +49,7 @@ export default defineComponent({
   },
   setup() {
     const { isReady } = useAppState()
-    useOnboarding()
+    // useOnboarding()
 
     const menu = ref(false)
 

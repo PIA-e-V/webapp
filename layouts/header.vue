@@ -73,7 +73,7 @@ export default defineComponent({
     const { isReady } = useAppState()
     const { isAuthenticated, logout: logoutUser } = useUser()
     const { confirm } = useConfirmationDialog()
-    useOnboarding()
+    // useOnboarding()
 
     const menu = ref(false)
 

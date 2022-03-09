@@ -29,7 +29,7 @@ export default defineComponent({
   },
   setup() {
     const { isReady } = useAppState()
-    useOnboarding()
+    // useOnboarding()
 
     function calculateScreenHeight() {
       // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
