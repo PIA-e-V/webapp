@@ -13,17 +13,28 @@
     <div>
       <h2 class="text-white text-center mx-4">Wilt u anderen helpen een keus te maken?</h2>
 
-      <div id="share-btn" @click="share">Deel de tool</div>
+      <div class="flex justify-center">
+        <div id="back-btn">
+          <Button class="mx-auto" icon="replay" color="#F76B30" background="white" small @click="restart" />
+          <div class="text-white">Herstart</div>
+        </div>
+
+        <div class="mx-2"></div>
+
+        <div id="share-btn" @click="share">Deel de tool</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, useRouter } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   layout: 'minimal',
   setup() {
+    const router = useRouter()
+
     return {
       async share() {
         if (!navigator.share) {
@@ -36,6 +47,10 @@ export default defineComponent({
             url: 'https://www.hetkompassliedrecht.nl/'
           })
         } catch {}
+      },
+      restart() {
+        localStorage.setItem('widget-index', '0')
+        router.push('/widget')
       }
     }
   }
@@ -66,8 +81,12 @@ export default defineComponent({
     }
   }
 
+  #back-btn {
+    @apply flex flex-col justify-center cursor-pointer outline-none select-none;
+  }
+
   #share-btn {
-    @apply bg-white mb-8 rounded-xl text-center outline-none select-none shadow mx-auto mt-8 cursor-pointer;
+    @apply bg-white mb-8 rounded-xl text-center outline-none select-none shadow-md mt-8 cursor-pointer;
 
     width: min(30vw, 200px);
     line-height: 50px;

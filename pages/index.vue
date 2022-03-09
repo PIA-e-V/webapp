@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from '@nuxtjs/composition-api'
+import { defineComponent, onBeforeMount, onMounted, ref, useRouter } from '@nuxtjs/composition-api'
 import gql from 'graphql-tag'
 
 export default defineComponent({
@@ -52,6 +52,12 @@ export default defineComponent({
     `
   },
   setup(_, { root }) {
+    const router = useRouter()
+
+    onBeforeMount(() => {
+      router.push('/widget')
+    })
+
     const progress = ref(0)
 
     if (localStorage.getItem('user-progress')) {
