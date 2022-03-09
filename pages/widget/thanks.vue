@@ -14,8 +14,8 @@
       <h2 class="text-white text-center mx-4">Wilt u anderen helpen een keus te maken?</h2>
 
       <div class="flex justify-center">
-        <div id="back-btn">
-          <Button class="mx-auto" icon="replay" color="#F76B30" background="white" small @click="restart" />
+        <div id="back-btn" @click="restart">
+          <Button class="mx-auto" icon="replay" color="#F76B30" background="white" small />
           <div class="text-white">Herstart</div>
         </div>
 
