@@ -210,6 +210,7 @@ export type Mutation = {
   deleteFeedItem: FeedItem;
   createFeedback?: Maybe<Feedback>;
   upsertOpinion?: Maybe<Opinion>;
+  deleteAllOpinions: Scalars['Boolean'];
   upsertProposal?: Maybe<Proposal>;
   deleteProposal: Proposal;
   uploadProposalImage?: Maybe<Scalars['String']>;

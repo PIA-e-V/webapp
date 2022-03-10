@@ -29,10 +29,12 @@
 
 <script lang="ts">
 import { defineComponent, useRouter } from '@nuxtjs/composition-api'
+import useGraphql from '~/composables/useGraphql'
 
 export default defineComponent({
   layout: 'minimal',
   setup() {
+    const client = useGraphql()
     const router = useRouter()
 
     return {
@@ -48,7 +50,11 @@ export default defineComponent({
           })
         } catch {}
       },
-      restart() {
+      async restart() {
+        const { deleteAllOpinions: response } = await client.mutation(`mutation {
+          deleteAllOpinions
+        }`)
+        console.log(response)
         localStorage.setItem('widget-index', '0')
         router.push('/widget')
       }
