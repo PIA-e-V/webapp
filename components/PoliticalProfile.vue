@@ -7,7 +7,7 @@
 
     <p v-if="fetchState.pending" class="text-center pt-10">Resultaten laden ...</p>
     <div v-else-if="partyScores.length === 0" class="text-center pt-10 px-4">
-      <p class="font-bold pb-4">Noch nichts da...</p>
+      <p class="font-bold pb-4">Beantwoord vragen om een resultaat te krijgen</p>
     </div>
 
     <div v-if="!fetchState.pending" class="mx-4">
