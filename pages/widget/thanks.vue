@@ -45,7 +45,7 @@ export default defineComponent({
 
         try {
           await navigator.share({
-            title: 'Stemwijzer voor Sliedrecht',
+            title: 'Stemwijzer voor gemeenteraadsverkiezingen in Sliedrecht',
             url: 'https://www.hetkompassliedrecht.nl/lokaal/politiek/799262/stemwijzer-voor-gemeenteraadsverkiezingen-in-sliedrecht'
           })
         } catch {}
